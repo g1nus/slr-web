@@ -59,7 +59,7 @@ export class SideMenu extends React.Component{
         return (
         <div className="menu">
             <div className={cls} onClick={this.handleToggleClick}>
-                <svg id="button" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg id="menu-button" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     viewBox="0 0 1000 1000" xmlSpace="preserve">
                     <path class="st0" d="M214,482.1"/>
                     <line class="st-t" x1="172" y1="482.1" x2="172" y2="482.1"/>

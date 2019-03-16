@@ -1,4 +1,4 @@
-/*===KEYFRAMES==*/
+/*===KEYFRAMES===*/
 @keyframes st-t-o{
     0%{
         transform: translateY(0px);
@@ -120,7 +120,7 @@ div.navigation-wrapper nav{
 /*===MENU_BUTTON===*/
 div.navigation-wrapper div.menu div.button-wrapper{
     z-index: 1100;
-    position: absolute;
+    position: fixed;
     top: 5px;
     left: 15px;
     width: 50px;
@@ -128,29 +128,29 @@ div.navigation-wrapper div.menu div.button-wrapper{
     cursor: pointer;
 }
 
-div.navigation-wrapper div.menu div.button-wrapper svg#button{
+div.navigation-wrapper div.menu div.button-wrapper svg#menu-button{
     position: absolute;
     width: 80%;
     top: 5%;
     left: 10%;
 }
 /*button animation*/
-div.open svg .st-t{
+div.open svg#menu-button .st-t{
     animation: st-t-o 0.3s forwards cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
-div.open svg .st-b{
+div.open svg#menu-button .st-b{
     animation: st-b-o 0.3s forwards cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
-div.open svg .st-m{
+div.open svg#menu-button .st-m{
     animation: st-m-o 0.3s forwards cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
-div.close svg .st-t{
+div.close svg#menu-button .st-t{
     animation: st-t-c 0.3s forwards cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
-div.close svg .st-b{
+div.close svg#menu-button .st-b{
     animation: st-b-c 0.3s forwards cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
-div.close svg .st-m{
+div.close svg#menu-button .st-m{
     animation: st-m-c 0.3s forwards cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
 
