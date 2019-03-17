@@ -1,0 +1,73 @@
+/*===SEARCH_FORM===*/
+form.search-form{
+  position: absolute;
+  width: 60%;
+  left: 20%;
+  top: 150px;
+  z-index: 100;
+}
+
+form.search-form input[type=text]{
+  float: left;
+  width: 100%;
+  font-size: 20px;
+  height: 40px;
+  padding-left: 7px;
+}
+
+form.search-form button{
+  background-color: white;
+  position: absolute;
+  float: right;
+  width: 35px;
+  height: 40px;
+  top: 0px;
+  right: 0px;
+  border-bottom: solid 1px black;
+}
+
+form.search-form button svg#search-icon{
+  margin-top: 5px;
+  width: 30px;
+  margin-right: 5px;
+}
+
+div.option-holder{
+  font-size: 18px;
+  width: 80%;
+  margin: 60px 10% 0% 10%;
+}
+
+/*options*/
+div.option-holder label{
+  font-weight: 400;
+}
+div.option-holder div.checkboxes-holder{
+  font-size: 15px;
+  margin-top: 5px;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+div.option-holder div.checkboxes-holder label {
+  display: table-cell;
+  white-space: nowrap;
+  font-weight: 300;
+  text-align: center;
+}
+div.option-holder div.checkboxes-holder label:first-child {
+  text-align: left;
+}
+div.option-holder div.checkboxes-holder label:last-child {
+  text-align: right;
+}
+div.option-holder div.checkboxes-holder input {
+  vertical-align: middle;
+}
+div.option-holder div.checkboxes-holder label span {
+  vertical-align: middle;
+}
+
+
+/*===SVG_ELEMENTS===*/
+.st0, .st1{fill:none;stroke:#000000;stroke-width:35;stroke-miterlimit:10;}
