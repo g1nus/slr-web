@@ -43,9 +43,10 @@
     transform: rotate(360deg);
   }
 }
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+
+/*===DEFAULT_STYLING===*/
+* {
+  box-sizing: border-box;
 }
 
 body{
@@ -53,6 +54,33 @@ body{
   margin: 0;
   font-size: 0px;
   box-sizing: border-box;
+}
+
+#root{
+  z-index: 9999999;
+}
+
+div.navigation-wrapper{
+  position: fixed;
+  top: 0px;
+}
+
+div.main-wrapper{
+  z-index: 100;
+  width: 800px;
+  margin: 70px auto 0px auto;
+}
+
+.modal{
+  background-color: aliceblue;
+  border: solid 2px black;
+  border-radius: 15px;
+}
+
+a{
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 button{
@@ -65,15 +93,56 @@ button{
   outline: inherit;
 }
 
-.modal{
-  background-color: aliceblue;
-  border: solid 2px black;
-  border-radius: 15px;
-}
-#root{
-  z-index: 9999999;
+textarea:focus, input:focus, a:focus, div:focus{
+  outline: none;
 }
 
+input[type=text]{
+  box-sizing: border-box;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: solid 1px black;
+  padding: 3px 5px 3px 5px;
+  color: black;
+}
+
+/*checkboxes*/
+input[type=checkbox]{
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+.checkmark {
+  display: inline-block;
+  margin: 6px;
+  height: 20px;
+  width: 20px;
+  background-color:white;
+  border-radius: 3px;
+  border: solid 0.5px gray;
+}
+.checkbox-container{
+  cursor: pointer;
+}
+.checkbox-container:hover input ~ .checkmark {
+  background-color: rgb(241, 241, 241);
+}
+.checkmark:after {
+  content: url('./svg/tick.svg');
+  display: none;
+}
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+.checkbox-container .checkmark:after {
+  margin-left: 2px;
+  margin-top: 2px;
+  width: 14px;
+  height: 14px;
+}
+
+/*loading icon*/
 svg#loading-icon{
   position: absolute;
   width: 80px;
@@ -101,7 +170,9 @@ svg#loading-icon path#loading-circle2{
   animation: complete-big 5s linear infinite, rotate-big 1s linear infinite;
 }
 
-div.main-wrapper{
-  width: 800px;
-  margin: 0 auto;
+/*code tag*/
+code{
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
+
