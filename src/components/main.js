@@ -1,9 +1,8 @@
-import React from "react";
+import React, {Component} from "react";
 
-export class Main extends React.Component{
-  constructor(props){
-    super(props);
-  }
+class Main extends Component{
+  state = {};
+  
   render(){
     return (
       <div className="main-wrapper">
@@ -12,3 +11,5 @@ export class Main extends React.Component{
     );
   }
 }
+
+export default Main;
