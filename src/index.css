@@ -60,6 +60,10 @@ body{
   z-index: 9999999;
 }
 
+a{
+  display: block;
+}
+
 div.navigation-wrapper{
   position: fixed;
   top: 0px;

@@ -1,14 +1,20 @@
 import React, {Component} from "react";
+import { AccountConsumer } from '../../providers/AccountProvider'
+import { Link } from 'react-router-dom'
 
 const UserInfo = ({user}) => (
-  <div className="user" >
-    {user.image}
-    <div className="user-info">
-      {user.name}
-      <br/>
-      {user.surname}
-    </div>
-  </div>
+  <AccountConsumer>
+     {({ image, name, surname }) => (
+      <div className="user" >
+        {image}
+        <div className="user-info">
+          {name}
+          <br/>
+          {surname}
+        </div>
+      </div>  
+     )}
+  </AccountConsumer>
 );
 
 class SideMenu extends Component{
@@ -16,13 +22,6 @@ class SideMenu extends Component{
     shown: false, 
     firsttime: true
   };
-
-  handleLink = e => {
-    this.setState(prevstate => ({
-      shown: !prevstate.shown
-    }));
-    this.props.handler(e.target.getAttribute("data"));
-  }
 
   handleToggleMenuButton = () =>{
     this.setState(prevstate => ({
@@ -50,7 +49,7 @@ class SideMenu extends Component{
     }
     return (
       <div className="menu">
-        <div className={clsbutton} onClick={this.handleToggleMenuButton} onBlur={this.handleMenuBlur} tabIndex={-1}>
+        <div className={clsbutton} onClick={this.handleToggleMenuButton}>
           <svg id="menu-button" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 1000 1000">
             <path className="st0" d="M214,482.1"/>
@@ -59,11 +58,11 @@ class SideMenu extends Component{
             <line className="st-b" x1="828" y1="482.1" x2="828" y2="482.1"/>
           </svg>
       </div>
-      <div className={clsidemenu}>
+      <div className={clsidemenu} tabIndex={-1}>
         <UserInfo user={this.props.user}></UserInfo>
         {this.props.menu_elements.map((element, index) =>
           <div key={index}>
-          <a href='#' data={element.link} className="menu-option" onMouseDown={this.handleLink}>{element.content}</a>
+            <Link to={element.link} className="menu-option" /*onMouseDown={this.handleLink}*/ onMouseUp={this.handleMenuBlur}>{element.content}</Link>          
           </div>
         )}
         </div>
