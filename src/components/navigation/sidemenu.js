@@ -1,14 +1,19 @@
 import React, {Component} from "react";
+import { AccountConsumer } from '../../providers/accountprovider'
 
 const UserInfo = ({user}) => (
-  <div className="user" >
-    {user.image}
-    <div className="user-info">
-      {user.name}
-      <br/>
-      {user.surname}
-    </div>
-  </div>
+  <AccountConsumer>
+     {({ image, name, surname }) => (
+      <div className="user" >
+        {image}
+        <div className="user-info">
+          {name}
+          <br/>
+          {surname}
+        </div>
+      </div>  
+     )}
+  </AccountConsumer>
 );
 
 class SideMenu extends Component{

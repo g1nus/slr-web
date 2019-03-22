@@ -5,6 +5,7 @@ import LoadIcon from './components/loadicon';
 import SearchForm from './components/forms/searchform';
 import NavBar from './components/navigation/navbar';
 import Main from './components/main';
+import AccountProvider from './providers/accountprovider';
 
 class App extends Component {
   state = {
@@ -49,8 +50,10 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <NavBar navhandler={this.handleNavLinkClick} menuhandler={this.handleMenuLinkClick} user_elements={this.state.user} nav_elements={this.state.nav_list} menu_elements={this.state.menu_list} underline={15}></NavBar>
-        <Main main_element={this.state.main}></Main>
+        <AccountProvider>
+          <NavBar navhandler={this.handleNavLinkClick} menuhandler={this.handleMenuLinkClick} user_elements={this.state.user} nav_elements={this.state.nav_list} menu_elements={this.state.menu_list}></NavBar>
+          <Main main_element={this.state.main}></Main>
+        </AccountProvider>
       </div>
     );
   }
