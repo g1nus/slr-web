@@ -61,7 +61,7 @@ class App extends Component {
             <Route exact path = "/" render={() => <Main main_element={<LoadIcon />}></Main>} />
             <Route exact path = "/search" render={() => <Main main_element={<SearchForm />}></Main>} />
             <Route exact path = "/projects" render={(props) => <Main main_element={<ProjectsList {...props} />}></Main>} />
-            <Route exact path = "/projects/:id" render={(props) => <Main main_element={<ProjectPage {...props} />}></Main>} />
+            <Route path = "/projects/:id" render={(props) => <Main main_element={<ProjectPage {...props} />}></Main>} />
           </AccountProvider>
         </div>
         </Router>
