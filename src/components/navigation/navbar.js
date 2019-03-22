@@ -5,6 +5,7 @@ import { Flipper, Flipped } from 'react-flip-toolkit';
 class NavBar extends Component {
   state = { toLeft: true };
 
+
   handleLink = e => {
     var data = e.target.getAttribute("data")
     this.setState(prevState => {
