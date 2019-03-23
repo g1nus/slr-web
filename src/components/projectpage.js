@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Link } from 'react-router-dom'
 import { Flipper, Flipped } from 'react-flip-toolkit';
 
@@ -10,18 +10,22 @@ const PAPERS = [{id:"1", name:"paper one", description:"Lorem ipsum dolor sit am
 
 const ProjectPage = ({ match }) => {
   const [slider, setSlider] = useState(true);
+  useEffect(() => {
+    var substr = window.location.pathname.substring(window.location.pathname.length-7,window.location.pathname.length);
+    if(substr === '/search' || substr === 'search/'){
+      setSlider(false);
+    }else{
+      setSlider(true);
+    }
+  });
   return(
     <div className="project-wrapper">
       <div>{match.params.id}</div>
       <div className="project-nav-link-wrapper">
-        <div className="nav-link" onClick={e => {
-          if(!slider) {setSlider(!slider)}
-        }}>
+        <div className="nav-link">
           <Link to={match.url}>project[link]</Link>
         </div>
-        <div className="nav-link" onClick={e => {
-          if(slider) {setSlider(!slider)}
-        }}>
+        <div className="nav-link">
           <Link to={match.url + "/search"}>search[link]</Link>
         </div>
         <Flipper flipKey={slider}>
