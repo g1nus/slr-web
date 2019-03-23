@@ -11,9 +11,6 @@ import ProjectPage from './components/projectpage';
 
 import { AccountProvider } from './providers/AccountProvider';
 
-//test component
-//import Test from './test';
-
 class App extends Component {
   state = {
       menu_list: [
@@ -32,7 +29,6 @@ class App extends Component {
             <Route exact path = "/projects" render={(props) => <Main main_element={<ProjectsList {...props} />}></Main>} />
             <Route path = "/projects/:id" render={(props) => <Main main_element={<ProjectPage {...props} />}></Main>} />
           </AccountProvider>
-          //test componen
         </div>
       </Router>
     );
