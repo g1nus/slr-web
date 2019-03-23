@@ -13,7 +13,7 @@ import ProjectPage from './components/projectpage';
 import { AccountProvider } from './providers/AccountProvider';
 
 //test component
-import Test from './test';
+//import Test from './test';
 
 class App extends Component {
     state = {
@@ -36,7 +36,7 @@ class App extends Component {
         </AccountProvider>
 
           //test component
-            <Test />
+            
 
         </div>
         </Router>
