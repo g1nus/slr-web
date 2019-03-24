@@ -70,14 +70,20 @@ div.navigation-wrapper{
 }
 
 div.main-wrapper{
+  position: relative;
   z-index: 100;
-  width: 800px;
+  width: 1000px;
   margin: 70px auto 0px auto;
 }
 
 .modal{
   background-color: aliceblue;
   border: solid 2px black;
+  border-radius: 15px;
+}
+
+.light-modal{
+  border: solid 1px #c4c4c4;
   border-radius: 15px;
 }
 
@@ -108,6 +114,17 @@ input[type=text]{
   border-bottom: solid 1px black;
   padding: 3px 5px 3px 5px;
   color: black;
+}
+
+div.title{
+  z-index: 1100;
+  position: fixed;
+  top: 0px;
+  left: 100px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 21px;
 }
 
 /*checkboxes*/

@@ -3,35 +3,48 @@ div.project-cards-holder, div.project-wrapper{
 }
 div.project-cards-holder div.project-card{
     width: 40%;
-    margin: 5% 5% 0% 5%;
+    margin: 20px 5% 20px 5%;
     float: left;
+    transition: all 0.3s;
+}
+div.project-cards-holder div.project-card:hover{
+    transform: scale(1.03);
+}
+
+div.project-cards-holder div.project-card h3{
+    text-align: center;
+    font-size: 20px;
+    margin: 10px auto 10px auto;
+}
+div.project-cards-holder div.project-card p{
+    margin: 0px auto 10px auto;
+    padding: 0px 10px 0px 10px;
 }
 
 /*navbar links*/
 div.project-nav-link-wrapper{
-    position: absolute;
-    left: 85px;
-    height: 50px;
+    position: relative;
 }
 div.project-nav-link-wrapper div.nav-link{
 position: relative;
 display: inline-block;
-width: 150px;
+height: 40px;
 }
 div.project-nav-link-wrapper div.nav-link a{
 display: inline-block;
-width: 200px;
-height: 50px;
-line-height: 50px;
+width: 150px;
+height: 35px;
+line-height: 35px;
+font-size: 18px;
 text-align: center;
 }
 div.project-nav-link-wrapper div.underline{
 background-color: black;
 position: absolute;
 width: 100px;
-height: 4px;
+height: 2px;
 bottom: 0px;
-border-radius: 2px 2px 0px 0px;
+border-radius: 1px 1px 0px 0px;
 }
 div.project-nav-link-wrapper div.underline-to-left{
 left: 25px;
@@ -39,3 +52,11 @@ left: 25px;
 div.project-nav-link-wrapper div.underline-to-right{
 left: 175px;
 }
+
+div.papers-list{
+    margin-top: 10px;
+  }
+  div.papers-list a{
+    width: 600px;
+    margin: 0px auto 20px 10px;
+  }
