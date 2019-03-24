@@ -1,8 +1,7 @@
 /*this is the file to communicate with backend*/
 
 //signal to abort the request
-const abortController = new AbortController();
-const signal = abortController.signal;
+var abortController;
 
 //object to export
 const http = {
@@ -30,6 +29,10 @@ function abortRequest() {
  */
 async function request(url, options = {}) {
     try {
+
+        //create a new abortController for this request
+        abortController =  new AbortController();
+        let signal = abortController.signal;
         let requestOptions = Object.assign(
             {
                 //enable the  sending of cookie
