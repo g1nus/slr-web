@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import CheckBox from "./checkbox";
 import ClampLines from 'react-clamp-lines';
 import {paperDao} from '../../dao/paper.dao';
+import {projectPapersDao} from '../../dao/projectPapers.dao'
 import LoadIcon from '../loadicon';
 
 const OPTIONS1 = ["option one", "option two", "option three"];
 
-const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setResults}) => {
+const  SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, results, setResults, selectedpapers, setSelectedPapers}) => {
   const [searching, setSearching] = useState(false);
   function handleCheckboxChange(e){
     const { name } = e.target;
@@ -20,16 +21,37 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
     });
   }
 
+  function handlePaperSelection(e){
+    const id = e.target.value;
+    if(!selectedpapers.includes(id)){
+      var array = selectedpapers;
+      array.push(id);
+      setSelectedPapers(array);
+    }else{
+      var array = selectedpapers.filter(function(value, index, arr){
+        return value !== id;
+      });
+      setSelectedPapers(array);
+    }
+  }
+
+  function addPapers(){
+    const postData = async () => {
+      for(let i = 0; i < selectedpapers.length; i++){
+        let res = await projectPapersDao.postPaperIntoProject({paper_id: selectedpapers[i], project_id: projectId});
+      }
+    }
+    postData();
+  }
+
   function createCheckboxes(){return OPTIONS1.map(option => {return <CheckBox label={option} isSelected={checkboxes.one[option]} handler={handleCheckboxChange} key={option} />})}
 
   function updateSearchResults(){
-    console.log(query)
     //a wrapper function ask by reat hook
     const fetchData = async () => {
       //call the dao
       setSearching(true);
       let res = await paperDao.search({query : query});
-      console.log(res);
       //update state
       setSearching(false);
       setResults(res);
@@ -43,7 +65,7 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
     }else{
       return results.map((element, index) =>
       <div key={index} className="paper-card">
-      <CheckBox label={""}/>
+      <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
         <Link to={"#"}><h3>{element.data.Title}</h3></Link>
         <ClampLines
           text={element.data.Abstract}
@@ -68,6 +90,10 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
       setResults([]);
     }
   }, []);//this way is executed only on mount
+
+  useEffect(() => {
+    setSelectedPapers([]);
+  }, [results]);
 
   return(
     <>
@@ -102,7 +128,10 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
       <div className="loading-holder" style={{visibility: (!searching) ? 'hidden' : '' }}>
         <LoadIcon></LoadIcon>
       </div>
-      <form className="search-results" style={{visibility: (results.length === 0 || searching) ? 'hidden' : '' }}>
+      <form className="search-results" style={{visibility: (results.length === 0 || searching) ? 'hidden' : '' }} onSubmit={(e) => {
+          e.preventDefault();
+          addPapers();
+        }}>
           {showResults()}
           <button type="submit" value="Submit">+</button>
         </form>

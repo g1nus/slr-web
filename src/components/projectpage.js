@@ -15,6 +15,7 @@ const ProjectPage = ({ match }) => {
   const [fetching, setFetching] = useState(true);
   const [slider, setSlider] = useState(true);
   const [query, setQuery] = useState('');
+  const [selectedpapers, setSelectedPapers] = useState([]);
   const [checkboxes, setCheckboxes] = useState({
     one: OPTIONS1.reduce(
       (options, option) => ({
@@ -97,7 +98,10 @@ const ProjectPage = ({ match }) => {
         </>
       } />
       <Route path = {match.url + "/search"} render={() => 
-        <SearchForm query={query} setQuery={setQuery} checkboxes={checkboxes} setCheckboxes={setCheckboxes} results={results} setResults={setResults}/>
+        <SearchForm projectId={project.id} query={query} setQuery={setQuery} 
+        checkboxes={checkboxes} setCheckboxes={setCheckboxes} 
+        results={results} setResults={setResults}
+        selectedpapers={selectedpapers} setSelectedPapers={setSelectedPapers}/>
       } />
     </div>
 

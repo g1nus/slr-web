@@ -28,6 +28,7 @@ async function getPaper(paper_id) {
  */
 async function postPaperIntoProject(bodyData) {
     let url = config.home + config.papers;
+    console.log(bodyData);
     return await http.post(url, bodyData);
 }
 

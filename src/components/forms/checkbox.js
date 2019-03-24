@@ -1,8 +1,8 @@
 import React from "react";
 
-const CheckBox = ({ label, isSelected, handler }) => (
+const CheckBox = ({ val, label, isSelected, handler }) => (
     <label className="checkbox-container">
-      <input type="checkbox" name={label} checked={isSelected} onChange={handler} />
+      <input type="checkbox" value={val} name={label} checked={isSelected} onChange={handler} />
       <span className="checkmark"></span>
       <span>{label}</span>
     </label>
