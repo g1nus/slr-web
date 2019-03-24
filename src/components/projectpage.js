@@ -6,6 +6,7 @@ import {projectPapersDao} from '../dao/projectPapers.dao';
 import {projectsDao} from '../dao/projects.dao';
 import LoadIcon from '../components/loadicon';
 import ClampLines from 'react-clamp-lines';
+import join from '../utils/stringUtils';
 
 const OPTIONS1 = ["option one", "option two", "option three"];
 
@@ -126,7 +127,7 @@ const ProjectPage = ({match}) => {
                         <Link to={match.url}>papers</Link>
                     </div>
                     <div className="nav-link">
-                        <Link to={match.url + "/search"}>search</Link>
+                        <Link to={join(match.url,"/search")}>search</Link>
                     </div>
                     <Flipper flipKey={slider}>
                         <Flipped flipId="underline">
