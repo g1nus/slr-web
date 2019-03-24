@@ -103,6 +103,10 @@ button{
   outline: inherit;
 }
 
+button:disabled{
+  cursor: not-allowed;
+}
+
 textarea:focus, input:focus, a:focus, div:focus{
   outline: none;
 }
