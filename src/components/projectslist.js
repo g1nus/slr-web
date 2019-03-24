@@ -10,6 +10,7 @@ const PROJECTS = [{id:"1", name:"project one", description:"Lorem ipsum dolor si
 const ProjectsList = ({ match }) => {
   const [projectslist, setProjectsList] = useState([]);
   const [fetching, setFetching] = useState(true);
+
   useEffect(() => {
     //a wrapper function ask by reat hook
     const fetchData = async () => {
@@ -25,7 +26,8 @@ const ProjectsList = ({ match }) => {
         //stop all ongoing request
         projectsDao.abortRequest();
     };
-  });
+  }, []);//this way is executed only on mount
+  
   if(fetching){
     return <LoadIcon></LoadIcon>;
   }else{
@@ -34,7 +36,7 @@ const ProjectsList = ({ match }) => {
         <div className="title">PROJETCS</div>
         {projectslist.map((element, index) => 
           <Link key={index} to={match.url + "/" + element.id}>
-            <div className="modal project-card">
+            <div className="light-modal project-card">
               <h3>{element.data.name}</h3>
               <p>{element.data.description}</p>
             </div>
