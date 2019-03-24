@@ -8,7 +8,12 @@ import {config} from './../config/index'
  */
 async function search(queryData){
     let url = config.home+config.search
-    return await http.get(url, queryData);
+    try{
+        const res = await http.get(url, queryData);
+        return res;
+    }catch(e){
+        return ["not_found"];
+    }
 }
 
 
