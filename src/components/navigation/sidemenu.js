@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { AccountConsumer } from '../../providers/AccountProvider'
 import { Link } from 'react-router-dom'
 
-const UserInfo = ({user}) => (
+const UserInfo = () => (
   <AccountConsumer>
      {({ image, name, surname }) => (
       <div className="user" >
@@ -62,7 +62,7 @@ class SideMenu extends Component{
         <UserInfo user={this.props.user}></UserInfo>
         {this.props.menu_elements.map((element, index) =>
           <div key={index}>
-            <Link to={element.link} className="menu-option" /*onMouseDown={this.handleLink}*/ onMouseUp={this.handleMenuBlur}>{element.content}</Link>          
+            <Link to={element.link} className="menu-option" onMouseUp={this.handleMenuBlur}>{element.content}</Link>          
           </div>
         )}
         </div>
