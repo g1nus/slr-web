@@ -21,12 +21,6 @@ const  SearchForm = () => {
     )
   });
 
-  function handleSubmit(e){
-    e.preventDefault();
-    
-    alert(query + "\n" + checkboxes.one["option one"] + "\n" + checkboxes.one["option two"] + "\n" + checkboxes.one["option three"]);
-  }
-
   function handleCheckboxChange(e){
     const { name } = e.target;
     const prevCheckboxes = checkboxes;
