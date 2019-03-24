@@ -8,7 +8,16 @@ import {config} from './../config/index'
  */
 async function getPapersList(queryData) {
     let url = config.home + config.papers
-    return await http.get(url, queryData);
+    try{
+        const res = await http.get(url, queryData);
+        return res;
+    }catch(e){
+        if(e.message === "Not Found"){
+            return null;
+        }else{
+            return e;
+        }
+    }
 }
 
 /**

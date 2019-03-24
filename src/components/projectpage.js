@@ -9,6 +9,59 @@ import ClampLines from 'react-clamp-lines';
 
 const OPTIONS1 = ["option one", "option two", "option three"];
 
+const PapersList = ({id, papers, setPapersList}) => {
+    const [fetching, setFetching] = useState(true);
+    useEffect(() => {
+        //a wrapper function ask by reat hook
+        const fetchData = async () => {
+
+            //call the dao
+            let res = await projectPapersDao.getPapersList({project_id: id});
+            //let res2 = await projectsDao.getProject(match.params.id);
+            console.log(res);
+            setFetching(false);
+            //update only when there are the results
+            if (res !== null /*&& res2 !== null*/) {
+                setPapersList(res);
+                //setProject(res2);
+            }
+        }
+        fetchData();
+        //when the component will unmount
+        return () => {
+            //stop all ongoing request
+            projectPapersDao.abortRequest();
+        };
+    }, []);//this way is executed only on mount
+    if (fetching) {
+        return <div className="papers-list"><LoadIcon></LoadIcon></div>;
+    }else {
+        if(papers.length === 0){
+            return <div className="papers-list">there are no papers here, you can add new ones by searching</div>;
+        }else{
+            return(
+                <div className="papers-list">
+                    {papers.map((element, index) =>
+                        <div key={index} className="paper-card">
+                            <Link to={"#"}><h3>{element.data.Title}</h3></Link>
+                            <ClampLines
+                                text={element.data.Abstract}
+                                lines={4}
+                                ellipsis="..."
+                                moreText="Expand"
+                                lessText="Collapse"
+                                className="paragraph"
+                                moreText="more"
+                                lessText="less"
+                            />
+                        </div>
+                    )}
+                </div>
+        );
+        }
+    }
+}
+
 const ProjectPage = ({match}) => {
     const [papers, setPapersList] = useState([]);
     const [project, setProject] = useState({});
@@ -43,12 +96,12 @@ const ProjectPage = ({match}) => {
         const fetchData = async () => {
 
             //call the dao
-            let res = await projectPapersDao.getPapersList({project_id: match.params.id});
+            //let res = await projectPapersDao.getPapersList({project_id: match.params.id});
             let res2 = await projectsDao.getProject(match.params.id);
 
             //update only when there are the results
-            if (res !== null && res2 !== null) {
-                setPapersList(res);
+            if (/*res !== null && */res2 !== null) {
+                //setPapersList(res);
                 setProject(res2);
                 setFetching(false);
             }
@@ -84,23 +137,7 @@ const ProjectPage = ({match}) => {
                 <Route exact path={match.url} render={() =>
                     <>
                         <div className="project-description">{project.data.description}</div>
-                        <div className="papers-list">
-                            {papers.map((element, index) =>
-                                <div key={index} className="paper-card">
-                                    <Link to={"#"}><h3>{element.data.Title}</h3></Link>
-                                    <ClampLines
-                                        text={element.data.Abstract}
-                                        lines={4}
-                                        ellipsis="..."
-                                        moreText="Expand"
-                                        lessText="Collapse"
-                                        className="paragraph"
-                                        moreText="more"
-                                        lessText="less"
-                                    />
-                                </div>
-                            )}
-                        </div>
+                        <PapersList id={match.params.id} papers={papers} setPapersList={setPapersList}/>
                     </>
                 }/>
                 <Route path = {match.url + "/search"} render={() =>
