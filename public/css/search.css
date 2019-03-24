@@ -5,12 +5,6 @@ form.search-form{
   z-index: 100;
 }
 
-form.small{
-  width: 680px;
-  margin: 20px auto 20px 10px;
-  height: 60px;
-}
-
 form.search-form input[type=text]{
   float: left;
   width: 100%;
@@ -73,13 +67,18 @@ div.option-holder div.checkboxes-holder label span {
   vertical-align: middle;
 }
 
+/*options when results are shown*/
+form.small{
+  width: 680px;
+  margin: 20px auto 20px 10px;
+  height: 60px;
+}
 form.small div.option-holder {
   margin: 10px 0% 0% 0%;
   width: 200px;
   position: absolute;
   right: 0px;
 }
-
 form.small div.option-holder div.checkboxes-holder label{
   display: table-row;
   text-align: left;
@@ -100,14 +99,7 @@ form.small + div.loading-holder{
   width: 700px;
 }
 
-/*===SVG_ELEMENTS===*/
-.st0, .st1{fill:none;stroke:#000000;stroke-width:35;stroke-miterlimit:10;}
-
-/*===SEARCH_RESULTS===*/
-form.search-results{
-  margin-top: 10px;
-}
-
+/*===PAPER-CARD_GENERIC===*/ /*projectpage.js & searchform.js*/
 div.paper-card{
   position: relative;
   width: 600px;
@@ -117,33 +109,16 @@ div.paper-card{
 div.paper-card a{
   margin: 0px auto 0px 10px;
 }
+
 div.paper-card a:hover{
   text-decoration: underline;
 }
 
-form.search-results div.paper-card a{
-  margin: 0px auto 0px 10px;
-}
-form.search-results button[type=submit]{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
-div.paper-card label.checkbox-container{
-  position: absolute;
-  top: 1px;
-  left: -30px;
-}
-
-form.search-results div.paper-card{
-  width: 700px;
-  margin: 0px auto 20px 0px;
-}
 div.paper-card h3{
   font-size: 25px;
   margin: 10px auto 2px 0px;
 }
+
 div.paper-card div.paragraph{
   margin: 0px auto 10px auto;
   padding: 0px 10px 0px 10px;
@@ -152,7 +127,37 @@ div.paper-card div.paragraph{
   word-wrap: break-word;
   hyphens: auto;
 }
+
 div.paper-card button{
   color: grey;
   font-weight: 300;
 }
+
+
+/*===SEARCH_RESULTS===*/
+form.search-results{
+  margin-top: 10px;
+}
+
+/*paper-card for search result*/ /*searchform.js*/
+form.search-results div.paper-card{
+  width: 700px;
+  margin: 0px auto 20px 0px;
+}
+form.search-results div.paper-card a{
+  margin: 0px auto 0px 10px;
+}
+form.search-results button[type=submit]{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+div.paper-card label.checkbox-container{
+  position: absolute;
+  top: 1px;
+  left: -30px;
+}
+
+
+/*===SVG_ELEMENTS===*/
+.st0, .st1{fill:none;stroke:#000000;stroke-width:35;stroke-miterlimit:10;}

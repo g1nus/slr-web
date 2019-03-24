@@ -1,3 +1,4 @@
+/*projects card holder*/ /*projectslist.js*/
 div.project-cards-holder, div.project-wrapper{
   font-size: 15px;
 }
@@ -21,7 +22,7 @@ div.project-cards-holder div.project-card p{
   padding: 0px 10px 0px 10px;
 }
 
-/*navbar links*/
+/*small navigation links*/ /*projectpage.js*/
 div.project-nav-link-wrapper{
   position: relative;
   width: 300px;
@@ -55,10 +56,13 @@ div.project-nav-link-wrapper div.underline-to-right{
   left: 175px;
 }
 
+/*list and description components*/ /*projectpage.js*/
 div.papers-list{
-  margin-top: 20px;
+  position: relative;
+  margin: 20px auto auto 0px;
+  width: 700px;
+  min-height: 300px;
 }
-
 div.project-description{
   margin-top: 20px;
   width: 300px;
@@ -71,4 +75,8 @@ div.project-description{
   word-wrap: break-word;
   hyphens: auto;
   color: #2f2f2f;
+}
+div.papers-list svg#loading-icon{
+  width: 50px;
+  height: 50px;
 }
