@@ -4,26 +4,10 @@ import CheckBox from "./checkbox";
 import { SearchResultsConsumer } from "../../providers/SearchResultsProvider"
 
 //the papers will be fetched through an api
-const PAPERS = [{id:"1", name:"paper one", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}, 
-                  {id:"2", name:"paper two", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}, 
-                  {id:"3", name:"project three", description:""}];
+const PAPERS = [{id:"1", title:"paper one", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}, 
+                  {id:"2", title:"paper two", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}, 
+                  {id:"3", title:"paper two", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}];
 const OPTIONS1 = ["option one", "option two", "option three"];
-
-const SearchResults = () =>{
-  return(
-    <SearchResultsConsumer>
-        {( context ) => (
-          <div>
-            {context.results.map((element, index) =>
-              <div key={index}>
-                <Link to={element.id} className="modal paper-card">{element.description}</Link>          
-              </div>
-            )}
-        </div>
-        )}
-    </SearchResultsConsumer>
-  );
-}
 
 const  SearchForm = () => {
   const [query, setQuery] = useState('');
@@ -36,7 +20,6 @@ const  SearchForm = () => {
       {}
     )
   });
-  const [results, setResults] = useState([]);
 
   function handleSubmit(e){
     e.preventDefault();
@@ -61,7 +44,7 @@ const  SearchForm = () => {
     <SearchResultsConsumer>
     {( context ) => (
     <div>
-      <form className="search-form" onSubmit={(e) => {
+      <form className={(context.results.length === 0) ? 'search-form' : 'search-form small' } onSubmit={(e) => {
         e.preventDefault();
         context.updateSearchResults(PAPERS);
         }}>
@@ -71,7 +54,7 @@ const  SearchForm = () => {
           value={query}
           onChange={e => setQuery(e.target.value)}
         />
-        <div className="option-holder">
+        <div className="option-holder" style={{visibility: (context.results.length === 0) ? 'visible' : 'hidden' }}>
           <label>Option:</label><br/>
           <div className="checkboxes-holder">
             {createCheckboxes()}
@@ -88,11 +71,14 @@ const  SearchForm = () => {
         </button>
       </form>
 
-          <div>
+          <div className="search-results">
             {context.results.map((element, index) =>
-              <div key={index}>
-                <Link to={element.id} className="modal paper-card">{element.description}</Link>          
-              </div>
+                <Link key={index} to={"#"}>
+                  <div  className="light-modal paper-card">
+                    <h3>{element.title}</h3>
+                    <p>{element.description}</p>
+                  </div>
+                </Link>
             )}
         </div>
     </div>

@@ -31,6 +31,7 @@ const ProjectsList = ({ match }) => {
   }else{
     return(
       <div className="project-cards-holder">
+        <div className="title">PROJETCS</div>
         {projectslist.map((element, index) => 
           <Link key={index} to={match.url + "/" + element.id}>
             <div className="modal project-card">
