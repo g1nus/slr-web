@@ -41,15 +41,15 @@ const ProjectPage = ({match}) => {
     useEffect(() => {
         //a wrapper function ask by reat hook
         const fetchData = async () => {
+
             //call the dao
             let res = await projectPapersDao.getPapersList({project_id: match.params.id});
-            //update state
-            setPapersList(res);
-            res = await projectsDao.getProject(match.params.id);
+            let res2 = await projectsDao.getProject(match.params.id);
 
-            //update only when there is a result
-            if (res !== null) {
-                setProject(res);
+            //update only when there are the results
+            if (res !== null && res2 !== null) {
+                setPapersList(res);
+                setProject(res2);
                 setFetching(false);
             }
         }
