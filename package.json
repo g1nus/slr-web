@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "react": "^16.8.4",
+    "react-clamp-lines": "^2.2.0",
     "react-dom": "^16.8.4",
     "react-flip-toolkit": "^6.5.7",
     "react-router-dom": "^5.0.0",
