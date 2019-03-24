@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import CheckBox from "./checkbox";
 import ClampLines from 'react-clamp-lines';
+import {paperDao} from '../../dao/paper.dao';
+import {projectPapersDao} from '../../dao/projectPapers.dao'
+import LoadIcon from '../loadicon';
 
-//the papers will be fetched through an api
-const PAPERS = [{id:"1", title:"paper one", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}, 
-                  {id:"2", title:"paper two", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}, 
-                  {id:"3", title:"paper two", description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum mauris tristique quam tincidunt, nec sodales mauris ornare. Nunc non sapien eu felis interdum vehicula. Donec lacinia scelerisque ullamcorper. Sed viverra a dolor vitae volutpat. Duis non est non ligula lobortis fermentum. Donec finibus diam est, eget aliquet eros pellentesque vel. Nulla sit amet purus neque. Fusce pulvinar lobortis felis, in laoreet massa sollicitudin vestibulum. In consectetur felis massa, at varius justo ultricies in. Curabitur egestas euismod justo, sit amet consectetur velit sagittis eu. Phasellus ornare in libero eget semper. Sed quis risus in nulla mattis vestibulum. "}];
 const OPTIONS1 = ["option one", "option two", "option three"];
 
-const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setResults}) => {
-
+const  SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, results, setResults, selectedpapers, setSelectedPapers}) => {
+  const [searching, setSearching] = useState(false);
   function handleCheckboxChange(e){
     const { name } = e.target;
     const prevCheckboxes = checkboxes;
@@ -22,18 +21,85 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
     });
   }
 
+  function handlePaperSelection(e){
+    const id = e.target.value;
+    if(!selectedpapers.includes(id)){
+      var array = selectedpapers;
+      array.push(id);
+      setSelectedPapers(array);
+    }else{
+      var array = selectedpapers.filter(function(value, index, arr){
+        return value !== id;
+      });
+      setSelectedPapers(array);
+    }
+  }
+
+  function addPapers(){
+    const postData = async () => {
+      for(let i = 0; i < selectedpapers.length; i++){
+        let res = await projectPapersDao.postPaperIntoProject({paper_id: selectedpapers[i], project_id: projectId});
+      }
+    }
+    postData();
+  }
+
   function createCheckboxes(){return OPTIONS1.map(option => {return <CheckBox label={option} isSelected={checkboxes.one[option]} handler={handleCheckboxChange} key={option} />})}
 
-  function updateSearchResults(papers){
-    console.log(papers)
-    setResults(papers)
+  function updateSearchResults(){
+    //a wrapper function ask by reat hook
+    const fetchData = async () => {
+      //call the dao
+      setSearching(true);
+      let res = await paperDao.search({query : query});
+      //update state
+      setSearching(false);
+      setResults(res);
+    }
+    fetchData();
   }
+
+  function showResults(){
+    if(results[0] === "not_found"){
+      return <>not found :(</>
+    }else{
+      return results.map((element, index) =>
+      <div key={index} className="paper-card">
+      <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
+        <Link to={"#"}><h3>{element.data.Title}</h3></Link>
+        <ClampLines
+          text={element.data.Abstract}
+          lines= {4}
+          ellipsis="..."
+          moreText="Expand"
+          lessText="Collapse"
+          className="paragraph"
+          moreText="more"
+          lessText="less"
+        />
+      </div>
+    )
+    }
+  }
+
+  useEffect(() => {
+    if(query !== ''){
+      updateSearchResults();
+    }
+    if(query === ''){
+      setResults([]);
+    }
+  }, []);//this way is executed only on mount
+
+  useEffect(() => {
+    setSelectedPapers([]);
+  }, [results]);
 
   return(
     <>
       <form className={(results.length === 0) ? 'search-form' : 'search-form small' } onSubmit={(e) => {
         e.preventDefault();
-        updateSearchResults(PAPERS);
+        updateSearchResults();
         }}>
         <div style={{position:'relative'}}>
           <input
@@ -42,7 +108,7 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
             value={query}
             onChange={e => setQuery(e.target.value)}
           />
-          <button type="submit" value="Submit" disabled={(query === '')}>
+          <button type="submit" value="Submit" disabled={(query === '' || searching)}>
             <svg id="search-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 1000 1000">
               <path className="st0" d="M626.9,644.3c-73.5,0-142.6-28.6-194.6-80.6s-80.6-121.1-80.6-194.6s28.6-142.6,80.6-194.6
@@ -59,24 +125,14 @@ const  SearchForm = ({query, setQuery, checkboxes, setCheckboxes, results, setRe
           </div>
         </div>
       </form>
-      <form className="search-results" style={{visibility: (results.length === 0) ? 'hidden' : '' }}>
-          {results.map((element, index) =>
-                <div key={index} className="paper-card">
-                <CheckBox label={""}/>
-                  <Link to={"#"}><h3>{element.title}</h3></Link>
-                  <ClampLines
-                    text={element.description}
-                    lines= {4}
-                    ellipsis="..."
-                    moreText="Expand"
-                    lessText="Collapse"
-                    className="paragraph"
-                    moreText={"more"}
-                    lessText={"less"}
-                  />
-                </div>
-              
-          )}
+      <div className="loading-holder" style={{visibility: (!searching) ? 'hidden' : '' }}>
+        <LoadIcon></LoadIcon>
+      </div>
+      <form className="search-results" style={{visibility: (results.length === 0 || searching) ? 'hidden' : '' }} onSubmit={(e) => {
+          e.preventDefault();
+          addPapers();
+        }}>
+          {showResults()}
           <button type="submit" value="Submit">+</button>
         </form>
     </>

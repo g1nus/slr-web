@@ -27,6 +27,7 @@ const ProjectPage = ({match}) => {
     });
     const [results, setResults] = useState([])
 
+
     useEffect(() => {
         var substr = window.location.pathname.substring(window.location.pathname.length - 7, window.location.pathname.length);
         if (substr === '/search' || substr === 'search/') {
@@ -45,8 +46,12 @@ const ProjectPage = ({match}) => {
             //update state
             setPapersList(res);
             res = await projectsDao.getProject(match.params.id);
-            setProject(res);
-            setFetching(false);
+
+            //update only when there is a result
+            if (res !== null) {
+                setProject(res);
+                setFetching(false);
+            }
         }
         fetchData();
         //when the component will unmount
@@ -98,14 +103,13 @@ const ProjectPage = ({match}) => {
                         </div>
                     </>
                 }/>
-                <Route path={match.url + "/search"} render={() =>
+                <Route path = {match.url + "/search"} render={() =>
                     <SearchForm projectId={project.id} query={query} setQuery={setQuery}
                                 checkboxes={checkboxes} setCheckboxes={setCheckboxes}
                                 results={results} setResults={setResults}
                                 selectedpapers={selectedpapers} setSelectedPapers={setSelectedPapers}/>
-                }/>
+                } />
             </div>
-
         );
     }
 }
