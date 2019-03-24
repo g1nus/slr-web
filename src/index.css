@@ -71,9 +71,9 @@ div.navigation-wrapper{
 
 div.main-wrapper{
   position: relative;
-  z-index: 100;
   width: 1000px;
-  margin: 70px auto 0px auto;
+  margin: 60px auto 0px auto;
+  min-height: 500px;
 }
 
 .modal{
@@ -117,7 +117,7 @@ input[type=text]{
 }
 
 div.title{
-  z-index: 1100;
+  z-index: 99999999;
   position: fixed;
   top: 0px;
   left: 100px;
