@@ -57,7 +57,11 @@ function ProjectForm(props) {
     }
 
     return (
-        <form>
+        <>
+        <form className="modal add-project" style={{visibility: (!props.visibility) ? 'hidden' : '' }}>
+            <button type="button" className="close-btn" onClick={(e) => {
+                props.setVisibility(!props.visibility);
+            }}>X</button>
             <label>name</label>
             <br/>
             <input ref={projectName} type="text" defaultValue={projectInputData.name}/>
@@ -66,8 +70,9 @@ function ProjectForm(props) {
             <br/>
             <input ref={projectDescription} type="text" defaultValue={projectInputData.description}/>
             <br/>
-            <input type="submit" onClick={submitAction} value="submit"/>
+            <button type="submit" onClick={submitAction} value="submit">submit</button>
         </form>
+        </>
     );
 
 

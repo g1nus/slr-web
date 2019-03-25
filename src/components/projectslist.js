@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
-import {Link} from 'react-router-dom'
-import {projectsDao} from '../dao/projects.dao'
+import {Link} from 'react-router-dom';
+import {projectsDao} from '../dao/projects.dao';
 import LoadIcon from '../components/loadicon';
+import ProjectForm from '../components/forms/projectForm';
 import join from '../utils/stringUtils';
 
 /**
@@ -10,6 +11,7 @@ import join from '../utils/stringUtils';
 
 const ProjectsList = ({match}) => {
 
+    const [toggleform, setToggleForm] = useState(false);
     const [projectslist, setProjectsList] = useState([]);
     //bool variable to decide show  or not show list
     const [fetching, setFetching] = useState(true);
@@ -42,17 +44,25 @@ const ProjectsList = ({match}) => {
     }
     else {
         return (
-            <div className="project-cards-holder">
-                <div className="title">PROJECTS</div>
-                {projectslist.map((element, index) =>
-                    <Link key={index} to={join(match.url,"/"+element.id)}>
-                        <div className="light-modal project-card">
-                            <h3>{element.data.name}</h3>
-                            <p>{element.data.description}</p>
-                        </div>
-                    </Link>
-                )}
-            </div>
+            <>
+                <div className="project-cards-holder">
+                    <div className="title">PROJECTS</div>
+                    {projectslist.map((element, index) =>
+                        <Link key={index} to={join(match.url,"/"+element.id)}>
+                            <div className="light-modal project-card">
+                                <h3>{element.data.name}</h3>
+                                <p>{element.data.description}</p>
+                            </div>
+                        </Link>
+                    )}
+                </div>
+                <ProjectForm visibility={toggleform} setVisibility={setToggleForm}></ProjectForm>
+                <button className="bottom-left-btn" type="button" value="toggle-insert-form"
+                onClick={(e) => {
+                    setToggleForm(!toggleform);
+                  }}
+                >+</button>
+            </>
 
         );
     }
