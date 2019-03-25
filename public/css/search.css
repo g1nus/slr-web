@@ -147,11 +147,6 @@ form.search-results div.paper-card{
 form.search-results div.paper-card a{
   margin: 0px auto 0px 10px;
 }
-form.search-results button[type=submit]{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
 div.paper-card label.checkbox-container{
   position: absolute;
   top: 1px;

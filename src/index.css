@@ -174,7 +174,7 @@ svg#loading-icon{
   height: 80px;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%)
+  transform: translate(-50%,-50%);
 }
 svg#loading-icon path#loading-circle1{
   fill: transparent;
@@ -193,6 +193,15 @@ svg#loading-icon path#loading-circle2{
   stroke-dasharray: 1917;
   transform-origin: 50% 50%;
   animation: complete-big 5s linear infinite, rotate-big 1s linear infinite;
+}
+
+/*buttons*/
+button.bottom-left-btn{
+  font-weight: 300;
+  font-size: 50px;
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
 }
 
 /*code tag*/
