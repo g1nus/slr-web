@@ -133,7 +133,7 @@ const  SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, res
           addPapers();
         }}>
           {showResults()}
-          <button type="submit" value="Submit">+</button>
+          <button className="bottom-left-btn" type="submit" value="Submit" style={{visibility: (results.length === 0 || results[0] === "not_found") ? 'hidden' : '' }}>+</button>
         </form>
     </>
 
