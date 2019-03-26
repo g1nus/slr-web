@@ -1,0 +1,158 @@
+/*===SEARCH_FORM===*/
+form.search-form{
+  width: 500px;
+  margin: 20px auto 20px auto;
+  z-index: 100;
+}
+
+form.search-form input[type=text]{
+  float: left;
+  width: 100%;
+  font-size: 20px;
+  height: 40px;
+  padding-left: 7px;
+  margin-bottom: 10px;
+}
+
+form.search-form button{
+  background-color: white;
+  position: absolute;
+  float: right;
+  width: 35px;
+  height: 40px;
+  top: 0px;
+  right: 0px;
+  border-bottom: solid 1px black;
+}
+
+form.search-form button svg#search-icon{
+  margin-top: 5px;
+  width: 30px;
+  margin-right: 5px;
+}
+
+div.option-holder{
+  font-size: 18px;
+  width: 80%;
+  margin: 0px 10% 0% 10%;
+}
+
+/*options*/
+div.option-holder label{
+  font-weight: 400;
+}
+div.option-holder div.checkboxes-holder{
+  font-size: 15px;
+  margin-top: 5px;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+div.option-holder div.checkboxes-holder label {
+  display: table-cell;
+  white-space: nowrap;
+  font-weight: 300;
+  text-align: center;
+}
+div.option-holder div.checkboxes-holder label:first-child {
+  text-align: left;
+}
+div.option-holder div.checkboxes-holder label:last-child {
+  text-align: right;
+}
+div.option-holder div.checkboxes-holder input {
+  vertical-align: middle;
+}
+div.option-holder div.checkboxes-holder label span {
+  vertical-align: middle;
+}
+
+/*options when results are shown*/
+form.small{
+  width: 680px;
+  margin: 20px auto 20px 10px;
+  height: 60px;
+}
+form.small div.option-holder {
+  margin: 10px 0% 0% 0%;
+  width: 200px;
+  position: absolute;
+  right: 0px;
+}
+form.small div.option-holder div.checkboxes-holder label{
+  display: table-row;
+  text-align: left;
+}
+form.small div.option-holder div.checkboxes-holder label:last-child{
+  text-align: left;
+}
+
+form.search-form + div.loading-holder{
+  position: absolute;
+  height: 100px;
+  width: 1000px;
+}
+
+form.small + div.loading-holder{
+  position: absolute;
+  height: 100px;
+  width: 700px;
+}
+
+/*===PAPER-CARD_GENERIC===*/ /*projectpage.js & searchform.js*/
+div.paper-card{
+  position: relative;
+  width: 600px;
+  margin: 0px auto 20px 0px;
+}
+
+div.paper-card a{
+  margin: 0px auto 0px 10px;
+}
+
+div.paper-card a:hover{
+  text-decoration: underline;
+}
+
+div.paper-card h3{
+  font-size: 25px;
+  margin: 10px auto 2px 0px;
+}
+
+div.paper-card div.paragraph{
+  margin: 0px auto 10px auto;
+  padding: 0px 10px 0px 10px;
+  text-align: justify;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+div.paper-card button{
+  color: grey;
+  font-weight: 300;
+}
+
+
+/*===SEARCH_RESULTS===*/
+form.search-results{
+  margin-top: 10px;
+}
+
+/*paper-card for search result*/ /*searchform.js*/
+form.search-results div.paper-card{
+  width: 700px;
+  margin: 0px auto 20px 0px;
+}
+form.search-results div.paper-card a{
+  margin: 0px auto 0px 10px;
+}
+div.paper-card label.checkbox-container{
+  position: absolute;
+  top: 1px;
+  left: -30px;
+}
+
+
+/*===SVG_ELEMENTS===*/
+.st0, .st1{fill:none;stroke:#000000;stroke-width:35;stroke-miterlimit:10;}
