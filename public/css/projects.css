@@ -1,0 +1,113 @@
+/*projects card holder*/ /*projectslist.js*/
+div.project-cards-holder, div.project-wrapper{
+  font-size: 15px;
+}
+div.project-cards-holder div.project-card{
+  width: 40%;
+  margin: 20px 5% 20px 5%;
+  float: left;
+  transition: all 0.3s;
+}
+div.project-cards-holder div.project-card:hover h3{
+  text-decoration: underline;
+}
+
+div.project-cards-holder div.project-card h3{
+  text-align: center;
+  font-size: 20px;
+  margin: 10px auto 10px auto;
+}
+div.project-cards-holder div.project-card p{
+  margin: 0px auto 10px auto;
+  padding: 0px 10px 0px 10px;
+}
+
+/*add project form*/ /*projectslist.js*/
+form.add-project{
+  font-size: 14px;
+  padding: 20px 30px 10px 30px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+form.add-project button{
+  border: solid 1px grey;
+}
+form.add-project button[type=submit]{
+  font-size: 18px;
+  margin: 10px auto 10px auto;
+  padding: 10px 10px 10px 10px;
+  border-radius: 4px;
+}
+form.add-project button.close-btn{
+  font-size: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+}
+form.add-project input{
+  margin-bottom: 10px;
+}
+
+/*small navigation links*/ /*projectpage.js*/
+div.project-nav-link-wrapper{
+  position: relative;
+  width: 300px;
+  margin: auto;
+}
+div.project-nav-link-wrapper div.nav-link{
+  position: relative;
+  display: inline-block;
+  height: 40px;
+}
+div.project-nav-link-wrapper div.nav-link a{
+  display: inline-block;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  text-align: center;
+}
+div.project-nav-link-wrapper div.underline{
+  background-color: black;
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  bottom: 0px;
+  border-radius: 1px 1px 0px 0px;
+}
+div.project-nav-link-wrapper div.underline-to-left{
+  left: 25px;
+}
+div.project-nav-link-wrapper div.underline-to-right{
+  left: 175px;
+}
+
+/*list and description components*/ /*projectpage.js*/
+div.papers-list{
+  position: relative;
+  margin: 20px auto auto 0px;
+  width: 700px;
+  min-height: 300px;
+}
+div.project-description{
+  margin-top: 20px;
+  width: 300px;
+  position: absolute;
+  right: 0px;
+  text-align: justify;
+  font-size: 15px;
+  font-weight: 300;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  color: #2f2f2f;
+}
+div.papers-list svg#loading-icon{
+  width: 50px;
+  height: 50px;
+}
