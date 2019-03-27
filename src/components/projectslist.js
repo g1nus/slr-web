@@ -22,11 +22,15 @@ const ProjectsList = ({match}) => {
         const fetchData = async () => {
             //call the dao
             const res = await projectsDao.getProjectsList();
-
             //update only when there is a result
+            console.log(res);
             if (res !== null) {
                 //update state
-                setProjectsList(res);
+                if(res.message){//I check if I get an error message
+                    setProjectsList({"results": [{"data": {"name": res.message}}]});//momentary way to display error message as a project
+                }else{//if there's no error message it means I got a list of projects
+                    setProjectsList(res);
+                }
                 setFetching(false);
             }
 
@@ -47,7 +51,7 @@ const ProjectsList = ({match}) => {
             <>
                 <div className="project-cards-holder">
                     <div className="title">PROJECTS</div>
-                    {projectslist.map((element, index) =>
+                    {projectslist.results.map((element, index) =>
                         <Link key={index} to={join(match.url,"/"+element.id)}>
                             <div className="light-modal project-card">
                                 <h3>{element.data.name}</h3>

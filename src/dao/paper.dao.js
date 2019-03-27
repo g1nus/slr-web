@@ -10,7 +10,8 @@ async function search(queryData){
     let url = config.home+config.search
     try{
         const res = await http.get(url, queryData);
-        return res;
+        console.log(res);
+        return res.results;
     }catch(e){
         return ["not_found"];
     }
