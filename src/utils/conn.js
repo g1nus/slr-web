@@ -1,4 +1,4 @@
-/*this is the file to communicate with backend*/
+/*this is the file to communicate with backend by fetch request*/
 
 //signal to abort the request
 var abortController;
@@ -210,4 +210,4 @@ async function parseResponseData(response) {
 }
 
 
-export {http};
+export default  http;

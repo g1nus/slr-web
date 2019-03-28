@@ -1,5 +1,5 @@
-import {http} from './../utils/conn'
-import {config} from './../config/index'
+import http from './../utils/conn'
+import config from './../config/index'
 
 /**
  * dao to get a list of paper associated with a project

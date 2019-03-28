@@ -1,44 +1,39 @@
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, /*Link, Switch*/} from "react-router-dom";
-//import logo from './svg/logo.svg';
-import './App.css';
+import React from 'react';
+import {BrowserRouter as Router, Route, } from "react-router-dom";
 
-import LoadIcon from './components/loadicon';
-import NavBar from './components/navigation/navbar';
+
+import NavBar from './components/navigation/navBar';
 import Main from './components/main';
-import ProjectsList from './components/projectslist';
-import ProjectPage from './components/projectpage';
+import Home from './components/home';
+import  Projects from './components/projects';
 
-import {AccountProvider} from './providers/AccountProvider';
+import  {AppProvider} from './providers/appProvider';
 
-class App extends Component {
-    state = {
-        menu_list: [
-            {id: 4, content: "my projects", link: "/projects"},
-            {id: 5, content: "option3", link: "/"},
-            {id: 6, content: "option4", link: "/projects/1"}],
-    };
 
-    render() {
+/**
+ *this is the start point of application
+ */
+
+const App = function(props) {
+
         return (
             <Router>
                 <div className="app">
 
-                    {/*mount component with context object*/}
-                    <AccountProvider>
+                    {/*mount a root context object*/}
+                    <AppProvider>
 
-                        {/*inputs of AccountProvider*/}
-                        <NavBar menu_elements={this.state.menu_list}></NavBar>
-                        {/*router by url*/}
-                        <Route exact path="/" render={() => <Main main_element={<LoadIcon/>}></Main>}/>
-                        <Route exact path="/projects" render={(props) => <Main main_element={<ProjectsList {...props} />}></Main>}/>
-                        <Route path="/projects/:id" render={(props) => <Main main_element={<ProjectPage {...props} />}></Main>}/>
+                        <NavBar/>
+                        <Main>
+                            <Route exact path="/" render={() => <Home/> }/>
+                            <Route path="/projects" render={(props) => <Projects {...props} /> }/>
+                        </Main>
 
-                    </AccountProvider>
+                    </AppProvider>
                 </div>
             </Router>
         );
-    }
+
 }
 
 export default App;

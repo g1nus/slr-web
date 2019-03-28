@@ -1,5 +1,5 @@
 import React from "react";
-import SideMenu from './sidemenu';
+import SideMenu from './sideMenu';
 
 
 /**
@@ -7,14 +7,14 @@ import SideMenu from './sidemenu';
  * @param "menu_elements" contains the list of menu-items
  */
 
-const NavBar = ({menuhandler, user_elements, menu_elements}) => {
+const NavBar = function(props){
     return (
         <div className="navigation-wrapper">
 
             {/*background of the menu-bar*/}
             <nav className="main-nav"></nav>
             {/*component menu*/}
-            <SideMenu handler={menuhandler} user={user_elements} menu_elements={menu_elements}></SideMenu>
+            <SideMenu/>
 
         </div>
     );

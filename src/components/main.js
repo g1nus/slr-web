@@ -1,18 +1,15 @@
-import React, {Component} from "react";
+import React from "react";
 
 /**
  * compotent main of page
  */
-class Main extends Component {
-    state = {};
+const Main = function(props){
 
-    render() {
         return (
             <div className="main-wrapper">
-                {this.props.main_element}
+                {props.children}
             </div>
         );
-    }
 };
 
 export default Main;
