@@ -2,6 +2,10 @@
 
 //signal to abort the request
 var abortController;
+//int to know abort error type
+var abortRequestType;
+//10seconds for timeout
+var timeOutTime = 10 * 1000;
 
 //object to export
 const http = {
@@ -15,10 +19,20 @@ const http = {
 
 
 /**
- * abort all request in progeress
+ * abort all request in progeress by user
  */
 function abortRequest() {
     abortController.abort();
+    abortRequestType = 1;
+}
+
+/**
+ * abort all request if timeout
+ */
+function timeOut(){
+
+    abortController.abort();
+    abortRequestType = 2;
 }
 
 /**
@@ -33,6 +47,9 @@ async function request(url, options = {}) {
         //create a new abortController for this request
         abortController =  new AbortController();
         let signal = abortController.signal;
+        //initialize as 0 for every request
+        abortRequestType=0;
+
         let requestOptions = Object.assign(
             {
                 //enable the  sending of cookie
@@ -43,8 +60,9 @@ async function request(url, options = {}) {
             options
         );
 
-
+        setTimeout(() => abortController.abort(), timeOutTime);
         let response = await fetch(url, requestOptions);
+
         //response error check
         checkResponseStatus(response);
         //parse response data
@@ -54,7 +72,18 @@ async function request(url, options = {}) {
         return response;
 
     } catch (error) {
-        throw error;
+        //if abort error is caused by timeout
+        if(abortRequestType === 2){
+            //create a custom error for timeout
+            let timeOutError = new Error("Error: Time out to get response from backend");
+            timeOutError.name ="timeout";
+            throw  timeOutError;
+        }
+        //if isn't a abort error  caused by user
+        else if(abortRequestType !== 1){
+            throw error;
+        }
+
         return null;
     }
 }
