@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "3002f0ae45ff693c7ba0",
+    "revision": "3f34099a40d03aaf58ea",
     "url": "/slr-web/static/css/main.85250957.chunk.css"
   },
   {
-    "revision": "3002f0ae45ff693c7ba0",
-    "url": "/slr-web/static/js/main.f0c0d435.chunk.js"
+    "revision": "3f34099a40d03aaf58ea",
+    "url": "/slr-web/static/js/main.e865be8f.chunk.js"
   },
   {
     "revision": "728711b4df32723b671a",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/slr-web/static/media/tick.df0b2afe.svg"
   },
   {
-    "revision": "4876878306ddc6ac3c19d651ab8106a8",
+    "revision": "b0f94db51d1cc01010b24a84deaab93d",
     "url": "/slr-web/index.html"
   }
 ];
