@@ -1,10 +1,14 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Link} from 'react-router-dom';
 
+
 import {projectsDao} from './../../dao/projects.dao';
 import LoadIcon from './../svg/loadIcon';
 import ProjectForm from './../forms/projectForm';
-import join from './../../utils/stringUtils';
+import Pagination from './../pagination';
+import {join, setPaginationParamsFromQuery} from './../../utils/index';
+import config from './../../config/index'
+
 import {AppContext} from "./../../providers/appProvider";
 
 /**
@@ -24,13 +28,21 @@ const ProjectsList = function (props) {
     //get data from global context
     const appConsumer = useContext(AppContext);
 
+
+    //set pagination params
+    let [pagesize, after] = setPaginationParamsFromQuery(props.location.search);
+
+
+
     useEffect(() => {
 
         //a wrapper function ask by reat hook
         const fetchData = async () => {
 
+                //query data
+                const queryData = {pagesize, after};
                 //call the dao
-                const res = await projectsDao.getProjectsList();
+                const res = await projectsDao.getProjectsList(queryData);
 
                 //error checking
                 //if is 404 error
@@ -60,7 +72,7 @@ const ProjectsList = function (props) {
             //stop all ongoing request
             projectsDao.abortRequest();
         };
-    }, []);
+    },[after]); //re-excute when "after" is changed
 
     //if the page is loading
     if (fetching) {
@@ -78,10 +90,14 @@ const ProjectsList = function (props) {
     }
     else {
 
+        //get last project id of list
+        let lastId = projectslist.results[projectslist.results.length-1].id;
         return (
             <div>
                 {/*print list of projects*/}
                 <PrintList projectslist={projectslist} {...props} />
+                {/*set listId and continues value*/}
+                <Pagination after={lastId} continues={projectslist.continues} path={props.match.url} />
                 {/*print the input form to create/update the projects*/}
                 <ProjectForm visibility={toggleform} setVisibility={setToggleForm}></ProjectForm>
                 {/*button to show input form*/}
@@ -94,6 +110,9 @@ const ProjectsList = function (props) {
         );
 
     }
+
+
+
 };
 
 
@@ -118,6 +137,8 @@ const PrintList = function (props) {
     );
 
 }
+
+
 
 
 export default ProjectsList;
