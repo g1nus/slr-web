@@ -154,7 +154,7 @@ input[type=checkbox]{
   background-color: rgb(241, 241, 241);
 }
 .checkmark:after {
-  content: url('./svg/tick.svg');
+  content: url('./../img/tick.svg');
   display: none;
 }
 .checkbox-container input:checked ~ .checkmark:after {
