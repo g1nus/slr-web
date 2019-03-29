@@ -8,13 +8,10 @@ import config from './../config/index'
  */
 async function getProjectsList(queryData = "") {
     let url = config.home + config.projects
-    try{
-        const res =  await http.get(url, queryData);
-        return res;
-    }catch(e){
-        return e;
-    }
-    
+    const res = await http.get(url, queryData);
+    return res;
+
+
 }
 
 /**
@@ -23,8 +20,10 @@ async function getProjectsList(queryData = "") {
  * @return {Object} project requested
  */
 async function getProject(project_id) {
-    let url = config.home + config.projects+"/"+project_id;
-    return await http.get(url);
+    let url = config.home + config.projects + "/" + project_id;
+    const res = await http.get(url);
+
+    return res;
 }
 
 /**
@@ -41,22 +40,24 @@ async function postProject(bodyData) {
  * dao to put a old project
  * @param project_id
  * @param bodyData
+ * @return {String} empty string
  */
 async function putProject(project_id, bodyData) {
-    let url = config.home + config.projects+"/"+project_id;
-    await http.put(url, bodyData);
+    let url = config.home + config.projects + "/" + project_id;
+    return await http.put(url, bodyData);
 }
 
 /**
  * dao to delete a project
  * @param project_id
  * @param bodyData
+ * @return {String} empty string
  */
 async function deleteProject(project_id) {
-    let url = config.home + config.projects+"/"+project_id;
-    await http.delete(url);
+    let url = config.home + config.projects + "/" + project_id;
+    let res = await http.delete(url);
+    return res;
 }
-
 
 
 const projectsDao = {

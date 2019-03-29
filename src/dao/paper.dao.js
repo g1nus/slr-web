@@ -7,14 +7,11 @@ import config from './../config/index'
  * @return {array[objects]}
  */
 async function search(queryData){
-    let url = config.home+config.search
-    try{
+    let url = config.home+config.search;
+
         const res = await http.get(url, queryData);
-        console.log(res);
-        return res.results;
-    }catch(e){
-        return ["not_found"];
-    }
+        return res;
+
 }
 
 

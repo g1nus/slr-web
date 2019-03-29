@@ -29,7 +29,7 @@ function abortRequest() {
 /**
  * abort all request if timeout
  */
-function timeOut(){
+function timeOut() {
 
     abortController.abort();
     abortRequestType = 2;
@@ -45,10 +45,10 @@ async function request(url, options = {}) {
     try {
 
         //create a new abortController for this request
-        abortController =  new AbortController();
+        abortController = new AbortController();
         let signal = abortController.signal;
         //initialize as 0 for every request
-        abortRequestType=0;
+        abortRequestType = 0;
 
         let requestOptions = Object.assign(
             {
@@ -60,7 +60,7 @@ async function request(url, options = {}) {
             options
         );
 
-        setTimeout(() => abortController.abort(), timeOutTime);
+        setTimeout(() => timeOut(), timeOutTime);
         let response = await fetch(url, requestOptions);
 
         //response error check
@@ -71,20 +71,24 @@ async function request(url, options = {}) {
 
         return response;
 
-    } catch (error) {
+    }
+    catch (error) {
+
         //if abort error is caused by timeout
-        if(abortRequestType === 2){
+        if (abortRequestType === 2) {
             //create a custom error for timeout
             let timeOutError = new Error("Error: Time out to get response from backend");
-            timeOutError.name ="timeout";
-            throw  timeOutError;
+            timeOutError.name = "timeout";
+            return  timeOutError;
         }
-        //if isn't a abort error  caused by user
-        else if(abortRequestType !== 1){
-            throw error;
+        //if is a abort error  caused by user
+        else if (abortRequestType === 1) {
+            return null;
         }
 
-        return null;
+        return error;
+
+
     }
 }
 
@@ -116,7 +120,7 @@ async function deletes(url) {
         "method": 'DELETE'
     };
 
-    await request(url, options);
+    return await request(url, options);
 }
 
 /**
@@ -140,8 +144,6 @@ async function post(url, bodyData = "") {
 
     return await request(url, options);
 }
-
-
 
 
 /**
@@ -188,7 +190,7 @@ function checkResponseStatus(response) {
 async function parseResponseData(response) {
     //get response data type
     const contentType = response.headers.get('Content-Type');
-    let data;
+    let data = null;
     //parse the data by its type
     if (contentType != null) {
         if (contentType.indexOf('text') > -1) {
@@ -203,11 +205,12 @@ async function parseResponseData(response) {
         if (contentType.indexOf('json') > -1) {
             data = await response.json();
         }
-    } else {
+    }
+    else if (response != null) {
         data = await response.text();
     }
     return data;
 }
 
 
-export default  http;
+export default http;

@@ -1,6 +1,7 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useContext} from "react";
 import {projectsDao} from './../../dao/projects.dao'
 
+import { AppContext } from './../../providers/appProvider'
 
 /**
  * this is the form for create or edit the project
@@ -14,6 +15,9 @@ function ProjectForm(props) {
     //field of project description
     const projectDescription = useRef(null);
 
+    //get data from global context
+    const appConsumer = useContext(AppContext);
+
     /**
      * action to create a new project
       */
@@ -24,6 +28,12 @@ function ProjectForm(props) {
         let bodyData = {name: projectName.current.value, description: projectDescription.current.value};
         //call dao
         let res = await projectsDao.postProject(bodyData);
+
+        //error checking
+        if(res.message){
+            //pass error object to global context
+            appConsumer.setError(res);
+        }
 
         alert("inserted correctly");
     }
@@ -37,7 +47,13 @@ function ProjectForm(props) {
         //prepare the data object to post
         let bodyData = {name: projectName.current.value, description: projectDescription.current.value};
         //call dao  with project_id and data object
-        await projectsDao.putProject(props.project.id, bodyData);
+        let res = await projectsDao.putProject(props.project.id, bodyData);
+
+        //error checking
+        if(res.message){
+            //pass error object to global context
+            appConsumer.setError(res);
+        }
 
         alert("updated correctly");
     }

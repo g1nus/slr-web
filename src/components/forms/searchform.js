@@ -1,17 +1,30 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Link} from 'react-router-dom'
 import ClampLines from 'react-clamp-lines';
 
 import CheckBox from "./checkbox";
-import {paperDao} from '../../dao/paper.dao';
-import {projectPapersDao} from '../../dao/projectPapers.dao'
-import LoadIcon from '../svg/loadIcon';
+import {paperDao} from './../../dao/paper.dao';
+import {projectPapersDao} from './../../dao/projectPapers.dao'
+import LoadIcon from './../svg/loadIcon';
+import SearchButton from './../svg/searchButton';
+
+import { AppContext } from './../../providers/appProvider'
 
 const OPTIONS1 = ["option one", "option two", "option three"];
 
+/*this is component form to search for the paper in project page*/
+
 const SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, results, setResults, selectedpapers, setSelectedPapers}) => {
+
+    //bool to control the visualization of page
     const [searching, setSearching] = useState(false);
 
+    //get data from global context
+    const appConsumer = useContext(AppContext);
+
+    /**
+     * update the checkbox state of project page
+     */
     function handleCheckboxChange(e) {
         const {name} = e.target;
         const prevCheckboxes = checkboxes;
@@ -23,6 +36,7 @@ const SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, resu
         });
     }
 
+    /*function to insert and remove the paper id from selected list*/
     function handlePaperSelection(e) {
         const id = e.target.value;
         if (!selectedpapers.includes(id)) {
@@ -38,70 +52,66 @@ const SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, resu
         }
     }
 
-    function addPapers() {
-        const postData = async () => {
-            for (let i = 0; i < selectedpapers.length; i++) {
-                let res = await projectPapersDao.postPaperIntoProject({
-                    paper_id: selectedpapers[i], project_id: projectId
-                });
-            }
+    /*function to add the post in the project*/
+    async function addPapers() {
+        for (let i = 0; i < selectedpapers.length; i++) {
+            let res = await projectPapersDao.postPaperIntoProject({
+                paper_id: selectedpapers[i], project_id: projectId
+            });
         }
-        postData();
     }
 
-    function createCheckboxes() {
-        return OPTIONS1.map(option => {
-            return <CheckBox label={option} isSelected={checkboxes.one[option]} handler={handleCheckboxChange}
-                             key={option}/>
-        })
-    }
 
-    function updateSearchResults() {
-        //a wrapper function ask by reat hook
-        const fetchData = async () => {
-            //call the dao
-            setSearching(true);
-            let res = await paperDao.search({query: query});
-            //update state
+    /*
+     * update the search result
+     * */
+    async function updateSearchResults() {
+        //call the dao
+        setSearching(true);
+        let res = await paperDao.search({query: query});
+
+        //error checking
+        //if is 404 error
+        if(res.message == "Not Found"){
+            setResults(["not_found"]);
             setSearching(false);
-            setResults(res);
         }
-        fetchData();
+        //if is other error
+        else if(res.message){
+            //pass error object to global context
+            appConsumer.setError(res);
+        }
+        //if res isn't null
+        else if (res !== null){
+            //update state
+            setResults(res.results);
+            setSearching(false);
+        }
     }
+
 
     function showResults() {
         if (results[0] === "not_found") {
             return <>not found :(</>
         }
         else {
-            return results.map((element, index) =>
-                <div key={index} className="paper-card">
-                    <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
-                    <Link to={"#"}><h3>{element.data.Title}</h3></Link>
-                    <ClampLines
-                        text={element.data.Abstract}
-                        lines={4}
-                        ellipsis="..."
-                        moreText="Expand"
-                        lessText="Collapse"
-                        className="paragraph"
-                        moreText="more"
-                        lessText="less"
-                    />
-                </div>
-            )
+            return <PrintSearchResultList results={results} handlePaperSelection={handlePaperSelection}/>
         }
     }
 
+    /*update the results in mount time*/
     useEffect(() => {
+
         if (query !== '') {
             updateSearchResults();
         }
+
         if (query === '') {
             setResults([]);
         }
     }, []);//this way is executed only on mount
 
+    /*re-render page when results are changed*/
     useEffect(() => {
         setSelectedPapers([]);
     }, [results]);
@@ -120,20 +130,13 @@ const SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, resu
                         onChange={e => setQuery(e.target.value)}
                     />
                     <button type="submit" value="Submit" disabled={(query === '' || searching)}>
-                        <svg id="search-icon" xmlns="http://www.w3.org/2000/svg"
-                             xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                             viewBox="0 0 1000 1000">
-                            <path className="st0" d="M626.9,644.3c-73.5,0-142.6-28.6-194.6-80.6s-80.6-121.1-80.6-194.6s28.6-142.6,80.6-194.6
-                c52-52,121.1-80.6,194.6-80.6c73.5,0,142.6,28.6,194.6,80.6c52,52,80.6,121.1,80.6,194.6s-28.6,142.6-80.6,194.6
-                S700.4,644.3,626.9,644.3z"/>
-                            <line className="st1" x1="145.2" y1="850.8" x2="431.7" y2="564.3"/>
-                        </svg>
+                        <SearchButton/>
                     </button>
                 </div>
                 <div className="option-holder">
                     <label>Option:</label><br/>
                     <div className="checkboxes-holder">
-                        {createCheckboxes()}
+                        <PrintCheckboxes checkboxes={checkboxes} handleCheckboxChange={handleCheckboxChange}/>
                     </div>
                 </div>
             </form>
@@ -154,5 +157,37 @@ const SearchForm = ({projectId, query, setQuery, checkboxes, setCheckboxes, resu
 
     );
 }
+
+/*local component to print checkboxs*/
+const  PrintCheckboxes = function(props) {
+    return OPTIONS1.map(option => {
+        return <CheckBox label={option} isSelected={props.checkboxes.one[option]} handler={props.handleCheckboxChange}
+                         key={option}/>
+    })
+}
+
+/*local component to print search result list of papers*/
+const PrintSearchResultList = function (props) {
+
+    return props.results.map((element, index) =>
+        <div key={index} className="paper-card">
+            <CheckBox val={element.id} label={""} handler={props.handlePaperSelection}/>
+            <Link to={"#"}><h3>{element.data.Title}</h3></Link>
+            <ClampLines
+                text={element.data.Abstract}
+                lines={4}
+                ellipsis="..."
+                moreText="Expand"
+                lessText="Collapse"
+                className="paragraph"
+                moreText="more"
+                lessText="less"
+            />
+        </div>
+    );
+
+}
+
+
 
 export default SearchForm;

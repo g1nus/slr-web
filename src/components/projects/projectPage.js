@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Route, Link} from 'react-router-dom';
 import {Flipper, Flipped} from 'react-flip-toolkit';
 import ClampLines from 'react-clamp-lines';
 
 import SearchForm from './../forms/searchform';
-import {projectPapersDao} from './../../dao/projectPapers.dao';
+import PapersList from './papersList';
 import {projectsDao} from './../../dao/projects.dao';
 import LoadIcon from './../svg/loadIcon';
 import join from './../../utils/stringUtils';
+
+import { AppContext } from './../../providers/appProvider'
 
 const OPTIONS1 = ["option one", "option two", "option three"];
 
@@ -40,7 +42,10 @@ const ProjectPage = (props) => {
         )
     });
     //search result
-    const [results, setResults] = useState([])
+    const [results, setResults] = useState([]);
+
+    //get data from global context
+    const appConsumer = useContext(AppContext);
 
 
     useEffect(() => {
@@ -63,18 +68,25 @@ const ProjectPage = (props) => {
             //call the dao
             let res = await projectsDao.getProject(props.match.params.id);
 
-            //update only when there are the results
-            if (res !== null) {
-                //setPapersList(res);
-                setProject(res);
-                setFetching(false);
+            //error checking
+            //if is other error
+             if(res.message){
+                //pass error object to global context
+                appConsumer.setError(res);
+            }
+            //if res isn't null
+            else if (res !== null){
+                //update state
+                 setProject(res);
+                 //show the page
+                 setFetching(false);
             }
         }
         fetchData();
         //when the component will unmount
         return () => {
             //stop all ongoing request
-            projectPapersDao.abortRequest();
+            projectsDao.abortRequest();
         };
     }, []);//this way is executed only on mount
 
@@ -106,7 +118,7 @@ const ProjectPage = (props) => {
                 <Route exact path={props.match.url} render={() =>
                     <>
                         <div className="project-description">{project.data.description}</div>
-                        <PapersList id={props.match.params.id} papers={papers} setPapersList={setPapersList}/>
+                        <PapersList project_id={props.match.params.id} papers={papers} setPapersList={setPapersList}/>
                     </>
                 }/>
 
@@ -121,81 +133,6 @@ const ProjectPage = (props) => {
             </div>
         );
     }
-}
-
-/**
- * the local component that shows the papers list of a project
- */
-const PapersList = (props) => {
-
-    //bool to control the visualization of page
-    const [fetching, setFetching] = useState(true);
-
-    useEffect(() => {
-        //a wrapper function ask by reat hook
-        const fetchData = async () => {
-
-            //call the dao
-            let res = await projectPapersDao.getPapersList({project_id: props.id});
-            //hide the page until to have the search result
-            setFetching(false);
-
-            //update only when there are the results
-            if (res !== null) {
-                props.setPapersList(res);
-            }
-        }
-        fetchData();
-
-        //when the component will unmount
-        return () => {
-            //stop all ongoing request
-            projectPapersDao.abortRequest();
-        };
-    }, []);//this way is executed only on mount
-
-    //if the page is loading
-    if (fetching) {
-        //print svg image
-        return <div className="papers-list"><LoadIcon></LoadIcon></div>;
-    }
-    //if result is empty
-    else if (props.papers.length === 0) {
-        return (<div className="papers-list">there are no papers here, you can add new ones by searching</div>);
-    }
-    else {
-        return ( <PrintList papers={props.papers}/> );
-    }
-
-}
-
-
-/**
- *local component to print list
- */
-const PrintList = function (props) {
-
-    return (
-        <div className="papers-list">
-            {props.papers.map((element, index) =>
-                <div key={index} className="paper-card">
-                    <Link to={"#"}><h3>{element.data.Title}</h3></Link>
-                    <ClampLines
-                        text={element.data.Abstract}
-                        lines={4}
-                        ellipsis="..."
-                        moreText="Expand"
-                        lessText="Collapse"
-                        className="paragraph"
-                        moreText="more"
-                        lessText="less"
-                    />
-                </div>
-            )}
-        </div>
-
-    );
-
 }
 
 
