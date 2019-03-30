@@ -19,6 +19,8 @@ const OPTIONS1 = ["option one", "option two", "option three"];
  */
 const ProjectPage = (props) => {
 
+    console.log("project page------");
+
     //project object of page
     const [project, setProject] = useState({});
 
@@ -32,19 +34,18 @@ const ProjectPage = (props) => {
 
     const project_id = props.match.params.id;
 
-    const substrUrl = window.location.pathname.substring(window.location.pathname.length - 7, window.location.pathname.length);
 
-    //set animation effects on menu by parsing the url
     useEffect(() => {
 
-        if (substrUrl === '/search' || substrUrl === 'search/') {
+        //set animation effects on menu by parsing the url
+        let substr = window.location.pathname.substring(window.location.pathname.length - 7, window.location.pathname.length);
+        if (substr === '/search' || substr === 'search/') {
             setSlider(false);
         }
         else {
             setSlider(true);
         }
-    }, [substrUrl]);
-
+    });
 
     useEffect(() => {
 
@@ -77,7 +78,6 @@ const ProjectPage = (props) => {
         };
     }, [project_id]); //re-execute when these variables change
 
-
     let output;
 
     //if the page is loading
@@ -86,6 +86,7 @@ const ProjectPage = (props) => {
         output = <LoadIcon/>;
     }
     else {
+
 
         output = (
 
@@ -96,7 +97,6 @@ const ProjectPage = (props) => {
                 <Route exact  path={props.match.url} render={() =>
                     <>
                         <div className="project-description">
-                            <h2>description:</h2>
                             {project.data.description}
                         </div>
                         <PapersList project_id={project_id} location={props.location} match={props.match} />
@@ -104,8 +104,8 @@ const ProjectPage = (props) => {
                 }/>
 
                 {/*route the form of search*/}
-                <Route exact path={props.match.url + "/search"} render={(props) =>
-                    <SearchForm project_id={project_id} {...props} />
+                <Route exact path={props.match.url + "/search"} render={() =>
+                    <SearchForm project_id={project_id} location={props.location} match={props.match} history={props.history} />
                 }/>
 
             </div>

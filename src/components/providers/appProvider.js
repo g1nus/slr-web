@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 
-import NavBar from './../components/navigation/navBar';
-import Main from './../components/main';
-import Error from './../components/error';
+import NavBar from './../navigation/navBar';
+import Main from './../main';
+import Error from './../modules/error';
 
 //create a context object
 const AppContext = React.createContext();
@@ -12,29 +12,30 @@ const AppContext = React.createContext();
  */
 const AppProvider = function (props) {
 
-    //user info
-    const [user, setUser] = useState({
+    const user = {
         image: <img className="face" alt="profile" src="https://placekitten.com/100/100"/>,
         name: "mario",
         surname: "super"
-    });
+    };
 
     //error
     const [error, setError] = useState(null);
-
+    const showError = useRef(false);
 
     //preparate an object to be insertd into context
-    const valueObject = {
+    const contextObject ={
         user,
         error,
         setError
-    }
+    };
+
 
     //if there isn't error
     if (!error) {
+
         return (
             //*set the values of contenxt*
-            <AppContext.Provider value={valueObject}>
+            <AppContext.Provider value={contextObject}>
 
                 {/*mount all components children*/}
                 {props.children}
@@ -46,7 +47,7 @@ const AppProvider = function (props) {
     else {
         return (
             //*set the values of contenxt*
-            <AppContext.Provider value={valueObject}>
+            <AppContext.Provider value={contextObject}>
 
                     <Error/>
 

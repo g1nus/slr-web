@@ -62,18 +62,17 @@ const SideMenu = function (props) {
  */
 const PrintMenu = function (props) {
 
-    return (
-        config.menu_list.map((element, index) => {
-                return (
-                    <div key={index}>
-                        <Link to={element.link} className="menu-option"
-                              onMouseUp={props.handleMenuBlur}>{element.content}</Link>
-                    </div>
-                );
-            }
+    let output = (
+        config.menu_list.map((element, index) => (
+                <div key={index}>
+                    <Link to={element.link} className="menu-option"
+                          onMouseUp={props.handleMenuBlur}>{element.content}</Link>
+                </div>
+            )
         )
-
     );
+    return output;
+
 
 }
 

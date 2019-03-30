@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { AppContext } from './../../providers/appProvider'
+import { AppContext } from './../providers/appProvider'
 
 /*
 * this is the component that visualize user information box

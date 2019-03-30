@@ -1,5 +1,5 @@
 import React from "react";
-import SideMenu from './sideMenu';
+
 
 
 /**
@@ -13,8 +13,7 @@ const NavBar = function(props){
 
             {/*background of the menu-bar*/}
             <nav className="main-nav"></nav>
-            {/*component menu*/}
-            <SideMenu/>
+            {props.children}
 
         </div>
     );

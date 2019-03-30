@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Link} from 'react-router-dom';
+import queryString from 'query-string';
 
 
 import {projectsDao} from './../../dao/projects.dao';
 import LoadIcon from './../svg/loadIcon';
 import ProjectForm from './../forms/projectForm';
-import Pagination from './../pagination';
-import {join, setPaginationParamsFromQuery} from './../../utils/index';
-import config from './../../config/index'
+import Pagination from './../modules/pagination';
+import {join} from './../../utils/index';
 
-import {AppContext} from "./../../providers/appProvider";
+import {AppContext} from "./../providers/appProvider";
 
 /**
  *this component will show a projects list page
@@ -18,127 +18,155 @@ import {AppContext} from "./../../providers/appProvider";
 const ProjectsList = function (props) {
 
 
-    //projects list
-    const [projectslist, setProjectsList] = useState([]);
+    //fetch data
+    const [projectsList, setProjectsList] = useState([]);
+
+    //bool to show the pagination buttons
+    const initialPaginationState = {hasbefore: false, continues: false};
+    const [pagination, setPagination] = useState(initialPaginationState);
+
     //bool to control the visualization of page
-    const [fetching, setFetching] = useState(true);
+    const [display, setDisplay] = useState(false);
+
     //bool to control the visualization of input form
     const [toggleform, setToggleForm] = useState(false);
 
     //get data from global context
     const appConsumer = useContext(AppContext);
 
+    //set query params from url
+    const params = queryString.parse( props.location.search && props.location.search);
+    const pagesize = params.pagesize || 10;
+    const before = params.before || -1;
+    const after = params.after || 0;
 
-    //set pagination params
-    let [pagesize, after] = setPaginationParamsFromQuery(props.location.search);
-
+    //if "before" is defined by query then insert it in object, else insert "after" in object
+    const queryData = (before >= 0 ? {pagesize, before} : {pagesize, after});
 
 
     useEffect(() => {
 
-        //a wrapper function ask by reat hook
+
+        //a wrapper function ask by react hook
         const fetchData = async () => {
+            //hide the page
+            setDisplay(false);
 
-                //query data
-                const queryData = {pagesize, after};
-                //call the dao
-                const res = await projectsDao.getProjectsList(queryData);
+            //call the dao
+            const res = await projectsDao.getProjectsList(queryData);
 
-                //error checking
-                //if is 404 error
-                if(res.message == "Not Found"){
-                    setProjectsList(null);
-                    setFetching(false);
-                }
-                //if is other error
-                else if(res.message){
-                    //pass error object to global context
-                    appConsumer.setError(res);
-                }
-                //if res isn't null
-                else if (res !== null){
-                    //update state
-                    setProjectsList(res);
-                    setFetching(false);
-                }
+            //error checking
+            //if is 404 error
+            if (res.message === "Not Found") {
+                setProjectsList([]);
+                setPagination(initialPaginationState);
+                //show the page
+                setDisplay(true);
+            }
+            //if is other error
+            else if (res.message) {
+                //pass error object to global context
+                appConsumer.setError(res);
+            }
+            //if res isn't null
+            else if (res !== null) {
+                //update state
+                setProjectsList(res.results);
+                setPagination({hasbefore: res.hasbefore, continues: res.continues});
+                //show the page
+                setDisplay(true);
+            }
         }
 
-
         fetchData();
-
 
         //when the component will unmount
         return () => {
             //stop all ongoing request
             projectsDao.abortRequest();
         };
-    },[after]); //re-excute when "after" is changed
+    }, [pagesize, before, after]); //re-execute when these variables change
 
+    let output;
     //if the page is loading
-    if (fetching) {
+    if (display === false) {
         //print svg image
-        return <LoadIcon></LoadIcon>;
+        output = <LoadIcon/>;
     }
-    //if the result is empty
-    else if(projectslist === null){
-        return(
-            <div className="project-cards-holder">
-                <div className="title">PROJECTS</div>
-                <div>there aren't projects</div>
-            </div>
-        )
-    }
+
     else {
 
-        //get last project id of list
-        let lastId = projectslist.results[projectslist.results.length-1].id;
-        return (
+        //get first and last project id of list
+        let firstId = 0;
+        let lastId = 0;
+        //if the list is not empty
+        if (projectsList.length > 0) {
+            firstId = projectsList[0].id;
+            lastId = projectsList[projectsList.length - 1].id;
+        }
+        output = (
             <div>
                 {/*print list of projects*/}
-                <PrintList projectslist={projectslist} {...props} />
+                <PrintList projectsList={projectsList} path={props.match.url}/>
                 {/*set listId and continues value*/}
-                <Pagination after={lastId} continues={projectslist.continues} path={props.match.url} />
+                <Pagination before={firstId} after={lastId} pagination={pagination} path={props.match.url+"?"}/>
+
                 {/*print the input form to create/update the projects*/}
-                <ProjectForm visibility={toggleform} setVisibility={setToggleForm}></ProjectForm>
+                <ProjectForm visibility={toggleform} setVisibility={setToggleForm}/>
                 {/*button to show input form*/}
                 <button className="bottom-left-btn" type="button" value="toggle-insert-form" onClick={(e) => {
                     setToggleForm(!toggleform);
-                }}>
-                    +
+                }}>+
                 </button>
             </div>
         );
 
     }
 
+    return output;
 
 
 };
 
 
 /**
- *local component to print list
+ *  local component to print list
+ * @param projectsList projects list data
+ * @param path current page url
  */
-const PrintList = function (props) {
+const PrintList = function ({projectsList, path}) {
 
-    return (
+    let maps;
+    //if list is empty, print a notice message
+    if (projectsList.length === 0) {
+        maps = (
+            <div>there aren't projects</div>
+        );
+    }
+    //if list isn't empty, print list of projects
+    else {
+        maps = (projectsList.map((element, index) =>
+            <Link key={element.id} to={join(path, "/" + element.id)}>
+                <div className="light-modal project-card">
+                    <h3>{element.id} {element.data.name}</h3>
+                    <p>{element.data.description}</p>
+                </div>
+            </Link>
+        ));
+    }
+
+    let output =  (
         <div className="project-cards-holder">
-            <div className="title">PROJECTS</div>
-            {props.projectslist.results.map((element, index) =>
-                <Link key={index} to={join(props.match.url, "/" + element.id)}>
-                    <div className="light-modal project-card">
-                        <h3>{element.data.name}</h3>
-                        <p>{element.data.description}</p>
-                    </div>
-                </Link>
-            )}
+            <div className="title">
+                PROJECTS
+            </div>
+            {maps}
         </div>
-
     );
 
-}
+    return output;
 
-
+};
 
 
 export default ProjectsList;

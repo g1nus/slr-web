@@ -1,48 +1,77 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Link} from 'react-router-dom';
 import ClampLines from 'react-clamp-lines';
+import queryString from "query-string";
 
 import {projectPapersDao} from './../../dao/projectPapers.dao';
 import LoadIcon from './../svg/loadIcon';
 
-import { AppContext } from './../../providers/appProvider'
+import {AppContext} from './../providers/appProvider'
+import {join} from "../../utils";
+import Pagination from "./../modules/pagination";
+
 
 /**
  * the local component that shows the papers list of a project
  */
-const PapersList = (props) => {
+const PapersList = ({project_id, location, match}) => {
+
+
+    //fetch data
+    const [papersList, setPapersList] = useState([]);
+
+    //bool to show the pagination buttons
+    const initialPaginationState = {hasbefore: false, continues: false};
+    const [pagination, setPagination] = useState(initialPaginationState);
 
     //bool to control the visualization of page
-    const [fetching, setFetching] = useState(true);
+    const [display, setDisplay] = useState(false);
 
     //get data from global context
     const appConsumer = useContext(AppContext);
 
+    //set query params from url
+    const params = queryString.parse(location.search);
+    const pagesize = params.pagesize || 10;
+    const before = params.before || -1;
+    const after = params.after || 0;
+
+    //if "before" is defined by query then insert it in object, else insert "after" in object
+    const queryData = (before >= 0 ? {pagesize, before} : {pagesize, after});
+    //insert project_id in queryData
+    queryData.project_id = project_id;
+
     useEffect(() => {
-        //a wrapper function ask by reat hook
+
+        //a wrapper function ask by react hook
         const fetchData = async () => {
+            //hide the page
+            setDisplay(false);
 
             //call the dao
-            let res = await projectPapersDao.getPapersList({project_id: props.project_id});
+            let res = await projectPapersDao.getPapersList(queryData);
 
             //error checking
             //if is 404 error
-            if(res.message == "Not Found"){
-                props.setPapersList([]);
+            if (res.message === "Not Found") {
+                setPapersList([]);
+                setPagination(initialPaginationState);
                 //show the page
-                setFetching(false);
+                setDisplay(true);
             }
             //if is other error
-            else if(res.message){
+            else if (res.message) {
                 //pass error object to global context
                 appConsumer.setError(res);
             }
             //if res isn't null
-            else if (res !== null){
+            else if (res !== null) {
+
                 //update state
-                props.setPapersList(res);
+                setPapersList(res.results);
+                setPagination({hasbefore: res.hasbefore, continues: res.continues});
                 //show the page
-                setFetching(false);
+                setDisplay(true);
             }
 
         }
@@ -53,34 +82,65 @@ const PapersList = (props) => {
             //stop all ongoing request
             projectPapersDao.abortRequest();
         };
-    }, []);//this way is executed only on mount
+    }, [pagesize, before, after]); //re-excute when these variables change
 
-    //hide the page until to have the fetch result
-    if (fetching) {
+    let output;
+    //if the page is loading
+    if (display === false) {
         //print svg image
-        return <div className="papers-list"><LoadIcon></LoadIcon></div>;
-    }
-    //if result is empty
-    else if (props.papers.length === 0) {
-        return (<div className="papers-list">there are no papers here, you can add new ones by searching</div>);
+        output = <LoadIcon/>;
     }
     else {
-        return ( <PrintList papers={props.papers}/> );
+
+        //get first and last paper id of list
+        let firstId = 0;
+        let lastId = 0;
+        //if the list is not empty
+        if (papersList.length > 0) {
+            firstId = papersList[0].id;
+            lastId = papersList[papersList.length - 1].id;
+        }
+
+        output = (
+            <>
+                <PrintList papersList={papersList}/>
+                <Pagination before={firstId} after={lastId} pagination={pagination} path={match.url+"?"}/>
+            </>
+        );
     }
+
+    output = (
+        <div className="papers-list">
+            {output}
+        </div>
+    );
+
+    return output;
 
 }
 
 
 /**
  *local component to print list
+ * @param papersList
  */
-const PrintList = function (props) {
+const PrintList = function ({papersList}) {
 
-    return (
-        <div className="papers-list">
-            {props.papers.map((element, index) =>
-                <div key={index} className="paper-card">
-                    <Link to={"#"}><h3>{element.data.Title}</h3></Link>
+    let output;
+    //if list is empty, print a notice message
+    if (papersList.length === 0) {
+        output = (
+            <div>there are no papers here, you can add new ones by searching</div>
+        );
+    }
+    //if list isn't empty, print list of papers
+    else {
+        output = (
+            papersList.map((element, index) =>
+                <div key={element.id} className="paper-card">
+                    <Link to={"#"}>
+                        <h3>{element.id} {element.data.Title}</h3>
+                    </Link>
                     <ClampLines
                         text={element.data.Abstract}
                         lines={4}
@@ -92,10 +152,11 @@ const PrintList = function (props) {
                         lessText="less"
                     />
                 </div>
-            )}
-        </div>
+            )
+        );
+    }
+    return output;
 
-    );
 
 }
 

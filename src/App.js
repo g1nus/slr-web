@@ -2,12 +2,18 @@ import React from 'react';
 import {BrowserRouter as Router, Route, } from "react-router-dom";
 
 
-import NavBar from './components/navigation/navBar';
+
 import Main from './components/main';
 import Home from './components/home';
-import  Projects from './components/projects';
 
-import  {AppProvider} from './providers/appProvider';
+import NavBar from './components/navigation/navBar';
+import SideMenu from './components/navigation/sideMenu';
+
+import ProjectsList from './components/projects/projectsList';
+import ProjectPage from './components/projects/projectPage';
+
+
+import  {AppProvider} from './components/providers/appProvider';
 
 
 /**
@@ -16,6 +22,7 @@ import  {AppProvider} from './providers/appProvider';
 
 const App = function(props) {
 
+
         return (
             <Router>
                 <div className="app">
@@ -23,10 +30,15 @@ const App = function(props) {
                     {/*mount a root context object*/}
                     <AppProvider>
 
-                        <NavBar/>
+                        <NavBar>
+                            {/*component menu*/}
+                            <SideMenu/>
+                        </NavBar>
                         <Main>
                             <Route exact path="/" render={() => <Home/> }/>
-                            <Route path="/projects" render={(props) => <Projects {...props} /> }/>
+                            <Route exact path="/projects" render={(props) => <ProjectsList {...props} />}/>
+                            <Route path="/projects/:id" render={(props) => <ProjectPage {...props} />}/>
+
                         </Main>
 
                     </AppProvider>

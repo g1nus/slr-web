@@ -60,16 +60,20 @@ async function request(url, options = {}) {
             options
         );
 
-        setTimeout(() => timeOut(), timeOutTime);
+        //set timeout clock
+        let timer = setTimeout(() => timeOut(), timeOutTime);
+
         let response = await fetch(url, requestOptions);
 
-        //response error check
-        checkResponseStatus(response);
-        //parse response data
-        response = await parseResponseData(response);
-        //console.log(response);
+        //clear timeoyt clock
+        clearTimeout(timer);
 
-        return response;
+
+        //parse response data
+        let data = await parseResponseData(response);
+        //response error check
+        checkResponseStatus(response,data);
+        return  data;
 
     }
     catch (error) {
@@ -171,12 +175,17 @@ async function put(url, bodyData = "") {
 /**
  *  * check resposonse status
  * @param response to check
+ * @param data data received
  * @throws {Error} if  status code < 200 or status code >= 300
  */
-function checkResponseStatus(response) {
+function checkResponseStatus(response, data) {
+
     if (response.status < 200 || response.status >= 300) {
         const error = new Error(response.statusText);
         error.data = response;
+        if(data.payload){
+            error.payload = data.payload;
+        }
         throw error;
     }
 
@@ -184,7 +193,7 @@ function checkResponseStatus(response) {
 
 /**
  * parse the response of  http request
- * @param response
+ * @param response response object
  * @return {object} data parsed
  */
 async function parseResponseData(response) {

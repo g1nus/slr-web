@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useContext} from "react";
 import {projectsDao} from './../../dao/projects.dao'
 
-import { AppContext } from './../../providers/appProvider'
+import { AppContext } from './../providers/appProvider'
 
 /**
  * this is the form for create or edit the project

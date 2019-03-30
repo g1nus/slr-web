@@ -8,7 +8,7 @@ import config from './../config/index'
  */
 async function getProjectsList(queryData = "") {
     let url = config.home + config.projects
-    const res = await http.get(url, queryData);
+    let res = await http.get(url, queryData);
     return res;
 
 
@@ -21,8 +21,7 @@ async function getProjectsList(queryData = "") {
  */
 async function getProject(project_id) {
     let url = config.home + config.projects + "/" + project_id;
-    const res = await http.get(url);
-
+    let res = await http.get(url);
     return res;
 }
 
