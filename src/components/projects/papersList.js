@@ -102,10 +102,10 @@ const PapersList = ({project_id, location, match}) => {
         }
 
         output = (
-            <>
+            <div className="paper-card-holder">
                 <PrintList papersList={papersList}/>
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={match.url+"?"}/>
-            </>
+            </div>
         );
     }
 

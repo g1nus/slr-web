@@ -257,21 +257,14 @@ const SearchForm = function ({project_id, location, match, history}) {
 
     let resultPart="";
 
-    //if is loading
-    if (display === false) {
-
-        resultPart = (
-            <div className="loading-holder">
-                <LoadIcon/>
-            </div>);
-    }
     //if the search results list is empty
-    if (papersList.length === 0 && query !== "") {
+    if (display === true && papersList.length === 0 && query !== "") {
+        //the class is used only to workaround a small bug that display not found just as the search start before the loading icon
         resultPart = (
-            <div> not found :( </div>
+            <div className="notfound"> not found :( </div> 
         );
     }
-    else if(papersList.length > 0 &&query !== ""){
+    else if(papersList.length > 0 && query !== ""){
 
         //get first and last paper id of list
         let firstId = papersList[0].id;
@@ -294,14 +287,23 @@ const SearchForm = function ({project_id, location, match, history}) {
 
 
         resultPart = (
-            <>
+            <div className="paper-card-holder">
                 <PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={paginationUrl}/>
                 <button className="bottom-left-btn" type="submit" value="Submit">
                     +
                 </button>
-            </>
+            </div>
         );
+    }
+
+    //if is loading
+    if (display === false) {
+
+        resultPart = (
+            <div className="loading-holder">
+                <LoadIcon/>
+            </div>);
     }
 
     let output = (

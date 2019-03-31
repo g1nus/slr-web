@@ -2,8 +2,8 @@ import React, {useState, useContext} from "react";
 import {Link} from 'react-router-dom';
 
 import UserInfo from './userInfo';
-import config from './../../config/index';
-import MenuBotton from './../svg/menuButton';
+import config from '../../config/index';
+import MenuButton from '../svg/menuButton';
 
 /**
  *this is the side menu component
@@ -42,7 +42,7 @@ const SideMenu = function (props) {
         <div className="menu">
 
             <div className={clsbutton} onClick={handleToggleMenuButton}>
-                <MenuBotton/>
+                <MenuButton/>
             </div>
 
             <div className={clsidemenu} tabIndex={-1}>

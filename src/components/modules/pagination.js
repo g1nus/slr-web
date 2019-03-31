@@ -23,8 +23,8 @@ const Pagination = function ({before, after, pagination, path}) {
         //show prev button only hasbefore is true
         if (pagination.hasbefore) {
             prevLink = (
-                <Link to={join(path, "before=" + before)} style={{width: "50%", display: "inline-block"}}>
-                    prev
+                <Link className="before" to={join(path, "before=" + before)}>
+                    {"< prev"}
                 </Link>
             );
         }
@@ -32,14 +32,14 @@ const Pagination = function ({before, after, pagination, path}) {
         if (pagination.continues) {
             nextLink = (
 
-                <Link to={join(path, "after=" + after)} style={{width: "50%", display: "inline-block"}}>
-                    next
+                <Link className="after" to={join(path, "after=" + after)}>
+                    {"next >"}
                 </Link>
 
             )
         }
         output = (
-            <div className="pagination" style={{clear: "both", fontSize: 18, margin: 20, width: "100%"}}>
+            <div className="pagination">
                 {prevLink}
                 {nextLink}
             </div>
