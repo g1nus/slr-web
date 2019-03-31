@@ -1,4 +1,15 @@
 /*===KEYFRAMES===*/
+@keyframes showup{
+  0%{
+    opacity: 0.0;
+  }
+  80%{
+    opacity: 0.0;
+  }
+  100%{
+    opacity: 1.0;
+  }
+}
 @keyframes complete-big {
   0% {
     stroke-dashoffset: 200;
@@ -210,7 +221,23 @@ code{
     monospace;
 }
 
+/*pagination*/
+div.pagination{
+  clear: both;
+  font-size: 18px; 
+  margin: 20px auto; 
+  width: 50%;
+  text-align: center;
+}
+a.before, a.after{
+  width: 25%; 
+  display: inline-block;
+}
 
+/*notfound error*/
+div.not-found{
+  animation: showup 0.3s linear ;
+}
 
 /*APP.css----------------------------------------------------------------------------------------------*/
 .App {
