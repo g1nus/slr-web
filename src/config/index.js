@@ -6,6 +6,7 @@
 const config = {
     "home": "http://localhost:3000/",
     "search": "search",
+    "scopus_search": "search-scopus",
     "projects": "projects",
     "papers": "papers",
     "menu_list": [

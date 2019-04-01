@@ -25,7 +25,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     const [papersList, setPapersList] = useState([]);
 
     //options on search
-    const initialCheckboxesState = {option1: false, option2: false, option3: false};
+    const initialCheckboxesState = {scopus: false, option2: false, option3: false};
     const [checkboxes, setCheckboxes] = useState(initialCheckboxesState);
 
     //selected list of papers
@@ -51,7 +51,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     const before = params.before || -1;
     const after = params.after || 0;
     const query = params.query || "";
-    const option1 = params.option1 || false;
+    const scopus = params.scopus || false;
     const option2 = params.option2 || false;
     const option3 = params.option3 || false;
     const queryData = {pagesize, query};
@@ -61,8 +61,8 @@ const SearchForm = function ({project_id, location, match, history}) {
     else {
         queryData.after = after;
     }
-    if (option1) {
-        queryData.option1 = option1;
+    if (scopus) {
+        queryData.scopus = scopus;
     }
     if (option2) {
         queryData.option2 = option2;
@@ -88,8 +88,17 @@ const SearchForm = function ({project_id, location, match, history}) {
 
                 //hide the page
                 setDisplay(false);
-                //call the dao
-                let res = await paperDao.search(queryData);
+
+                let res;
+                //call the dao to get local papers
+                if(scopus === false){
+                    res = await paperDao.search(queryData);
+                }
+                //call to dao to get scopus papers
+                else{
+                    res = await paperDao.scopusSearch(queryData);
+                }
+
 
                 //error checking
                 //if is 404 error
@@ -118,7 +127,7 @@ const SearchForm = function ({project_id, location, match, history}) {
 
         fetchData();
 
-    }, [query, before, after, option1, option2, option3, project_id]);  //re-execute when these variables change
+    }, [query, before, after, scopus, option2, option3, project_id]);  //re-execute when these variables change
 
     /**
      * update the checkbox state
@@ -128,8 +137,8 @@ const SearchForm = function ({project_id, location, match, history}) {
         let newState = {...checkboxes};
         let optionName = e.target.name;
         switch (optionName) {
-            case "option1":
-                newState.option1 = !newState.option1;
+            case "scopus":
+                newState.scopus = !newState.scopus;
                 break;
             case "option2":
                 newState.option2 = !newState.option2;
@@ -187,7 +196,7 @@ const SearchForm = function ({project_id, location, match, history}) {
         //show the page
         setDisplay(true);
 
-        //alert("insert completed");
+        alert("insert completed");
     }
 
 
@@ -202,8 +211,8 @@ const SearchForm = function ({project_id, location, match, history}) {
         else {
             //concatenate the query string
             let queryParams = "?query=" + inputToSearch;
-            if (checkboxes.option1) {
-                queryParams += "&option1=true";
+            if (checkboxes.scopus) {
+                queryParams += "&scopus=true";
             }
             if (checkboxes.option2) {
                 queryParams += "&option2=true";
@@ -244,7 +253,7 @@ const SearchForm = function ({project_id, location, match, history}) {
                     <label>Option:</label><br/>
                     <div className="checkboxes-holder">
 
-                        <CheckBox label="option1" isChecked={checkboxes.option1} handler={handleCheckboxChange}/>
+                        <CheckBox label="scopus" isChecked={checkboxes.scopus} handler={handleCheckboxChange}/>
                         <CheckBox label="option2" isChecked={checkboxes.option2} handler={handleCheckboxChange}/>
                         <CheckBox label="option3" isChecked={checkboxes.option3} handler={handleCheckboxChange}/>
 
@@ -285,10 +294,16 @@ const SearchForm = function ({project_id, location, match, history}) {
             paginationUrl = paginationUrl.slice(index) +"&";
         }
 
+        let printList = (scopus === false?
+                (<PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
+                :
+                ( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
+        );
+
 
         resultPart = (
             <div className="paper-card-holder">
-                <PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>
+                {printList}
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={paginationUrl}/>
                 <button className="bottom-left-btn" type="submit" value="Submit">
                     +
@@ -316,7 +331,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     );
 
     return output;
-}
+};
 
 
 /*local component to print search result list of papers*/
@@ -325,9 +340,34 @@ const PrintSearchList = function ({papersList, handlePaperSelection}) {
     let output = papersList.map((element, index) =>
         <div key={element.id} className="paper-card">
             <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
-            <Link to={"#"}><h3>{element.id} {element.data.Title}</h3></Link>
+            <Link to={"#"}><h3>{element.id} {element.data && element.data.Title}</h3></Link>
             <ClampLines
-                text={element.data.Abstract}
+                text={element.data && element.data.Abstract}
+                lines={4}
+                ellipsis="..."
+                moreText="Expand"
+                lessText="Collapse"
+                className="paragraph"
+                moreText="more"
+                lessText="less"
+            />
+        </div>
+    );
+    return output;
+
+}
+
+/*local component to print scopus search result list of papers*/
+const PrintScoupusSearchList = function ({papersList, handlePaperSelection}) {
+
+    let exampleAbstract ="I am a description I am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a description";
+
+    let output = papersList.map((element, index) =>
+        <div key={element.id} className="paper-card">
+            <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
+            <Link to={"#"}><h3>{element.id} {element.Title}</h3></Link>
+            <ClampLines
+                text={exampleAbstract}
                 lines={4}
                 ellipsis="..."
                 moreText="Expand"
