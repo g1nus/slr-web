@@ -8,6 +8,7 @@ import LoadIcon from './../svg/loadIcon';
 import ProjectForm from './../forms/projectForm';
 import Pagination from './../modules/pagination';
 import {join} from './../../utils/index';
+import Cover from './../modules/cover';
 
 import {AppContext} from "./../providers/appProvider";
 
@@ -110,13 +111,14 @@ const ProjectsList = function (props) {
         }
         output = (
             <div>
+                <Cover cls={toggleform ? "full-screen" : ""} handler={setToggleForm}/>
                 {/*print list of projects*/}
                 <PrintList projectsList={projectsList} path={props.match.url}/>
                 {/*set listId and continues value*/}
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={props.match.url+"?"}/>
 
                 {/*print the input form to create/update the projects*/}
-                <ProjectForm visibility={toggleform} setVisibility={setToggleForm}/>
+                <ProjectForm visibility={toggleform} setVisibility={setToggleForm} history={props.history}/>
                 {/*button to show input form*/}
                 <button className="bottom-left-btn" type="button" value="toggle-insert-form" onClick={(e) => {
                     setToggleForm(!toggleform);
@@ -150,12 +152,12 @@ const PrintList = function ({projectsList, path}) {
     //if list isn't empty, print list of projects
     else {
         maps = (projectsList.map((element, index) =>
-            <Link key={element.id} to={join(path, "/" + element.id)}>
-                <div className="light-modal project-card">
-                    <h3>{element.id} {element.data.name}</h3>
-                    <p>{element.data.description}</p>
+                <div key={element.id} className="light-modal project-card">
+                    <Link to={join(path, "/" + element.id)}>
+                        <h3>{element.id} {element.data.name}</h3>
+                        <p>{element.data.description}</p>
+                    </Link>
                 </div>
-            </Link>
         ));
     }
 

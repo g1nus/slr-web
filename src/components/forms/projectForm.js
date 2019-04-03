@@ -1,5 +1,7 @@
-import React, {useEffect, useRef, useContext} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import {projectsDao} from './../../dao/projects.dao'
+
+import CloseButton from './../svg/closeButton';
 
 import { AppContext } from './../providers/appProvider'
 
@@ -9,10 +11,10 @@ import { AppContext } from './../providers/appProvider'
  * @param null if we want to create a new project
  */
 function ProjectForm(props) {
-    //field of project name
-    const projectName = useRef(null);
-    //field of project description
-    const projectDescription = useRef(null);//sconsigliato da react, usare useRef per form
+
+    //fields values
+    const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
 
     //get data from global context
     const appConsumer = useContext(AppContext);
@@ -24,7 +26,7 @@ function ProjectForm(props) {
         //disable default action
         e.preventDefault();
         //prepare the data object to post
-        let bodyData = {name: projectName.current.value, description: projectDescription.current.value};
+        let bodyData = {name: name, description:description};
         //call dao
         let res = await projectsDao.postProject(bodyData);
 
@@ -33,18 +35,17 @@ function ProjectForm(props) {
             //pass error object to global context
             appConsumer.setError(res);
         }
-
-        alert("inserted correctly");
+        props.history.push("/projects/" + res.id);
     }
 
     /**
-     * action to update a old project
+     * action to update a old project(not used yet)
      */
     async function updateProject(e) {
         //disable default action
         e.preventDefault();
         //prepare the data object to post
-        let bodyData = {name: projectName.current.value, description: projectDescription.current.value};
+        let bodyData = {name: name, description: description};
         //call dao  with project_id and data object
         let res = await projectsDao.putProject(props.project.id, bodyData);
 
@@ -76,16 +77,22 @@ function ProjectForm(props) {
         <form className="modal add-project" style={{visibility: (!props.visibility) ? 'hidden' : '' }}>
             <button type="button" className="close-btn" onClick={(e) => {
                 props.setVisibility(!props.visibility);
-            }}>X</button>
-            <label>name</label>
+            }}><CloseButton/></button>
             <br/>
-            <input ref={projectName} type="text" defaultValue={projectInputData.name}/>
+            <input 
+                defaultValue={name}
+                onChange={e => setName(e.target.value)}
+                type="text" 
+                placeholder="project name"/>
             <br/>
-            <label>description</label>
             <br/>
-            <input ref={projectDescription} type="text" defaultValue={projectInputData.description}/>
+            <textarea 
+                defaultValue={description}
+                onChange={e => setDescription(e.target.value)}
+                type="text" 
+                placeholder="project description"/>
             <br/>
-            <button type="submit" onClick={submitAction} value="submit">submit</button>
+            <button type="submit" onClick={submitAction} value="submit">Add project</button>
         </form>
         </>
     );
