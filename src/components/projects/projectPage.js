@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useContext} from "react";
 import {Route, Link} from 'react-router-dom';
 import {Flipper, Flipped} from 'react-flip-toolkit';
-import ClampLines from 'react-clamp-lines';
 
 import SearchForm from './../forms/searchform';
-import PapersList from './papersList';
+import PapersList from './../papers/papersList';
 import {projectsDao} from './../../dao/projects.dao';
 import LoadIcon from './../svg/loadIcon';
 import {join} from './../../utils/index';

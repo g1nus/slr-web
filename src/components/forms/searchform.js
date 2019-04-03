@@ -10,6 +10,7 @@ import {projectPapersDao} from './../../dao/projectPapers.dao'
 import LoadIcon from './../svg/loadIcon';
 import SearchButton from './../svg/searchButton';
 import {searchCheckboxesToParams, join} from './../../utils/index';
+import {PrintLocalSearchList, PrintScoupusSearchList} from './../papers/printPapersList';
 
 import {AppContext} from './../providers/appProvider'
 import Pagination from "./../modules/pagination";
@@ -25,7 +26,6 @@ const SearchForm = function ({project_id, location, match, history}) {
     const sbyOptions = ["all", "author", "paperTitle"];
     //default year options
     const yearOptions = _.range(2017,2020).map(String);//it will be more useful once there will be multiple years
-    console.log(yearOptions);
     //set query params from url
     const params = queryString.parse(location.search);
     const pagesize = params.pagesize || 10;
@@ -312,9 +312,9 @@ const SearchForm = function ({project_id, location, match, history}) {
         }
 
         let printList = (scopus === false?
-                (<PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
+                (<PrintLocalSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
                 :
-                (<PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)//( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
+                (<PrintLocalSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)//( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
         );
 
 
@@ -351,53 +351,6 @@ const SearchForm = function ({project_id, location, match, history}) {
 };
 
 
-/*local component to print search result list of papers*/
-const PrintSearchList = function ({papersList, handlePaperSelection}) {
-
-    let output = papersList.map((element, index) =>
-        <div key={element.id} className="paper-card">
-            <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
-            <Link to={"#"}><h3>{element.id} {element.data && element.data.Title}</h3></Link>
-            <ClampLines
-                text={element.data && element.data.Abstract}
-                lines={4}
-                ellipsis="..."
-                moreText="Expand"
-                lessText="Collapse"
-                className="paragraph"
-                moreText="more"
-                lessText="less"
-            />
-        </div>
-    );
-    return output;
-
-}
-
-/*local component to print scopus search result list of papers*/
-const PrintScoupusSearchList = function ({papersList, handlePaperSelection}) {
-
-    let exampleAbstract ="I am a description I am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a description";
-
-    let output = papersList.map((element, index) =>
-        <div key={element.id} className="paper-card">
-            <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
-            <Link to={"#"}><h3>{element.id} {element.Title}</h3></Link>
-            <ClampLines
-                text={exampleAbstract}
-                lines={4}
-                ellipsis="..."
-                moreText="Expand"
-                lessText="Collapse"
-                className="paragraph"
-                moreText="more"
-                lessText="less"
-            />
-        </div>
-    );
-    return output;
-
-}
 
 
 export default SearchForm;

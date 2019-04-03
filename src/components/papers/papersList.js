@@ -1,14 +1,13 @@
 import React, {useState, useEffect, useContext} from "react";
-import {Link} from 'react-router-dom';
-import ClampLines from 'react-clamp-lines';
 import queryString from "query-string";
 
-import {projectPapersDao} from './../../dao/projectPapers.dao';
-import LoadIcon from './../svg/loadIcon';
+import {projectPapersDao} from '../../dao/projectPapers.dao';
+import LoadIcon from '../svg/loadIcon';
+import {PrintList} from './printPapersList';
 
-import {AppContext} from './../providers/appProvider'
+import {AppContext} from '../providers/appProvider'
 import {join} from "../../utils";
-import Pagination from "./../modules/pagination";
+import Pagination from "../modules/pagination";
 
 
 /**
@@ -119,46 +118,6 @@ const PapersList = ({project_id, location, match}) => {
 
 }
 
-
-/**
- *local component to print list
- * @param papersList
- */
-const PrintList = function ({papersList}) {
-
-    let output;
-    //if list is empty, print a notice message
-    if (papersList.length === 0) {
-        output = (
-            <div>there are no papers here, you can add new ones by searching</div>
-        );
-    }
-    //if list isn't empty, print list of papers
-    else {
-        output = (
-            papersList.map((element, index) =>
-                <div key={element.id} className="paper-card">
-                    <Link to={"#"}>
-                        <h3>{element.id} {element.data.Title}</h3>
-                    </Link>
-                    <ClampLines
-                        text={element.data.Abstract}
-                        lines={4}
-                        ellipsis="..."
-                        moreText="Expand"
-                        lessText="Collapse"
-                        className="paragraph"
-                        moreText="more"
-                        lessText="less"
-                    />
-                </div>
-            )
-        );
-    }
-    return output;
-
-
-}
 
 
 export default PapersList;
