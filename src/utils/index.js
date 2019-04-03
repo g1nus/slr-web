@@ -1,10 +1,28 @@
 //need to parse query string of url
 import queryString from 'query-string';
 
-/**
- * there are the common support function
- */
+//here are the common support function
 
+
+/**
+ * converts the checkboxes object of the search form into parameters for the url
+ */
+function searchCheckboxesToParams(checkboxes){
+    var params = "";
+    Object.keys(checkboxes).forEach(key => {//I iterate over each field of the object
+        if(key !== "years"){//if it's not an year
+            if(checkboxes[key]){//if it's a true flag
+                console.log(key)
+                params += "&" + key + "=" + checkboxes[key];
+            }
+        }else{//if it's a year
+            if(checkboxes.years.length !== 0){//if there are some years selected
+                params += "&" + queryString.stringify({"years" : checkboxes.years} , {arrayFormat: 'comma'});
+            }
+        }
+      });
+      return params;
+}
 
 /**
  * this is  function to manipolate 2 url string
@@ -56,4 +74,4 @@ function setPaginationParamsFromQuery(query){
 
 
 
-export  { join, setPaginationParamsFromQuery};
+export  {searchCheckboxesToParams, join, setPaginationParamsFromQuery};

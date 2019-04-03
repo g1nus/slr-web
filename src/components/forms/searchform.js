@@ -9,30 +9,56 @@ import {paperDao} from './../../dao/paper.dao';
 import {projectPapersDao} from './../../dao/projectPapers.dao'
 import LoadIcon from './../svg/loadIcon';
 import SearchButton from './../svg/searchButton';
-import {join} from './../../utils/index';
+import {searchCheckboxesToParams, join} from './../../utils/index';
 
 import {AppContext} from './../providers/appProvider'
 import Pagination from "./../modules/pagination";
 
+// Load the lodash build
+var _ = require('lodash');
 
 /*this is component form to search for the paper in project page*/
 
 const SearchForm = function ({project_id, location, match, history}) {
+    
+    //default searchby options(used for avoiding user errors)
+    const sbyOptions = ["all", "author", "paperTitle"];
+    //default year options
+    const yearOptions = _.range(2017,2020).map(String);//it will be more useful once there will be multiple years
+    console.log(yearOptions);
+    //set query params from url
+    const params = queryString.parse(location.search);
+    const pagesize = params.pagesize || 10;
+    const before = params.before || -1;
+    const after = params.after || 0;
+    const query = params.query || "";
+    //query params flags(I don't send errors if the user adds a value different from the default ones)
+    const scopus = (params.scopus === 'false') ? false : Boolean(params.scopus || false);
+    const googleScholar = (params.scopus === 'false') ? false : Boolean(params.googleScholar || false);
+    const arXiv = (params.scopus === 'false') ? false : Boolean(params.arXiv || false);
+    let searchby = params.searchby;
+    if(!sbyOptions.includes(searchby)){//if the value in input doesn't exists as default one I select 'all'
+        searchby = "all";
+    }
+    let years = (params.years || "").split(",");
+    if(years[0] === ""){
+        years = [];
+    }
 
-
+    //options on search
+    const initialCheckboxesState = {"scopus": scopus, "googleScholar": googleScholar, "arXiv": arXiv, //source
+                                    "all": (searchby === "all"), "author": (searchby === "author"), "paperTitle": (searchby === "paperTitle"), //searchby
+                                    "years": years};//year
+    const [checkboxes, setCheckboxes] = useState(initialCheckboxesState);
 
     //fetch data
     const [papersList, setPapersList] = useState([]);
-
-    //options on search
-    const initialCheckboxesState = {scopus: false, option2: false, option3: false};
-    const [checkboxes, setCheckboxes] = useState(initialCheckboxesState);
 
     //selected list of papers
     const [selectedPapers, setSelectedPapers] = useState([]);
 
     //input search string
-    const [inputToSearch, setInputToSearch] = useState('');
+    const [inputToSearch, setInputToSearch] = useState(query);
 
     //bool to control the visualization of page
     const [display, setDisplay] = useState(true);
@@ -45,15 +71,6 @@ const SearchForm = function ({project_id, location, match, history}) {
     const appConsumer = useContext(AppContext);
 
 
-    //set query params from url
-    const params = queryString.parse(location.search);
-    const pagesize = params.pagesize || 10;
-    const before = params.before || -1;
-    const after = params.after || 0;
-    const query = params.query || "";
-    const scopus = params.scopus || false;
-    const option2 = params.option2 || false;
-    const option3 = params.option3 || false;
     const queryData = {pagesize, query};
     if (before >= 0) {
         queryData.before = before;
@@ -61,16 +78,6 @@ const SearchForm = function ({project_id, location, match, history}) {
     else {
         queryData.after = after;
     }
-    if (scopus) {
-        queryData.scopus = scopus;
-    }
-    if (option2) {
-        queryData.option2 = option2;
-    }
-    if (option3) {
-        queryData.option3 = option3;
-    }
-
 
 
     useEffect(() => {
@@ -91,7 +98,7 @@ const SearchForm = function ({project_id, location, match, history}) {
 
                 let res;
                 //call the dao to get local papers
-                if(scopus === false){
+                if(scopus === false || scopus){
                     res = await paperDao.search(queryData);
                 }
                 //call to dao to get scopus papers
@@ -127,7 +134,7 @@ const SearchForm = function ({project_id, location, match, history}) {
 
         fetchData();
 
-    }, [query, before, after, scopus, option2, option3, project_id]);  //re-execute when these variables change
+    }, [query, before, after, scopus, googleScholar, arXiv, project_id]);  //re-execute when these variables change
 
     /**
      * update the checkbox state
@@ -135,17 +142,18 @@ const SearchForm = function ({project_id, location, match, history}) {
     function handleCheckboxChange(e) {
         //copy the object
         let newState = {...checkboxes};
-        let optionName = e.target.name;
-        switch (optionName) {
-            case "scopus":
-                newState.scopus = !newState.scopus;
-                break;
-            case "option2":
-                newState.option2 = !newState.option2;
-                break;
-            case "option3":
-                newState.option3 = !newState.option3;
-                break;
+        let optionName = e.target.value;
+        if(yearOptions.includes(optionName)){//if it's an year option
+            if (!checkboxes.years.includes(optionName)) {//I check whether the year wasn't selected
+                newState.years.push(optionName);
+            }else{
+                var array = checkboxes.years.filter(function (value) {
+                    return value !== optionName;
+                });
+                newState.years = array;
+            }
+        }else{
+            newState[optionName] = !checkboxes[optionName];
         }
         setCheckboxes(newState);
     }
@@ -211,15 +219,7 @@ const SearchForm = function ({project_id, location, match, history}) {
         else {
             //concatenate the query string
             let queryParams = "?query=" + inputToSearch;
-            if (checkboxes.scopus) {
-                queryParams += "&scopus=true";
-            }
-            if (checkboxes.option2) {
-                queryParams += "&option2=true";
-            }
-            if (checkboxes.option3) {
-                queryParams += "&option3=true";
-            }
+            queryParams += searchCheckboxesToParams(checkboxes);
 
             //update url to start the search
             history.push(queryParams);
@@ -250,12 +250,29 @@ const SearchForm = function ({project_id, location, match, history}) {
                 </div>
 
                 <div className="option-holder">
-                    <label>Option:</label><br/>
+                    <label>Source:</label><br/>
                     <div className="checkboxes-holder">
 
-                        <CheckBox label="scopus" isChecked={checkboxes.scopus} handler={handleCheckboxChange}/>
-                        <CheckBox label="option2" isChecked={checkboxes.option2} handler={handleCheckboxChange}/>
-                        <CheckBox label="option3" isChecked={checkboxes.option3} handler={handleCheckboxChange}/>
+                        <CheckBox label="Scopus" value="scopus" isChecked={checkboxes.scopus} handler={handleCheckboxChange}/>
+                        <CheckBox label="Google Scholar" value="googleScholar" isChecked={checkboxes.googleScholar} handler={handleCheckboxChange}/>
+                        <CheckBox label="arXiv" value="arXiv" isChecked={checkboxes.arXiv} handler={handleCheckboxChange}/>
+                    </div>
+
+                    <label>Search by:</label><br/>
+                    <div className="checkboxes-holder">
+
+                        <CheckBox label="All" value="all" isChecked={checkboxes.all} handler={handleCheckboxChange}/>
+                        <CheckBox label="Author" value="author" isChecked={checkboxes.author} handler={handleCheckboxChange}/>
+                        <CheckBox label="Paper title" value="paperTitle" isChecked={checkboxes.paperTitle} handler={handleCheckboxChange}/>
+
+                    </div>
+
+                    <label>Year:</label><br/>
+                    <div className="checkboxes-holder">
+
+                        <CheckBox label="2019" value="2019" isChecked={checkboxes.years.includes("2019")} handler={handleCheckboxChange}/>
+                        <CheckBox label="2018" value="2018" isChecked={checkboxes.years.includes("2018")} handler={handleCheckboxChange}/>
+                        <CheckBox label="2017" value="2017" isChecked={checkboxes.years.includes("2017")} handler={handleCheckboxChange}/>
 
                     </div>
                 </div>
@@ -297,7 +314,7 @@ const SearchForm = function ({project_id, location, match, history}) {
         let printList = (scopus === false?
                 (<PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
                 :
-                ( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
+                (<PrintSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)//( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
         );
 
 
