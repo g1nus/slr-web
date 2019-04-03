@@ -11,9 +11,9 @@ const PrintLocalSearchList = function ({papersList, handlePaperSelection}) {
     let output = papersList.map((element, index) =>
         <div key={element.id} className="paper-card">
             <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
-            <Link to={"#"}><h3>{element.id} {element.data && element.data.Title}</h3></Link>
+            <Link to={"#"}><h3>{element.id} {element.data && element.data.title}</h3></Link>
             <ClampLines
-                text={element.data && element.data.Abstract}
+                text={element.data && element.data.abstract}
                 lines={4}
                 ellipsis="..."
                 moreText="Expand"
@@ -74,10 +74,10 @@ const PrintList = function ({papersList}) {
             papersList.map((element, index) =>
                 <div key={element.id} className="paper-card">
                     <Link to={"#"}>
-                        <h3>{element.id} {element.data.Title}</h3>
+                        <h3>{element.id} {element.data.title}</h3>
                     </Link>
                     <ClampLines
-                        text={element.data.Abstract}
+                        text={element.data.abstract}
                         lines={4}
                         ellipsis="..."
                         moreText="Expand"
