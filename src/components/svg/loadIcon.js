@@ -7,7 +7,7 @@ const LoadIcon = function (props) {
 
     return (
 
-        <svg id="loading-icon" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px"
+        <svg id="loading-icon" className={props.class} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px"
              y="0px"
              viewBox="0 0 1000 1000">
             <g>

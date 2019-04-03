@@ -88,7 +88,7 @@ const PapersList = ({project_id, location, match}) => {
     //if the page is loading
     if (display === false) {
         //print svg image
-        output = <LoadIcon/>;
+        output = <LoadIcon class={"small"}/>;
     }
     else {
 

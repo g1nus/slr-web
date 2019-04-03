@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useContext} from "react";
 
-
+import {AppContext} from "./../providers/appProvider";
 
 /**
  * this is the head component of page
@@ -8,11 +8,17 @@ import React from "react";
  */
 
 const NavBar = function(props){
+
+    //get data from global context
+    const appConsumer = useContext(AppContext);
+
     return (
         <div className="navigation-wrapper">
 
             {/*background of the menu-bar*/}
-            <nav className="main-nav"></nav>
+            <nav className="main-nav">
+                <div className="nav-elements"> {appConsumer.title} </div>
+            </nav>
             {props.children}
 
         </div>

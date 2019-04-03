@@ -20,13 +20,17 @@ const AppProvider = function (props) {
 
     //error
     const [error, setError] = useState(null);
-    const showError = useRef(false);
+
+    //title
+    const [title, setTitle] = useState("HOME");
 
     //preparate an object to be insertd into context
     const contextObject ={
         user,
         error,
-        setError
+        setError,
+        title,
+        setTitle
     };
 
 

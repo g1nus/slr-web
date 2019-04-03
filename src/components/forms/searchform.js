@@ -232,7 +232,7 @@ const SearchForm = function ({project_id, location, match, history}) {
      need to  create a new child component for the part of <form>, when we have more information on search options
      ######################################
      */
-    let formPart = (
+    let formPart = (//creare un componente a part
         <>{}
             <form className={(query === "") ? 'search-form' : 'search-form small'}
                   onSubmit={handleSendSearch}>
@@ -270,7 +270,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     if (display === true && papersList.length === 0 && query !== "") {
         //the class is used only to workaround a small bug that display not found just as the search start before the loading icon
         resultPart = (
-            <div className="notfound"> not found :( </div> 
+            <div className="not-found"> not found :( </div> 
         );
     }
     else if(papersList.length > 0 && query !== ""){
@@ -316,8 +316,8 @@ const SearchForm = function ({project_id, location, match, history}) {
     if (display === false) {
 
         resultPart = (
-            <div className="loading-holder">
-                <LoadIcon/>
+            <div className="search-loading-holder">
+                <LoadIcon class={"small"}/>
             </div>);
     }
 

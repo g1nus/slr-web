@@ -11,8 +11,6 @@ import {join} from './../../utils/index';
 
 import {AppContext} from './../providers/appProvider'
 
-const OPTIONS1 = ["option one", "option two", "option three"];
-
 
 /**
  *this component will show a projects page
@@ -86,7 +84,7 @@ const ProjectPage = (props) => {
         output = <LoadIcon/>;
     }
     else {
-
+        appConsumer.setTitle(project.data.name.toUpperCase());//I set the page title
         output = (
 
             <div className="project-wrapper">
@@ -121,9 +119,6 @@ const ProjectPage = (props) => {
 const ProjectPageHead = function ({project, match, slider}) {
     let output = (
         <>
-            <div className="title">
-                {project.data.name.toUpperCase()}
-            </div>
             <div className="project-nav-link-wrapper">
                 <div className="nav-link">
                     <Link to={match.url}>papers</Link>

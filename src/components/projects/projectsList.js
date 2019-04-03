@@ -43,6 +43,10 @@ const ProjectsList = function (props) {
     //if "before" is defined by query then insert it in object, else insert "after" in object
     const queryData = (before >= 0 ? {pagesize, before} : {pagesize, after});
 
+    //set title when component mounts
+    useEffect(() => {
+        appConsumer.setTitle("PROJECTS");
+    },[])//run on component mount
 
     useEffect(() => {
 
@@ -157,9 +161,6 @@ const PrintList = function ({projectsList, path}) {
 
     let output =  (
         <div className="project-cards-holder">
-            <div className="title">
-                PROJECTS
-            </div>
             {maps}
         </div>
     );

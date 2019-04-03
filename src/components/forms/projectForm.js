@@ -9,11 +9,10 @@ import { AppContext } from './../providers/appProvider'
  * @param null if we want to create a new project
  */
 function ProjectForm(props) {
-
     //field of project name
     const projectName = useRef(null);
     //field of project description
-    const projectDescription = useRef(null);
+    const projectDescription = useRef(null);//sconsigliato da react, usare useRef per form
 
     //get data from global context
     const appConsumer = useContext(AppContext);
