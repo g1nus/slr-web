@@ -98,7 +98,8 @@ const SearchForm = function ({project_id, location, match, history}) {
 
                 let res;
                 //call the dao to get local papers
-                if(scopus === false || scopus){
+                console.log(scopus);
+                if(scopus === false){
                     res = await paperDao.search(queryData);
                 }
                 //call to dao to get scopus papers
@@ -314,7 +315,7 @@ const SearchForm = function ({project_id, location, match, history}) {
         let printList = (scopus === false?
                 (<PrintLocalSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
                 :
-                (<PrintLocalSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)//( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
+                ( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
         );
 
 

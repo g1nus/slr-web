@@ -14,8 +14,8 @@ const AppProvider = function (props) {
 
     const user = {
         image: <img className="face" alt="profile" src="https://placekitten.com/100/100"/>,
-        name: "mario",
-        surname: "super"
+        name: "Mario",
+        surname: "Rossi"
     };
 
     //error

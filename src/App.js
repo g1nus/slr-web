@@ -24,7 +24,7 @@ const App = function(props) {
 
 
         return (
-            <Router basename={process.env.PUBLIC_URL}>
+            <Router basename={"slr-web/"}>
                 <div className="app">
 
                     {/*mount a root context object*/}
