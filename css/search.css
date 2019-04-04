@@ -1,7 +1,7 @@
 /*===SEARCH_FORM===*/
 form.search-form{
   width: 500px;
-  margin: 60px auto 20px auto;
+  margin: 20px auto 20px auto;
   z-index: 100;
 }
 
@@ -11,7 +11,7 @@ form.search-form input[type=text]{
   font-size: 20px;
   height: 40px;
   padding-left: 7px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 form.search-form button{
@@ -86,7 +86,14 @@ form.small div.option-holder div.checkboxes-holder label{
 form.small div.option-holder div.checkboxes-holder label:last-child{
   text-align: left;
 }
-div.search-loading-holder{
+
+form.search-form + div.loading-holder{
+  position: absolute;
+  height: 100px;
+  width: 1000px;
+}
+
+form.small + div.loading-holder{
   position: absolute;
   height: 100px;
   width: 700px;
@@ -133,12 +140,8 @@ form.search-results{
 }
 
 /*paper-card for search result*/ /*searchform.js*/
-form.search-results div.paper-card-holder{
-  width: 700px;
-}
-
 form.search-results div.paper-card{
-  width: 100%;
+  width: 700px;
   margin: 0px auto 20px 0px;
 }
 form.search-results div.paper-card a{

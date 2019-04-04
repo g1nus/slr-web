@@ -1,11 +1,14 @@
 {
-  "main.js": "/slr-web/static/js/main.01e7adf1.chunk.js",
-  "main.js.map": "/slr-web/static/js/main.01e7adf1.chunk.js.map",
+  "main.css": "/slr-web/static/css/main.5e4b95eb.chunk.css",
+  "main.js": "/slr-web/static/js/main.f80f4547.chunk.js",
+  "main.js.map": "/slr-web/static/js/main.f80f4547.chunk.js.map",
   "runtime~main.js": "/slr-web/static/js/runtime~main.204b5f6c.js",
   "runtime~main.js.map": "/slr-web/static/js/runtime~main.204b5f6c.js.map",
-  "static/js/2.99f9bfae.chunk.js": "/slr-web/static/js/2.99f9bfae.chunk.js",
-  "static/js/2.99f9bfae.chunk.js.map": "/slr-web/static/js/2.99f9bfae.chunk.js.map",
+  "static/js/2.97a0490c.chunk.js": "/slr-web/static/js/2.97a0490c.chunk.js",
+  "static/js/2.97a0490c.chunk.js.map": "/slr-web/static/js/2.97a0490c.chunk.js.map",
   "index.html": "/slr-web/index.html",
-  "precache-manifest.32bf12e09392682edb5a38780f92b635.js": "/slr-web/precache-manifest.32bf12e09392682edb5a38780f92b635.js",
-  "service-worker.js": "/slr-web/service-worker.js"
+  "precache-manifest.c71bb471225306ccc301daba423acfb6.js": "/slr-web/precache-manifest.c71bb471225306ccc301daba423acfb6.js",
+  "service-worker.js": "/slr-web/service-worker.js",
+  "static/css/main.5e4b95eb.chunk.css.map": "/slr-web/static/css/main.5e4b95eb.chunk.css.map",
+  "static/media/index.css": "/slr-web/static/media/tick.df0b2afe.svg"
 }
