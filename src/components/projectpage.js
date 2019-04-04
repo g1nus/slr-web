@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from "react";
 import {Route, Link} from 'react-router-dom';
 import {Flipper, Flipped} from 'react-flip-toolkit';
-import SearchForm from '../components/forms/searchform';
-import {projectPapersDao} from '../dao/projectPapers.dao';
-import {projectsDao} from '../dao/projects.dao';
-import LoadIcon from '../components/loadicon';
+import SearchForm from 'src/components/forms/searchform';
+import {projectPapersDao} from 'src/dao/projectPapers.dao';
+import {projectsDao} from 'src/dao/projects.dao';
+import LoadIcon from 'src/components/loadicon';
 import ClampLines from 'react-clamp-lines';
-import join from '../utils/stringUtils';
+import join from 'src/utils/stringUtils';
 
 const OPTIONS1 = ["option one", "option two", "option three"];
 
