@@ -76,7 +76,14 @@ const ProjectsList = function (props) {
             //if res isn't null
             else if (res !== null) {
                 //update state
-                setProjectsList(res.results);
+
+                //I put even first and then odd ones so I can display 2 columns with left-right flow 
+                var even_projs = [];
+                even_projs = res.results.filter(function(element){ if( element.id % 2 ) return element;});
+                var odd_projs = [];
+                odd_projs = res.results.filter(function(element){ if( !(element.id % 2) ) return element;});
+
+                setProjectsList(even_projs.concat(odd_projs));
                 setPagination({hasbefore: res.hasbefore, continues: res.continues});
                 //show the page
                 setDisplay(true);
