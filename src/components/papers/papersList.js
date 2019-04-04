@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useContext} from "react";
 import queryString from "query-string";
 
-import {projectPapersDao} from '../../dao/projectPapers.dao';
-import LoadIcon from '../svg/loadIcon';
-import {PrintList} from './printPapersList';
+import {projectPapersDao} from 'src/dao/projectPapers.dao';
+import LoadIcon from 'src/components/svg/loadIcon';
+import {PrintList} from 'src/components/papers/printPapersList';
 
-import {AppContext} from '../providers/appProvider'
-import {join} from "../../utils";
-import Pagination from "../modules/pagination";
+import {AppContext} from 'src/components/providers/appProvider'
+import {join} from "src/utils";
+import Pagination from "src/components/modules/pagination";
 
 
 /**

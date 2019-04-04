@@ -1,5 +1,5 @@
-import http from './../utils/conn'
-import config from './../config/index'
+import http from 'src/utils/conn'
+import config from 'src/config/index'
 
 /**
  * dao to search local papers

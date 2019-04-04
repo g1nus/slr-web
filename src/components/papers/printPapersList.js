@@ -1,7 +1,7 @@
 import React from "react";
 import ClampLines from 'react-clamp-lines';
 import {Link} from 'react-router-dom';
-import CheckBox from "../forms/checkbox";
+import CheckBox from "src/components/forms/checkbox";
 /**
  * prints the papers list of a local search on the fake database
  */

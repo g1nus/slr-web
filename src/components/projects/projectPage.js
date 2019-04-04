@@ -2,13 +2,13 @@ import React, {useState, useEffect, useContext} from "react";
 import {Route, Link} from 'react-router-dom';
 import {Flipper, Flipped} from 'react-flip-toolkit';
 
-import SearchForm from './../forms/searchform';
-import PapersList from './../papers/papersList';
-import {projectsDao} from './../../dao/projects.dao';
-import LoadIcon from './../svg/loadIcon';
-import {join} from './../../utils/index';
+import SearchForm from 'src/components/forms/searchform';
+import PapersList from 'src/components/papers/papersList';
+import {projectsDao} from 'src/dao/projects.dao';
+import LoadIcon from 'src/components/svg/loadIcon';
+import {join} from 'src/utils/index';
 
-import {AppContext} from './../providers/appProvider'
+import {AppContext} from 'src/components/providers/appProvider'
 
 
 /**

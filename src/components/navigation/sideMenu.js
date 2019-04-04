@@ -1,9 +1,9 @@
 import React, {useState, useContext} from "react";
 import {Link} from 'react-router-dom';
 
-import UserInfo from './userInfo';
-import config from '../../config/index';
-import MenuButton from '../svg/menuButton';
+import UserInfo from 'src/components/navigation/userInfo';
+import config from 'src/config/index';
+import MenuButton from 'src/components/svg/menuButton';
 
 /**
  *this is the side menu component

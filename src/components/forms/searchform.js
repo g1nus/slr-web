@@ -4,16 +4,16 @@ import ClampLines from 'react-clamp-lines';
 import queryString from "query-string";
 
 
-import CheckBox from "./checkbox";
-import {paperDao} from './../../dao/paper.dao';
-import {projectPapersDao} from './../../dao/projectPapers.dao'
-import LoadIcon from './../svg/loadIcon';
-import SearchButton from './../svg/searchButton';
-import {searchCheckboxesToParams, join} from './../../utils/index';
-import {PrintLocalSearchList, PrintScoupusSearchList} from './../papers/printPapersList';
+import CheckBox from "src/components/forms/checkbox";
+import {paperDao} from 'src/dao/paper.dao';
+import {projectPapersDao} from 'src/dao/projectPapers.dao'
+import LoadIcon from 'src/components/svg/loadIcon';
+import SearchButton from 'src/components/svg/searchButton';
+import {searchCheckboxesToParams, join} from 'src/utils/index';
+import {PrintLocalSearchList, PrintScoupusSearchList} from 'src/components/papers/printPapersList';
 
-import {AppContext} from './../providers/appProvider'
-import Pagination from "./../modules/pagination";
+import {AppContext} from 'src/components/providers/appProvider'
+import Pagination from "src/components/modules/pagination";
 
 // Load the lodash build
 var _ = require('lodash');

@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
 
-import NavBar from './../navigation/navBar';
-import Main from './../main';
-import Error from './../modules/error';
+import NavBar from 'src/components/navigation/navBar';
+import Main from 'src/components/main';
+import Error from 'src/components/modules/error';
 
 //create a context object
 const AppContext = React.createContext();

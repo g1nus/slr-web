@@ -3,14 +3,14 @@ import {Link} from 'react-router-dom';
 import queryString from 'query-string';
 
 
-import {projectsDao} from './../../dao/projects.dao';
-import LoadIcon from './../svg/loadIcon';
-import ProjectForm from './../forms/projectForm';
-import Pagination from './../modules/pagination';
-import {join} from './../../utils/index';
-import Cover from './../modules/cover';
+import {projectsDao} from 'src/dao/projects.dao';
+import LoadIcon from 'src/components/svg/loadIcon';
+import ProjectForm from 'src/components/forms/projectForm';
+import Pagination from 'src/components/modules/pagination';
+import {join} from 'src/utils/index';
+import Cover from 'src/components/modules/cover';
 
-import {AppContext} from "./../providers/appProvider";
+import {AppContext} from "src/components/providers/appProvider";
 
 /**
  *this component will show a projects list page

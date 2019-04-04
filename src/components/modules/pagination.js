@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import {join} from './../../utils/index';
+import {join} from 'src/utils/index';
 
 /**
  * this is the component for paginaton

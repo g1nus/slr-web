@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useContext} from "react";
-import {projectsDao} from './../../dao/projects.dao'
+import {projectsDao} from 'src/dao/projects.dao'
 
-import CloseButton from './../svg/closeButton';
+import CloseButton from 'src/components/svg/closeButton';
 
-import { AppContext } from './../providers/appProvider'
+import { AppContext } from 'src/components/providers/appProvider'
 
 /**
  * this is the form for create or edit the project
