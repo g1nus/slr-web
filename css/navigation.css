@@ -118,8 +118,13 @@ div.navigation-wrapper nav{
   background-color: aliceblue;
   font-size: 21px;
   border-bottom: solid 2px black;
+  line-height: 50px;
 }
 
+div.navigation-wrapper nav div.nav-elements{
+  margin: 0px auto 0px 90px;
+  vertical-align: middle;
+}
 
 /*===MENU_BUTTON===*/
 div.navigation-wrapper div.menu div.button-wrapper{
@@ -236,3 +241,4 @@ div.navigation-wrapper div.menu div.side-menu div.user div.user-info{
 
 /*===SVG_ELEMENTS===*/
 .st0, .st-t, .st-m, .st-b{stroke:#000000;stroke-width:200;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.ln{stroke:#808080;stroke-width:88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}

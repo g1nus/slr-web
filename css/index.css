@@ -131,17 +131,6 @@ input[type=text]{
   color: black;
 }
 
-div.title{
-  z-index: 99999999;
-  position: fixed;
-  top: 0px;
-  left: 100px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-size: 21px;
-}
-
 /*checkboxes*/
 input[type=checkbox]{
   position: absolute;
@@ -179,6 +168,10 @@ input[type=checkbox]{
 }
 
 /*loading icon*/
+svg#loading-icon.small{
+  width: 50px;
+  height: 50px;
+}
 svg#loading-icon{
   position: absolute;
   width: 80px;
@@ -237,6 +230,20 @@ a.before, a.after{
 /*notfound error*/
 div.not-found{
   animation: showup 0.3s linear ;
+}
+
+/*cover the page*/
+div.cover{
+  opacity: 0.2;
+}
+
+div.full-screen{
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: black;
+  position: fixed;
+  top: 0px;
+  left: 0px;
 }
 
 /*APP.css----------------------------------------------------------------------------------------------*/
