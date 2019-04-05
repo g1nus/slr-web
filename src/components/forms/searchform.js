@@ -11,6 +11,8 @@ import LoadIcon from 'src/components/svg/loadIcon';
 import SearchButton from 'src/components/svg/searchButton';
 import {searchCheckboxesToParams, join} from 'src/utils/index';
 import {PrintLocalSearchList, PrintScoupusSearchList} from 'src/components/papers/printPapersList';
+import Select from 'src/components/forms/select';
+import OrderArrow from 'src/components/svg/orderArrow';
 
 import {AppContext} from 'src/components/providers/appProvider'
 import Pagination from "src/components/modules/pagination";
@@ -18,10 +20,32 @@ import Pagination from "src/components/modules/pagination";
 // Load the lodash build
 var _ = require('lodash');
 
+//order options
+const options = [
+    { value: 'id', label: 'ID' },
+    { value: 'title', label: 'Title' },
+    { value: 'last-modified', label: 'Last Modified' }
+  ];
+
 /*this is component form to search for the paper in project page*/
 
 const SearchForm = function ({project_id, location, match, history}) {
     
+    //ordering components
+    const [sortBy, setSortBy] = useState(0);//the number index of the options array
+    const [order, setOrder] = useState(true);//true means "asc"
+
+    //handler for sort selection(ID|last modified|title)
+    function handleSelection(e){
+        setSortBy(parseInt(e.target.getAttribute('data-value')));
+    }
+
+    //handler for order slection(ASC|DESC)
+    function handelOrder(e){
+        document.getElementById("ani-order-arrow").beginElement();//trigger svg animation
+        setOrder(!order);
+    }
+
     //default searchby options(used for avoiding user errors)
     const sbyOptions = ["all", "author", "paperTitle"];
     //default year options
@@ -321,6 +345,11 @@ const SearchForm = function ({project_id, location, match, history}) {
 
         resultPart = (
             <div className="paper-card-holder">
+                <div className="order">
+                        <label>sort by:</label>
+                        <Select options={options} selected={sortBy} handler={handleSelection}/>
+                        <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                </div>
                 {printList}
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={paginationUrl}/>
                 <button className="bottom-left-btn" type="submit" value="Submit">
@@ -334,8 +363,15 @@ const SearchForm = function ({project_id, location, match, history}) {
     if (display === false) {
 
         resultPart = (
-            <div className="search-loading-holder">
-                <LoadIcon class={"small"}/>
+            <div className="paper-card-holder">
+                <div className="order" style={{pointerEvents: "none"}}>{/* this way the user cannot sort while loading the results */}
+                        <label>sort by:</label>
+                        <Select options={options} selected={sortBy} handler={handleSelection}/>
+                        <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                </div>
+                <div className="search-loading-holder">
+                    <LoadIcon class={"small"}/>
+                </div>
             </div>);
     }
 

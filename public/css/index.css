@@ -129,6 +129,7 @@ input[type=text]{
   border-bottom: solid 1px black;
   padding: 3px 5px 3px 5px;
   color: black;
+  font-family: inherit;
 }
 
 /*checkboxes*/
@@ -207,6 +208,46 @@ button.bottom-left-btn{
   bottom: 20px;
   right: 40px;
 }
+
+/*<select> custom element*/
+div.custom-select {
+  width: 120px;
+  z-index: 1;
+  cursor: pointer;
+}
+div.selected{
+  display: flex;
+  justify-content: space-between;
+}
+div.options-holder{
+  border: 1px solid #d7d7d7;
+  border-top: 0.5px solid black;
+  border-radius: 0px 0px 5px 5px;
+  background-color: white;
+}
+div.options-holder div.option{
+  padding: 2px;
+  transition: all 0.2s;
+}
+div.options-holder div.option:last-child{
+  border-radius: 0px 0px 5px 5px;
+}
+div.options-holder div.option:hover{
+  background-color: #eaeaea;
+}
+div.arrow{
+  height: 20px;
+  width: 20px;
+}
+div.arrow svg#arrow-select{
+  width: 80%;
+  margin: 10%;
+}
+.st-arrow-select{fill:none;stroke:#000000;stroke-width:88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*order arrow element*/
+.st-order-arrow{fill:none;stroke:#000000;stroke-width:88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
+.st-order-arrow-head{fill:none;stroke:#000000;stroke-width:55;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
 
 /*code tag*/
 code{

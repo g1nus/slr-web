@@ -133,10 +133,6 @@ form.search-results{
 }
 
 /*paper-card for search result*/ /*searchform.js*/
-form.search-results div.paper-card-holder{
-  width: 700px;
-}
-
 form.search-results div.paper-card{
   width: 100%;
   margin: 0px auto 20px 0px;

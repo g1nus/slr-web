@@ -116,14 +116,36 @@ div.project-nav-link-wrapper div.underline-to-right{
 }
 
 /*list and description components*/ /*projectpage.js*/
+div.paper-card-holder div.order{
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+  height: 20px;
+  padding: 0px 0px 0px 10px;
+}
+div.paper-card-holder div.order label{
+  font-weight: 300;
+  margin-right: 20px;
+}
+div.paper-card-holder div.order button{
+  margin-left: 5px;
+  height: 20px;
+  width: 20px;
+}
+div.paper-card-holder div.order button svg#order-arrow{
+  height: 80%;
+  margin: 10%;
+}
 div.papers-list{
   position: relative;
   margin: 20px auto auto 0px;
   width: 700px;
   min-height: 300px;
 }
+div.paper-card-holder{
+  width: 700px;
+}
 div.project-description{
-  margin-top: 20px;
   width: 300px;
   position: absolute;
   right: 0px;
@@ -134,4 +156,7 @@ div.project-description{
   word-wrap: break-word;
   hyphens: auto;
   color: #2f2f2f;
+}
+div.project-description h2{
+  margin-top: 15px;
 }

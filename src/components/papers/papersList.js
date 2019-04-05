@@ -4,11 +4,19 @@ import queryString from "query-string";
 import {projectPapersDao} from 'src/dao/projectPapers.dao';
 import LoadIcon from 'src/components/svg/loadIcon';
 import {PrintList} from 'src/components/papers/printPapersList';
+import Select from 'src/components/forms/select';
+import OrderArrow from 'src/components/svg/orderArrow';
 
 import {AppContext} from 'src/components/providers/appProvider'
 import {join} from "src/utils";
 import Pagination from "src/components/modules/pagination";
 
+//order options
+const options = [
+    { value: 'id', label: 'ID' },
+    { value: 'title', label: 'Title' },
+    { value: 'last-modified', label: 'Last Modified' }
+  ];
 
 /**
  * the local component that shows the papers list of a project
@@ -18,6 +26,10 @@ const PapersList = ({project_id, location, match}) => {
 
     //fetch data
     const [papersList, setPapersList] = useState([]);
+
+    //ordering components
+    const [sortBy, setSortBy] = useState(0);//the number index of the options array
+    const [order, setOrder] = useState(true);//true means "asc"
 
     //bool to show the pagination buttons
     const initialPaginationState = {hasbefore: false, continues: false};
@@ -39,6 +51,17 @@ const PapersList = ({project_id, location, match}) => {
     const queryData = (before >= 0 ? {pagesize, before} : {pagesize, after});
     //insert project_id in queryData
     queryData.project_id = project_id;
+
+    //handler for sort selection(ID|last modified|title)
+    function handleSelection(e){
+        setSortBy(parseInt(e.target.getAttribute('data-value')));
+    }
+
+    //handler for order slection(ASC|DESC)
+    function handelOrder(e){
+        document.getElementById("ani-order-arrow").beginElement();//trigger svg animation
+        setOrder(!order);
+    }
 
     useEffect(() => {
 
@@ -86,8 +109,16 @@ const PapersList = ({project_id, location, match}) => {
     let output;
     //if the page is loading
     if (display === false) {
-        //print svg image
-        output = <LoadIcon class={"small"}/>;
+        //print loading image
+        output = (
+            <div className="paper-card-holder">
+                <div className="order" style={{pointerEvents: "none"}}>{/* this way the user cannot sort while loading the results */}
+                    <label>sort by:</label>
+                    <Select options={options} selected={sortBy} handler={handleSelection}/>
+                    <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                </div>
+                <LoadIcon class={"small"}/>
+            </div> );
     }
     else {
 
@@ -102,6 +133,11 @@ const PapersList = ({project_id, location, match}) => {
 
         output = (
             <div className="paper-card-holder">
+                <div className="order">
+                    <label>sort by:</label>
+                    <Select options={options} selected={sortBy} handler={handleSelection}/>
+                    <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                </div>
                 <PrintList papersList={papersList}/>
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={match.url+"?"}/>
             </div>
