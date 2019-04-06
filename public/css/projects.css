@@ -145,17 +145,45 @@ div.papers-list{
 div.paper-card-holder{
   width: 700px;
 }
+
 div.project-description{
   width: 300px;
   position: absolute;
   right: 0px;
   text-align: justify;
-  font-size: 15px;
   font-weight: 300;
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
   color: #2f2f2f;
+  display: flex;
+  flex-flow: column;
+}
+div.project-description p{
+  margin: 0px;
+}
+div.hidden-form-description form button{
+  opacity: 0.0;
+}
+div.hidden-form-description:hover form button{
+  opacity: 1.0;
+}
+div.project-description button.edit-button{
+  position: absolute;
+  right: 0px;
+  top: 15px;
+  width: 25px;
+  height: 25px;
+}
+div.project-description form.edit-project-description textarea{
+  height: 200px;
+  font-size: 15px;
+  font-family: inherit;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: solid 1px black;
+  color: black;
+  resize: none;
 }
 div.project-description h2{
   margin-top: 15px;

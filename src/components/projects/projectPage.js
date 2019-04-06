@@ -6,6 +6,7 @@ import SearchForm from 'src/components/forms/searchform';
 import PapersList from 'src/components/papers/papersList';
 import {projectsDao} from 'src/dao/projects.dao';
 import LoadIcon from 'src/components/svg/loadIcon';
+import ProjectDescription from 'src/components/projects/projectDescription'
 import {join} from 'src/utils/index';
 
 import {AppContext} from 'src/components/providers/appProvider'
@@ -92,10 +93,7 @@ const ProjectPage = (props) => {
                 {/*route the papers list*/}
                 <Route exact  path={props.match.url} render={() =>
                     <>
-                        <div className="project-description">
-                            <h2>description:</h2>
-                            {project.data.description}
-                        </div>
+                        <ProjectDescription description={project.data.description}/>
                         <PapersList project_id={project_id} location={props.location} match={props.match} />
                     </>
                 }/>

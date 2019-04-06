@@ -4,13 +4,11 @@ import {AppContext} from "src/components/providers/appProvider";
 import EditButton from "src/components/svg/editButton";
 
 /**
- * this is the head component of page
- * @param "menu_elements" contains the list of menu-items
+ * this is the description component for the project page
  */
 
-const defaultTitles = ["HOME", "PROJECTS", "ACCOUNT"];
 
-const NavBar = function(props){
+const ProjectDscription = function({description}){
 
     //get data from global context
     const appConsumer = useContext(AppContext);
@@ -32,9 +30,9 @@ const NavBar = function(props){
 
     
     var navElement = <></>;
-    if(defaultTitles.includes(appConsumer.title)){//I check if it's a default title or a project name
+    /*if(defaultTitles.includes(appConsumer.title)){//I check if it's a default title or a project name
         navElement = (
-                    <div className="nav-elements"> <h2 className="static-title">{appConsumer.title}</h2> </div>
+                    <div className="nav-elements"> <h2 class="static-title">{appConsumer.title}</h2> </div>
                 );
     }else{
         navElement = (
@@ -47,18 +45,19 @@ const NavBar = function(props){
                 </form>
             </div>
             );
-    }
+    }*/
     return (
-        <div className="navigation-wrapper">
-
-            {/*background of the menu-bar*/}
-            <nav className="main-nav">
-                {navElement}
-            </nav>
-            {props.children}
-
+        <div className={(!editing) ? "project-description hidden-form-description" : "project-description"}>
+            <h2>description:</h2>
+            <p style={{fontSize: (editing) ? "0px" : "15px"}}> {description}</p>
+            <form className="edit-project-description">
+                    <textarea defaultValue={description} style={{width: (editing) ? "100%" : "0%", padding: (editing) ? "" : "0px", height:(editing) ? "" : "0px"}}
+                        onChange={(e) => {}}
+                    />
+                    <button className="edit-button" onClick={(!editing) ? handleEditRequest : handleConfirm} type="button"><EditButton confirm={editing}/></button>
+                </form>
         </div>
     );
 }
 
-export default NavBar;
+export default ProjectDscription;
