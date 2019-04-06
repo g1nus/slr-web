@@ -16,8 +16,13 @@ const ProjectDscription = function({description, update}){
 
     //handles the click on the edit/confirm button
     function handleEditRequest(e){
+        console.log("CLICK")
         if(!editing){//if the user was not editing I allow him to edit
-            document.getElementById("edit-project-description-input").focus();
+            setTimeout(//I wait for the button event to fire before blurring out the textares
+                function(){
+                    document.getElementById("edit-project-description-input").focus();
+                },100)
+            
             setEditing(true);
             console.log(editing)
         }else{//if the user was editing I submit its changes
@@ -32,12 +37,11 @@ const ProjectDscription = function({description, update}){
             <p style={{fontSize: (editing) ? "0px" : "15px"}}> {description}</p>
             <form className="edit-project-description">
                     <textarea id="edit-project-description-input"  defaultValue={description} style={{width: (editing) ? "100%" : "0%", padding: (editing) ? "" : "0px", height:(editing) ? "" : "0px"}}
-                    onBlur={(e) => {setTimeout(//I wait for the button event to fire before blurring out the textares
-                                function(){
+                    onBlur={(e) => {
                                     console.log("blurring");setEditing(false);
-                                },100)}}
+                                }}
                     />
-                    <button className="edit-button" onClick={handleEditRequest} type="button"><EditButton confirm={editing}/></button>
+                    <button className="edit-button" onMouseDown={handleEditRequest} type="button"><EditButton confirm={editing}/></button>
                 </form>
         </div>
     );

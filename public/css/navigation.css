@@ -132,13 +132,13 @@ div.navigation-wrapper nav div.nav-elements h2.static-title{
 }
 div.navigation-wrapper nav div.nav-elements h2{
   margin: 0px;
-  cursor: pointer;
 }
 div.navigation-wrapper nav div.hidden-form:hover form{
   opacity: 1.0;
 }
 div.navigation-wrapper nav div.hidden-form form{
   opacity: 0.0;
+  cursor: pointer;
 }
 div.navigation-wrapper nav div.nav-elements form input[type=text]{
   margin-top: 9px;
@@ -148,15 +148,20 @@ div.navigation-wrapper nav div.nav-elements form button.edit-button{
   height: 25px;
   width: 25px;
   position: absolute;
-  top: 9px;
+  top: 13px;
   margin-left: 5px;
 }
 div.navigation-wrapper nav div.nav-elements form  button.edit-button svg#edit-button{
   width: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 div.navigation-wrapper nav div.nav-elements form  button.edit-button svg#confirm-edit-button{
   width: 80%;
-  margin: 10%;
+  position: absolute;
+  top: 10%;
+  right: 10%;
 }
 
 /*===MENU_BUTTON===*/

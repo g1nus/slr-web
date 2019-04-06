@@ -30,16 +30,13 @@ const ProjectName = function({name, update}){
     }
 
     return(
-        <div className={(editing) ? "nav-elements" : "nav-elements hidden-form"} onClick={handleEditRequest}> <h2 style={{fontSize: (editing) ? "0px" : "21px"}}>{name}</h2> 
+        <div className={(editing) ? "nav-elements" : "nav-elements hidden-form"}> <h2 style={{fontSize: (editing) ? "0px" : "21px"}}>{name}</h2> 
             {/*clicking on the div containing the title will allow the user to access the form for editing the project name*/}
-            <form className="edit-project-name">
+            <form className="edit-project-name"  onClick={handleEditRequest} onSubmit={(e) => {e.preventDefault()}}>
                 <input type="text" id="edit-project-name-input" defaultValue={name} style={{width: (editing) ? "" : "0px", padding: (editing) ? "" : "0px"}}
-                    onBlur={(e) => {setTimeout(//when the user focuses out the input field I wait for the "edit-button" to fire, if necessary, and then I hide the form
-                        function(){
-                            console.log("blurring");setEditing(false);
-                        },100)}}
+                    onBlur={(e) => {setEditing(false)}}
                 />
-                <button className="edit-button" onClick={handleConfirm} type="button"><EditButton confirm={editing}/></button>
+                <button className="edit-button" onMouseDown={handleConfirm} type="button"><EditButton confirm={editing}/></button>
                 {/*clicking on the button will confirm the new name*/}
             </form>
         </div>

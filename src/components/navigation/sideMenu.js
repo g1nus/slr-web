@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import UserInfo from 'src/components/navigation/userInfo';
 import config from 'src/config/index';
 import MenuButton from 'src/components/svg/menuButton';
+import Cover from 'src/components/modules/cover';
 
 /**
  *this is the side menu component
@@ -22,7 +23,7 @@ const SideMenu = function (props) {
     }
 
     //function to close the menu
-    function handleMenuBlur() {
+    function handleMenuBlur(e) {
         setShown(false);
     }
 
@@ -40,7 +41,7 @@ const SideMenu = function (props) {
 
     return (
         <div className="menu">
-
+            <Cover cls={(shown) ? "full-screen-transparent" : ""} handler={handleMenuBlur}/>
             <div className={clsbutton} onClick={handleToggleMenuButton}>
                 <MenuButton/>
             </div>

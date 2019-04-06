@@ -88,9 +88,7 @@ const ProjectPage = (props) => {
     //function for updating the descriptio
     function updateDescription(){
 
-        console.log("UPDATING");
         var new_desc = document.getElementById("edit-project-description-input").value;
-        console.log(new_desc);
 
         const putData = async () => {
 
@@ -105,7 +103,8 @@ const ProjectPage = (props) => {
             }
             //if res isn't null
             else if (res !== null) {
-                console.log("UPDATED SUCCESFULLY!")
+                console.log("UPDATED SUCCESFULLY!");
+                window.location.reload();
             }
         }
 
@@ -135,6 +134,7 @@ const ProjectPage = (props) => {
             //if res isn't null
             else if (res !== null) {
                 console.log("UPDATED SUCCESFULLY!")
+                window.location.reload();
             }
         }
 

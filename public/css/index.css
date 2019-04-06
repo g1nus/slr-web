@@ -263,7 +263,7 @@ button.edit-button{
 .st1-bin{fill:none;stroke:#000000;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 
 /*options button*/
-.st-options{stroke:#000000;stroke-width:150;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st-options{stroke: #737373;stroke-width: 140;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 
 /*code tag*/
 code{
@@ -301,6 +301,16 @@ div.full-screen{
   position: fixed;
   top: 0px;
   left: 0px;
+  z-index: 1;
+}
+div.full-screen-transparent{
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: transparent;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
 }
 
 /*APP.css----------------------------------------------------------------------------------------------*/
