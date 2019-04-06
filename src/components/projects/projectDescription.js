@@ -10,8 +10,6 @@ import EditButton from "src/components/svg/editButton";
 
 const ProjectDscription = function({description, update}){
 
-    //get data from global context
-    const appConsumer = useContext(AppContext);
 
     //this is used as a toggle for checking if the user is trying to edit the name of the project
     const [editing, setEditing] = useState(false);
@@ -23,7 +21,7 @@ const ProjectDscription = function({description, update}){
             setEditing(true);
             console.log(editing)
         }else{//if the user was editing I submit its changes
-            console.log("this is a cofirm request")
+            update();
         }
     }
 

@@ -6,7 +6,8 @@ import SearchForm from 'src/components/forms/searchform';
 import PapersList from 'src/components/papers/papersList';
 import {projectsDao} from 'src/dao/projects.dao';
 import LoadIcon from 'src/components/svg/loadIcon';
-import ProjectDescription from 'src/components/projects/projectDescription'
+import ProjectDescription from 'src/components/projects/projectDescription';
+import ProjectName from 'src/components/projects/projectName';
 import {join} from 'src/utils/index';
 
 import {AppContext} from 'src/components/providers/appProvider'
@@ -18,11 +19,11 @@ import {AppContext} from 'src/components/providers/appProvider'
 const ProjectPage = (props) => {
 
     //project object of page
-    const [project, setProject] = useState({});
+    const [project, setProject] = useState({data: {name: "loading..."}});
 
     //bool to control the visualization of page
     const [display, setDisplay] = useState(false);
-    //bool for annimation
+    //bool for animation
     const [slider, setSlider] = useState(true);
 
     //get data from global context
@@ -31,6 +32,15 @@ const ProjectPage = (props) => {
     const project_id = props.match.params.id;
 
     const substrUrl = window.location.pathname.substring(window.location.pathname.length - 7, window.location.pathname.length);
+
+    useEffect(() => {
+        if(project.data.name === "loading..."){
+            appConsumer.setTitle(<div className="nav-elements"> <h2 className="static-title">{project.data.name}</h2> </div>);//I set the page title
+        }else{
+            appConsumer.setTitle(<ProjectName name={project.data.name} update={updateName}/>);
+        }
+    
+    }, [project]);
 
     //set animation effects on menu by parsing the url
     useEffect(() => {
@@ -75,8 +85,62 @@ const ProjectPage = (props) => {
         };
     }, [project_id]); //re-execute when these variables change
 
-    async function updateDescription(e){
+    //function for updating the descriptio
+    function updateDescription(){
+
         console.log("UPDATING");
+        var new_desc = document.getElementById("edit-project-description-input").value;
+        console.log(new_desc);
+
+        const putData = async () => {
+
+            //call the dao
+            let res = await projectsDao.putProject(project_id, {name: project.data.name, description : new_desc});
+
+            //error checking
+            //if is other error
+            if (res.message) {
+                //pass error object to global context
+                appConsumer.setError(res);
+            }
+            //if res isn't null
+            else if (res !== null) {
+                console.log("UPDATED SUCCESFULLY!")
+            }
+        }
+
+        if(new_desc !== project.data.description){
+            putData();
+        }
+    }
+
+    //function for updating the name
+    function updateName(){
+
+        console.log("UPDATING");
+        var new_name = document.getElementById("edit-project-name-input").value;
+        console.log(new_name);
+
+        const putData = async () => {
+
+            //call the dao
+            let res = await projectsDao.putProject(project_id, {name: new_name, description : project.data.description});
+
+            //error checking
+            //if is other error
+            if (res.message) {
+                //pass error object to global context
+                appConsumer.setError(res);
+            }
+            //if res isn't null
+            else if (res !== null) {
+                console.log("UPDATED SUCCESFULLY!")
+            }
+        }
+
+        if(new_name !== project.data.name){
+            putData();
+        }
     }
 
     let output;
@@ -87,9 +151,7 @@ const ProjectPage = (props) => {
         output = <LoadIcon/>;
     }
     else {
-        appConsumer.setTitle(project.data.name.toUpperCase());//I set the page title
         output = (
-
             <div className="project-wrapper">
                 <ProjectPageHead project={project} match={props.match} slider={slider}/>
 

@@ -47,7 +47,7 @@ const ProjectsList = function (props) {
 
     //set title when component mounts
     useEffect(() => {
-        appConsumer.setTitle("PROJECTS");
+        appConsumer.setTitle(<div className="nav-elements"> <h2 className="static-title">PROJECTS</h2> </div>);
     },[])//run on component mount
 
     useEffect(() => {
@@ -150,10 +150,31 @@ const ProjectsList = function (props) {
  */
 const PrintList = function ({projectsList, path}) {
 
+    //get data from global context
+    const appConsumer = useContext(AppContext);
+
     let sideOptions= ["delete"];
 
     function handleDelete(id){
-        console.log("bobo " + id);
+        console.log("deleting " + id);
+        const deleteData = async () => {
+
+            //call the dao
+            let res = await projectsDao.deleteProject(id);
+
+            //error checking
+            //if is other error
+            if (res.message) {
+                //pass error object to global context
+                appConsumer.setError(res);
+            }
+            //if res isn't null
+            else if (res !== null) {
+                console.log("DELETED SUCCESFULLY!")
+            }
+        }
+
+        deleteData();
     }
 
     let maps;

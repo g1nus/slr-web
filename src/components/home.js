@@ -13,7 +13,7 @@ const Home = function (props) {
 
     //set title when component mounts
     useEffect(() => {
-        appConsumer.setTitle("HOME");
+        appConsumer.setTitle(<div className="nav-elements"> <h2 className="static-title">HOME</h2> </div>);
     },[])//run on component mount
 
 

@@ -22,7 +22,7 @@ const AppProvider = function (props) {
     const [error, setError] = useState(null);
 
     //title
-    const [title, setTitle] = useState("HOME");
+    const [title, setTitle] = useState(<div className="nav-elements"> <h2 className="static-title">HOME</h2> </div>);
 
     //preparate an object to be insertd into context
     const contextObject ={
