@@ -75,6 +75,9 @@ const ProjectPage = (props) => {
         };
     }, [project_id]); //re-execute when these variables change
 
+    async function updateDescription(e){
+        console.log("UPDATING");
+    }
 
     let output;
 
@@ -93,7 +96,7 @@ const ProjectPage = (props) => {
                 {/*route the papers list*/}
                 <Route exact  path={props.match.url} render={() =>
                     <>
-                        <ProjectDescription description={project.data.description}/>
+                        <ProjectDescription description={project.data.description} update={updateDescription}/>
                         <PapersList project_id={project_id} location={props.location} match={props.match} />
                     </>
                 }/>

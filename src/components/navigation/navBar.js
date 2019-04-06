@@ -18,14 +18,15 @@ const NavBar = function(props){
     const [editing, setEditing] = useState(false);
 
     function handleEditRequest(e){
-        console.log("edit request");
         if(!editing){
+            console.log("edit request");
+            document.getElementById("edit-project-name-input").focus();
             setEditing(!editing);
         }
     }
     function handleConfirm(e){
-        console.log("confirm request");
         if(editing){
+            console.log("confirm request");
             setEditing(!editing);
         }
     }
@@ -40,8 +41,11 @@ const NavBar = function(props){
         navElement = (
             <div className={(editing) ? "nav-elements" : "nav-elements hidden-form"} onClick={handleEditRequest}> <h2 style={{fontSize: (editing) ? "0px" : "21px"}}>{appConsumer.title}</h2> 
                 <form className="edit-project-name">
-                    <input type="text" defaultValue={appConsumer.title} style={{width: (editing) ? "" : "0px", padding: (editing) ? "" : "0px"}}
-                        onClick={(e) => {appConsumer.setTitle(e.target.value);}} onBlur={(e) => {setEditing(false)}}
+                    <input type="text" id="edit-project-name-input" defaultValue={appConsumer.title} style={{width: (editing) ? "" : "0px", padding: (editing) ? "" : "0px"}}
+                        onBlur={(e) => {setTimeout(
+                            function(){
+                                console.log("blurring");setEditing(false);
+                            },100)}}
                     />
                     <button className="edit-button" onClick={handleConfirm} type="button"><EditButton confirm={editing}/></button>
                 </form>

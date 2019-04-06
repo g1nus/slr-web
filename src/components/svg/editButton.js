@@ -5,7 +5,6 @@ import React from "react";
  */
 const EditButton = function ({confirm}) {
     var output = <></>;
-    console.log("CONFIRM : " + confirm)
     if(!confirm){
         output = (<svg version="1.1" id="edit-button" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	    viewBox="0 0 1000 1000">
