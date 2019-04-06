@@ -249,6 +249,14 @@ div.arrow svg#arrow-select{
 .st-order-arrow{fill:none;stroke:#000000;stroke-width:88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
 .st-order-arrow-head{fill:none;stroke:#000000;stroke-width:55;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
 
+/*edit button svg*/
+button.edit-button{
+  height: 20px;
+  width: 20px;
+}
+.st-pencil{fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st-pencil-border{fill:none;stroke:#000000;stroke-width:29;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st-confirm{fill:none;stroke:#000000;stroke-width:100;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 /*code tag*/
 code{
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
