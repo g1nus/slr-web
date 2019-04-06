@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 
 /**
  * component svg order arrow button
+ * 'up' is a flag for checking where the arrow is pointing
  */
 const OrderArrow= function ({up}) {
     var from="";

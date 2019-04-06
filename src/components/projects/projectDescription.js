@@ -13,15 +13,16 @@ const ProjectDscription = function({description, update}){
     //get data from global context
     const appConsumer = useContext(AppContext);
 
+    //this is used as a toggle for checking if the user is trying to edit the name of the project
     const [editing, setEditing] = useState(false);
 
+    //handles the click on the edit/confirm button
     function handleEditRequest(e){
-        console.log("edit request("+editing+")");
-        if(!editing){
+        if(!editing){//if the user was not editing I allow him to edit
             document.getElementById("edit-project-description-input").focus();
             setEditing(true);
             console.log(editing)
-        }else{
+        }else{//if the user was editing I submit its changes
             console.log("this is a cofirm request")
         }
     }
@@ -33,7 +34,7 @@ const ProjectDscription = function({description, update}){
             <p style={{fontSize: (editing) ? "0px" : "15px"}}> {description}</p>
             <form className="edit-project-description">
                     <textarea id="edit-project-description-input"  defaultValue={description} style={{width: (editing) ? "100%" : "0%", padding: (editing) ? "" : "0px", height:(editing) ? "" : "0px"}}
-                    onBlur={(e) => {setTimeout(
+                    onBlur={(e) => {setTimeout(//I wait for the button event to fire before blurring out the textares
                                 function(){
                                     console.log("blurring");setEditing(false);
                                 },100)}}

@@ -15,7 +15,28 @@ div.project-cards-holder div.project-card{
   margin: 0 0 20px;
   transition: all 0.3s;
   display: inline-block;
+  position: relative;
 }
+div.project-cards-holder div.project-card div.project-card-options{
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  width: 20px;
+  z-index: 1;
+}
+div.project-cards-holder div.project-card div.project-card-options div.options-list{
+  background-color: white;
+  border-radius: 3px;
+  text-align: center;
+  width: 60px;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+div.project-cards-holder div.project-card div.project-card-options button svg#options-button{
+  height: 20px;
+  width: 20px;
+}
+
 div.project-cards-holder div.project-card:hover h3{
   text-decoration: underline;
 }
@@ -40,6 +61,7 @@ form.add-project{
   transform: translate(-50%,-50%);
   width: 400px;
   text-align: center;
+  z-index: 1;
 }
 form.add-project button{
   border: solid 1px grey;

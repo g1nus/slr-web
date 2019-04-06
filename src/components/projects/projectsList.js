@@ -9,6 +9,7 @@ import ProjectForm from 'src/components/forms/projectForm';
 import Pagination from 'src/components/modules/pagination';
 import {join} from 'src/utils/index';
 import Cover from 'src/components/modules/cover';
+import SideOptions from 'src/components/modules/sideOptions';
 
 import {AppContext} from "src/components/providers/appProvider";
 
@@ -149,6 +150,12 @@ const ProjectsList = function (props) {
  */
 const PrintList = function ({projectsList, path}) {
 
+    let sideOptions= ["delete"];
+
+    function handleDelete(id){
+        console.log("bobo " + id);
+    }
+
     let maps;
     //if list is empty, print a notice message
     if (projectsList.length === 0) {
@@ -160,6 +167,7 @@ const PrintList = function ({projectsList, path}) {
     else {
         maps = (projectsList.map((element, index) =>
                 <div key={element.id} className="light-modal project-card">
+                    <SideOptions options={sideOptions} handler={handleDelete} target={element.id} cls="project-card-options"/>
                     <Link to={join(path, "/" + element.id)}>
                         <h3>{element.id} {element.data.name}</h3>
                         <p>{element.data.description}</p>

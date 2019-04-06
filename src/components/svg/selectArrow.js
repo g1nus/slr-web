@@ -2,6 +2,7 @@ import React from "react";
 
 /**
  * component svg select arrow
+ * 'focused' is a flag used for displaying a different shape
  */
 const SelectArrow= function ({focused}) {
     var from="";

@@ -257,6 +257,14 @@ button.edit-button{
 .st-pencil{fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 .st-pencil-border{fill:none;stroke:#000000;stroke-width:29;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 .st-confirm{fill:none;stroke:#000000;stroke-width:100;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*recycle bin svg*/
+.st0-bin{fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st1-bin{fill:none;stroke:#000000;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*options button*/
+.st-options{stroke:#000000;stroke-width:150;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
 /*code tag*/
 code{
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
