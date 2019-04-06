@@ -218,10 +218,10 @@ div.custom-select {
 div.selected{
   display: flex;
   justify-content: space-between;
+  border-bottom: solid 1px black;
 }
 div.options-holder{
-  border: 1px solid #d7d7d7;
-  border-top: 0.5px solid black;
+  border-top: none;
   border-radius: 0px 0px 5px 5px;
   background-color: white;
 }

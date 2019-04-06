@@ -47,7 +47,7 @@ const PapersList = ({project_id, location, match}) => {
     const start = params.start || 0;
 
     //if "before" is defined by query then insert it in object, else insert "after" in object
-    const queryData = {project_id, start, count, orderBy: "eid", sort: (sort) ? "ASC" : "DESC"};
+    const queryData = {project_id, start, count, orderBy: options[orderBy].value, sort: (sort) ? "ASC" : "DESC"};
 
 
     //handler for sort selection(ID|last modified|title)

@@ -81,6 +81,11 @@ const PrintList = function ({papersList}) {
                     <Link to={"#"}>
                         <h3>{element.id} {element.data.title}</h3>
                     </Link>
+                    <div className="extra-info">
+                        <p className="authors">{element.data.authors}</p>
+                        <p className="eid">{element.data.eid}</p>
+                        <p className="date">{element.data.date}</p>
+                    </div>
                     <ClampLines
                         text={element.data.abstract}
                         lines={4}
