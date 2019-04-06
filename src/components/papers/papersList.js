@@ -13,9 +13,9 @@ import Pagination from "src/components/modules/pagination";
 
 //order options
 const options = [
-    { value: 'id', label: 'ID' },
+    { value: 'eid', label: 'EID' },
     { value: 'title', label: 'Title' },
-    { value: 'last-modified', label: 'Last Modified' }
+    { value: 'authors', label: 'Authors' }
   ];
 
 /**
@@ -28,8 +28,8 @@ const PapersList = ({project_id, location, match}) => {
     const [papersList, setPapersList] = useState([]);
 
     //ordering components
-    const [sortBy, setSortBy] = useState(0);//the number index of the options array
-    const [order, setOrder] = useState(true);//true means "asc"
+    const [orderBy, setOrderBy] = useState(0);//the number index of the options array
+    const [sort, setSort] = useState(true);//true means "asc"
 
     //bool to show the pagination buttons
     const initialPaginationState = {hasbefore: false, continues: false};
@@ -43,24 +43,22 @@ const PapersList = ({project_id, location, match}) => {
 
     //set query params from url
     const params = queryString.parse(location.search);
-    const pagesize = params.pagesize || 10;
-    const before = params.before || -1;
-    const after = params.after || 0;
+    const count = params.count || 10;
+    const start = params.start || 0;
 
     //if "before" is defined by query then insert it in object, else insert "after" in object
-    const queryData = (before >= 0 ? {pagesize, before} : {pagesize, after});
-    //insert project_id in queryData
-    queryData.project_id = project_id;
+    const queryData = {project_id, start, count, orderBy: "eid", sort: (sort) ? "ASC" : "DESC"};
+
 
     //handler for sort selection(ID|last modified|title)
     function handleSelection(e){
-        setSortBy(parseInt(e.target.getAttribute('data-value')));
+        setOrderBy(parseInt(e.target.getAttribute('data-value')));
     }
 
     //handler for order slection(ASC|DESC)
     function handelOrder(e){
         document.getElementById("ani-order-arrow").beginElement();//trigger svg animation
-        setOrder(!order);
+        setSort(!sort);
     }
 
     useEffect(() => {
@@ -69,7 +67,7 @@ const PapersList = ({project_id, location, match}) => {
         const fetchData = async () => {
             //hide the page
             setDisplay(false);
-
+            console.log(queryData);
             //call the dao
             let res = await projectPapersDao.getPapersList(queryData);
 
@@ -91,7 +89,7 @@ const PapersList = ({project_id, location, match}) => {
 
                 //update state
                 setPapersList(res.results);
-                setPagination({hasbefore: res.hasbefore, continues: res.continues});
+                //setPagination({hasbefore: res.hasbefore, continues: res.continues});
                 //show the page
                 setDisplay(true);
             }
@@ -104,7 +102,7 @@ const PapersList = ({project_id, location, match}) => {
             //stop all ongoing request
             projectPapersDao.abortRequest();
         };
-    }, [pagesize, before, after]); //re-excute when these variables change
+    }, [sort, orderBy, start, count]); //re-excute when these variables change
 
     let output;
     //if the page is loading
@@ -114,8 +112,8 @@ const PapersList = ({project_id, location, match}) => {
             <div className="paper-card-holder">
                 <div className="order" style={{pointerEvents: "none"}}>{/* this way the user cannot sort while loading the results */}
                     <label>sort by:</label>
-                    <Select options={options} selected={sortBy} handler={handleSelection}/>
-                    <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                    <Select options={options} selected={orderBy} handler={handleSelection}/>
+                    <button type="button" onClick={handelOrder}><OrderArrow up={(sort)}/></button>
                 </div>
                 <LoadIcon class={"small"}/>
             </div> );
@@ -135,8 +133,8 @@ const PapersList = ({project_id, location, match}) => {
             <div className="paper-card-holder">
                 <div className="order">
                     <label>sort by:</label>
-                    <Select options={options} selected={sortBy} handler={handleSelection}/>
-                    <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                    <Select options={options} selected={orderBy} handler={handleSelection}/>
+                    <button type="button" onClick={handelOrder}><OrderArrow up={(sort)}/></button>
                 </div>
                 <PrintList papersList={papersList}/>
                 <Pagination before={firstId} after={lastId} pagination={pagination} path={match.url+"?"}/>

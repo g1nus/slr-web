@@ -22,9 +22,8 @@ var _ = require('lodash');
 
 //order options
 const options = [
-    { value: 'id', label: 'ID' },
     { value: 'title', label: 'Title' },
-    { value: 'last-modified', label: 'Last Modified' }
+    { value: 'date', label: 'Date' }
   ];
 
 /*this is component form to search for the paper in project page*/
@@ -32,18 +31,18 @@ const options = [
 const SearchForm = function ({project_id, location, match, history}) {
     
     //ordering components
-    const [sortBy, setSortBy] = useState(0);//the number index of the options array
-    const [order, setOrder] = useState(true);//true means "asc"
+    const [orderBy, setOrderBy] = useState(0);//the number index of the options array
+    const [sort, setSort] = useState(true);//true means "asc"
 
     //handler for sort selection(ID|last modified|title)
     function handleSelection(e){
-        setSortBy(parseInt(e.target.getAttribute('data-value')));
+        setOrderBy(parseInt(e.target.getAttribute('data-value')));
     }
 
     //handler for order slection(ASC|DESC)
     function handelOrder(e){
         document.getElementById("ani-order-arrow").beginElement();//trigger svg animation
-        setOrder(!order);
+        setSort(!sort);
     }
 
     //default searchby options(used for avoiding user errors)
@@ -52,9 +51,8 @@ const SearchForm = function ({project_id, location, match, history}) {
     const yearOptions = _.range(2017,2020).map(String);//it will be more useful once there will be multiple years
     //set query params from url
     const params = queryString.parse(location.search);
-    const pagesize = params.pagesize || 10;
-    const before = params.before || -1;
-    const after = params.after || 0;
+    const count = params.count || 10;
+    const start = params.start || 0;
     const query = params.query || "";
     //query params flags(I don't send errors if the user adds a value different from the default ones)
     const scopus = (params.scopus === 'false') ? false : Boolean(params.scopus || false);
@@ -95,13 +93,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     const appConsumer = useContext(AppContext);
 
 
-    const queryData = {pagesize, query};
-    if (before >= 0) {
-        queryData.before = before;
-    }
-    else {
-        queryData.after = after;
-    }
+    const queryData = {query, start, count, orderBy: options[orderBy].value, sort: (sort) ? "ASC" : "DESC"};
 
 
     useEffect(() => {
@@ -119,17 +111,11 @@ const SearchForm = function ({project_id, location, match, history}) {
 
                 //hide the page
                 setDisplay(false);
-
+                console.log(queryData);
                 let res;
-                //call the dao to get local papers
-                console.log(scopus);
-                if(scopus === false){
-                    res = await paperDao.search(queryData);
-                }
-                //call to dao to get scopus papers
-                else{
-                    res = await paperDao.scopusSearch(queryData);
-                }
+                
+                //always call the dao to search on scopus
+                res = await paperDao.search(queryData);
 
 
                 //error checking
@@ -149,7 +135,7 @@ const SearchForm = function ({project_id, location, match, history}) {
                 else if (res !== null) {
                     //update state
                     setPapersList(res.results);
-                    setPagination({hasbefore: res.hasbefore, continues: res.continues});
+                    //setPagination({hasbefore: res.hasbefore, continues: res.continues});
                     //show the page
                     setDisplay(true);
                 }
@@ -159,7 +145,7 @@ const SearchForm = function ({project_id, location, match, history}) {
 
         fetchData();
 
-    }, [query, before, after, scopus, googleScholar, arXiv, project_id]);  //re-execute when these variables change
+    }, [sort, orderBy, query, scopus, googleScholar, arXiv, project_id]);  //re-execute when these variables change
 
     /**
      * update the checkbox state
@@ -210,24 +196,23 @@ const SearchForm = function ({project_id, location, match, history}) {
 
         event.preventDefault();
         //hide the page
-        setDisplay(false);
-
+        //setDisplay(false);
+        console.log(selectedPapers);
         //for to insert papers into DB
-        for (let i = 0; i < selectedPapers.length; i++) {
-
-            //call dao
-            let res = await projectPapersDao.postPaperIntoProject({
-                paper_id: selectedPapers[i], project_id: project_id
-            });
-            //if there is the error
-            if (res.message) {
-                //pass error object to global context
-                appConsumer.setError(res);
-                return null;
-            }
+        
+        //call dao
+        let res = await projectPapersDao.postPaperIntoProject({
+            arrayEid: selectedPapers, project_id: project_id
+        });
+        //if there is the error
+        if (res.message) {
+            //pass error object to global context
+            appConsumer.setError(res);
+            return null;
         }
+
         //show the page
-        setDisplay(true);
+        //setDisplay(true);
 
         alert("insert completed");
     }
@@ -317,7 +302,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     }
     else if(papersList.length > 0 && query !== ""){
 
-        //get first and last paper id of list
+        /*//get first and last paper id of list
         let firstId = papersList[0].id;
         let lastId = papersList[papersList.length - 1].id;
 
@@ -335,23 +320,19 @@ const SearchForm = function ({project_id, location, match, history}) {
         else{
             paginationUrl = paginationUrl.slice(index) +"&";
         }
-
-        let printList = (scopus === false?
-                (<PrintLocalSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
-                :
-                ( <PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>)
-        );
+        */
+        let printList = (<PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>);
 
 
         resultPart = (
             <div className="paper-card-holder">
                 <div className="order">
                         <label>sort by:</label>
-                        <Select options={options} selected={sortBy} handler={handleSelection}/>
-                        <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                        <Select options={options} selected={orderBy} handler={handleSelection}/>
+                        <button type="button" onClick={handelOrder}><OrderArrow up={(sort)}/></button>
                 </div>
                 {printList}
-                <Pagination before={firstId} after={lastId} pagination={pagination} path={paginationUrl}/>
+                {/*<Pagination before={firstId} after={lastId} pagination={pagination} path={paginationUrl}/>*/}
                 <button className="bottom-left-btn" type="submit" value="Submit">
                     +
                 </button>
@@ -366,8 +347,8 @@ const SearchForm = function ({project_id, location, match, history}) {
             <div className="paper-card-holder">
                 <div className="order" style={{pointerEvents: "none"}}>{/* this way the user cannot sort while loading the results */}
                         <label>sort by:</label>
-                        <Select options={options} selected={sortBy} handler={handleSelection}/>
-                        <button type="button" onClick={handelOrder}><OrderArrow up={(order)}/></button>
+                        <Select options={options} selected={orderBy} handler={handleSelection}/>
+                        <button type="button" onClick={handelOrder}><OrderArrow up={(sort)}/></button>
                 </div>
                 <div className="search-loading-holder">
                     <LoadIcon class={"small"}/>

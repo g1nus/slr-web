@@ -36,11 +36,16 @@ const PrintScoupusSearchList = function ({papersList, handlePaperSelection}) {
     let exampleAbstract ="I am a description I am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a descriptionI am a description";
 
     let output = papersList.map((element, index) =>
-        <div key={element.id} className="paper-card">
-            <CheckBox val={element.id} label={""} handler={handlePaperSelection}/>
-            <Link to={"#"}><h3>{element.id} {element.Title}</h3></Link>
+        <div key={index} className="paper-card">
+            <CheckBox val={element.eid} label={""} handler={handlePaperSelection}/>
+            <Link to={"#"}><h3>{element.title}</h3></Link>
+            <div className="extra-info">
+                <p className="authors">{element.authors}</p>
+                <p className="eid">{element.eid}</p>
+                <p className="date">{element.date}</p>
+            </div>
             <ClampLines
-                text={exampleAbstract}
+                text={element.abstract}
                 lines={4}
                 ellipsis="..."
                 moreText="Expand"

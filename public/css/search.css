@@ -111,6 +111,26 @@ div.paper-card h3{
   font-size: 25px;
   margin: 10px auto 2px 0px;
 }
+div.paper-card div.extra-info{
+  padding: 0px 10px 0px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+div.paper-card p.authors{
+  font-size: 12px;
+  margin: 0px;
+  font-weight: 300;
+}
+div.paper-card p.date{
+  font-size: 12px;
+  margin: 0px;
+  font-weight: 300;
+}
+div.paper-card p.eid{
+  font-size: 12px;
+  margin: 0px;
+  font-weight: 300;
+}
 
 div.paper-card div.paragraph{
   margin: 0px auto 10px auto;
