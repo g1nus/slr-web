@@ -54,6 +54,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     const count = params.count || 10;
     const start = params.start || 0;
     const query = params.query || "";
+
     //query params flags(I don't send errors if the user adds a value different from the default ones)
     const scopus = (params.scopus === 'false') ? false : Boolean(params.scopus || false);
     const googleScholar = (params.scopus === 'false') ? false : Boolean(params.googleScholar || false);
@@ -85,9 +86,8 @@ const SearchForm = function ({project_id, location, match, history}) {
     //bool to control the visualization of page
     const [display, setDisplay] = useState(true);
 
-    //bool to show the pagination buttons
-    const initialPaginationState = {hasbefore: false, continues: false};
-    const [pagination, setPagination] = useState(initialPaginationState);
+    //bool to show the pagination list
+    const [totalResults, setTotalResults] = useState(0);
 
     //get data from global context
     const appConsumer = useContext(AppContext);
@@ -122,7 +122,7 @@ const SearchForm = function ({project_id, location, match, history}) {
                 //if is 404 error
                 if (res.message === "Not Found") {
                     setPapersList([]);
-                    setPagination(initialPaginationState);
+                    setTotalResults(0);
                     //show the page
                     setDisplay(true);
                 }
@@ -135,17 +135,17 @@ const SearchForm = function ({project_id, location, match, history}) {
                 else if (res !== null) {
                     //update state
                     setPapersList(res.results);
-                    //setPagination({hasbefore: res.hasbefore, continues: res.continues});
+                    setTotalResults(res.totalResults);
                     //show the page
                     setDisplay(true);
                 }
             }
 
-        }
+        };
 
         fetchData();
 
-    }, [sort, orderBy, query, scopus, googleScholar, arXiv, project_id]);  //re-execute when these variables change
+    }, [start, count, sort, orderBy, query, scopus, googleScholar, arXiv, project_id]);  //re-execute when these variables change
 
     /**
      * update the checkbox state
@@ -228,7 +228,7 @@ const SearchForm = function ({project_id, location, match, history}) {
         }
         else {
             //concatenate the query string
-            let queryParams = "?query=" + inputToSearch;
+            let queryParams = "?query=" + encodeURIComponent(inputToSearch);
             queryParams += searchCheckboxesToParams(checkboxes);
 
             //update url to start the search
@@ -302,25 +302,7 @@ const SearchForm = function ({project_id, location, match, history}) {
     }
     else if(papersList.length > 0 && query !== ""){
 
-        /*//get first and last paper id of list
-        let firstId = papersList[0].id;
-        let lastId = papersList[papersList.length - 1].id;
 
-        //set correct url for pagination
-        let paginationUrl = window.location.href;
-        let index = paginationUrl.indexOf("?");
-        let existBefore = paginationUrl.lastIndexOf("before");
-        let existOfAfter = paginationUrl.lastIndexOf("after");
-        if(existBefore > -1){
-            paginationUrl = paginationUrl.slice(index, existBefore)
-        }
-        else if(existOfAfter > -1){
-            paginationUrl = paginationUrl.slice(index, existOfAfter)
-        }
-        else{
-            paginationUrl = paginationUrl.slice(index) +"&";
-        }
-        */
         let printList = (<PrintScoupusSearchList papersList={papersList} handlePaperSelection={handlePaperSelection}/>);
 
 
@@ -332,7 +314,7 @@ const SearchForm = function ({project_id, location, match, history}) {
                         <button type="button" onClick={handelOrder}><OrderArrow up={(sort)}/></button>
                 </div>
                 {printList}
-                {/*<Pagination before={firstId} after={lastId} pagination={pagination} path={paginationUrl}/>*/}
+                <Pagination start={start} count={count} totalResults={totalResults} path={match.url}/>
                 <button className="bottom-left-btn" type="submit" value="Submit">
                     +
                 </button>

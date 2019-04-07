@@ -31,9 +31,8 @@ const PapersList = ({project_id, location, match}) => {
     const [orderBy, setOrderBy] = useState(0);//the number index of the options array
     const [sort, setSort] = useState(true);//true means "asc"
 
-    //bool to show the pagination buttons
-    const initialPaginationState = {hasbefore: false, continues: false};
-    const [pagination, setPagination] = useState(initialPaginationState);
+    //bool to show the pagination list
+    const [totalResults, setTotalResults] = useState(0);
 
     //bool to control the visualization of page
     const [display, setDisplay] = useState(false);
@@ -75,7 +74,7 @@ const PapersList = ({project_id, location, match}) => {
             //if is 404 error
             if (res.message === "Not Found") {
                 setPapersList([]);
-                setPagination(initialPaginationState);
+                setTotalResults(0);
                 //show the page
                 setDisplay(true);
             }
@@ -89,7 +88,7 @@ const PapersList = ({project_id, location, match}) => {
 
                 //update state
                 setPapersList(res.results);
-                //setPagination({hasbefore: res.hasbefore, continues: res.continues});
+                setTotalResults(res.totalResults);
                 //show the page
                 setDisplay(true);
             }
@@ -137,7 +136,7 @@ const PapersList = ({project_id, location, match}) => {
                     <button type="button" onClick={handelOrder}><OrderArrow up={(sort)}/></button>
                 </div>
                 <PrintList papersList={papersList}/>
-                <Pagination before={firstId} after={lastId} pagination={pagination} path={match.url+"?"}/>
+                <Pagination start={start} count={count} totalResults={totalResults} path={match.url}/>
             </div>
         );
     }
