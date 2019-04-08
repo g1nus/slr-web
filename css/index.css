@@ -1,0 +1,356 @@
+/*===KEYFRAMES===*/
+@keyframes showup{
+  0%{
+    opacity: 0.0;
+  }
+  80%{
+    opacity: 0.0;
+  }
+  100%{
+    opacity: 1.0;
+  }
+}
+@keyframes complete-big {
+  0% {
+    stroke-dashoffset: 200;
+    
+  }
+  50% {
+    stroke-dashoffset: 1100;
+    
+  }
+  100% {
+    stroke-dashoffset: 200;
+    
+  }
+}
+@keyframes rotate-big {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes complete-small {
+  0% {
+    stroke-dashoffset: 800;
+    
+  }
+  50% {
+    stroke-dashoffset: 100;
+    
+  }
+  100% {
+    stroke-dashoffset: 800;
+    
+  }
+}
+@keyframes rotate-small {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*===DEFAULT_STYLING===*/
+* {
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'Lato', sans-serif;
+  margin: 0;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+#root{
+  z-index: 9999999;
+}
+
+a{
+  display: block;
+}
+
+div.navigation-wrapper{
+  position: fixed;
+  top: 0px;
+}
+
+div.main-wrapper{
+  position: relative;
+  width: 1000px;
+  margin: 60px auto 0px auto;
+  min-height: 500px;
+}
+
+.modal{
+  background-color: aliceblue;
+  border: solid 2px black;
+  border-radius: 15px;
+}
+
+.light-modal{
+  border: solid 1px #c4c4c4;
+  border-radius: 15px;
+}
+
+a{
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button{
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+button:disabled{
+  cursor: not-allowed;
+}
+
+textarea:focus, input:focus, a:focus, div:focus{
+  outline: none;
+}
+
+input[type=text]{
+  box-sizing: border-box;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: solid 1px black;
+  padding: 3px 5px 3px 5px;
+  color: black;
+  font-family: inherit;
+}
+
+/*checkboxes*/
+input[type=checkbox]{
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+.checkmark {
+  display: inline-block;
+  margin: 6px;
+  height: 20px;
+  width: 20px;
+  background-color:white;
+  border-radius: 3px;
+  border: solid 0.5px gray;
+}
+.checkbox-container{
+  cursor: pointer;
+}
+.checkbox-container:hover input ~ .checkmark {
+  background-color: rgb(241, 241, 241);
+}
+.checkmark:after {
+  content: url('./../img/tick.svg');
+  display: none;
+}
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+.checkbox-container .checkmark:after {
+  margin-left: 2px;
+  margin-top: 2px;
+  width: 14px;
+  height: 14px;
+}
+
+/*loading icon*/
+svg#loading-icon.small{
+  width: 50px;
+  height: 50px;
+}
+svg#loading-icon{
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+svg#loading-icon path#loading-circle1{
+  fill: transparent;
+  stroke: black;
+  stroke-width: 3px;
+  stroke-dashoffset: 1005;
+  stroke-dasharray: 1005; /*1005*/
+  transform-origin: 50% 50%;
+  animation: complete-small 6s linear infinite, rotate-small 1s linear infinite;
+}
+svg#loading-icon path#loading-circle2{
+  fill: transparent;
+  stroke: black;
+  stroke-width: 9px;
+  stroke-dashoffset: 0;
+  stroke-dasharray: 1917;
+  transform-origin: 50% 50%;
+  animation: complete-big 5s linear infinite, rotate-big 1s linear infinite;
+}
+
+/*buttons*/
+button.bottom-left-btn{
+  font-weight: 300;
+  font-size: 50px;
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+}
+
+/*<select> custom element*/
+div.custom-select {
+  width: 120px;
+  z-index: 1;
+  cursor: pointer;
+}
+div.selected{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 1px black;
+}
+div.options-holder{
+  border-top: none;
+  border-radius: 0px 0px 5px 5px;
+  background-color: white;
+}
+div.options-holder div.option{
+  padding: 2px;
+  transition: all 0.2s;
+}
+div.options-holder div.option:last-child{
+  border-radius: 0px 0px 5px 5px;
+}
+div.options-holder div.option:hover{
+  background-color: #eaeaea;
+}
+div.arrow{
+  height: 20px;
+  width: 20px;
+}
+div.arrow svg#arrow-select{
+  width: 80%;
+  margin: 10%;
+}
+.st-arrow-select{fill:none;stroke:#000000;stroke-width:88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*order arrow element*/
+.st-order-arrow{fill:none;stroke:#000000;stroke-width:88;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
+.st-order-arrow-head{fill:none;stroke:#000000;stroke-width:55;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
+
+/*edit button svg*/
+button.edit-button{
+  height: 20px;
+  width: 20px;
+}
+.st-pencil{fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st-pencil-border{fill:none;stroke:#000000;stroke-width:29;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st-confirm{fill:none;stroke:#000000;stroke-width:100;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*recycle bin svg*/
+.st0-bin{fill:none;stroke:#000000;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+.st1-bin{fill:none;stroke:#000000;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*options button*/
+.st-options{stroke: #737373;stroke-width: 140;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+/*code tag*/
+code{
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/*pagination*/
+ul.pagination{
+  font-weight: 300;
+  padding: 0px;
+  clear: both;
+  font-size: 17px;
+  margin: 30px auto 20px auto;
+  text-align: center;
+  list-style-type: none;
+}
+ul.pagination *{
+  display: inline-block;
+}
+ul.pagination li{
+  margin: 10px;
+}
+ul.pagination span.current-page{
+  font-weight: 700;
+}
+/*notfound error*/
+div.not-found{
+  animation: showup 0.3s linear ;
+}
+
+/*cover the page*/
+div.cover{
+  opacity: 0.2;
+}
+
+div.full-screen{
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: black;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+div.full-screen-transparent{
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: transparent;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+
+/*APP.css----------------------------------------------------------------------------------------------*/
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+

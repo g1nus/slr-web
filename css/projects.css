@@ -2,12 +2,41 @@
 div.project-cards-holder, div.project-wrapper{
   font-size: 15px;
 }
-div.project-cards-holder div.project-card{
-  width: 40%;
-  margin: 20px 5% 20px 5%;
-  float: left;
-  transition: all 0.3s;
+div.project-cards-holder, div.project-wrapper{
+  font-size: 15px;
 }
+div.project-cards-holder{
+  width: 800px;
+  column-count: 2;
+  margin: 80px auto;
+}
+div.project-cards-holder div.project-card{
+  width: 100%;
+  margin: 0 0 20px;
+  transition: all 0.3s;
+  display: inline-block;
+  position: relative;
+}
+div.project-cards-holder div.project-card div.project-card-options{
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  width: 20px;
+  z-index: 1;
+}
+div.project-cards-holder div.project-card div.project-card-options div.options-list{
+  background-color: white;
+  border-radius: 3px;
+  text-align: center;
+  width: 60px;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+div.project-cards-holder div.project-card div.project-card-options button svg#options-button{
+  height: 20px;
+  width: 20px;
+}
+
 div.project-cards-holder div.project-card:hover h3{
   text-decoration: underline;
 }
@@ -25,11 +54,14 @@ div.project-cards-holder div.project-card p{
 /*add project form*/ /*projectslist.js*/
 form.add-project{
   font-size: 14px;
-  padding: 20px 30px 10px 30px;
+  padding: 30px 30px 10px 30px;
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+  width: 400px;
+  text-align: center;
+  z-index: 1;
 }
 form.add-project button{
   border: solid 1px grey;
@@ -41,17 +73,35 @@ form.add-project button[type=submit]{
   border-radius: 4px;
 }
 form.add-project button.close-btn{
-  font-size: 10px;
   position: absolute;
   top: 10px;
   right: 10px;
   border-radius: 50%;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
+}
+form.add-project svg#close-button{
+  width: 70%;
+  height: 70%;
+  margin: 15% auto;
+
 }
 form.add-project input{
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  width: 100%;
 }
+form.add-project textarea{
+  margin-bottom: 15px;
+  height: 100px;
+  width: 100%;
+  font-family: inherit;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: solid 1px black;
+  color: black;
+  resize: none;
+}
+
 
 /*small navigation links*/ /*projectpage.js*/
 div.project-nav-link-wrapper{
@@ -88,26 +138,77 @@ div.project-nav-link-wrapper div.underline-to-right{
 }
 
 /*list and description components*/ /*projectpage.js*/
+div.paper-card-holder div.order{
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+  height: 20px;
+  padding: 0px 0px 0px 10px;
+}
+div.paper-card-holder div.order label{
+  font-weight: 300;
+  margin-right: 20px;
+}
+div.paper-card-holder div.order button{
+  margin-left: 5px;
+  height: 20px;
+  width: 20px;
+}
+div.paper-card-holder div.order button svg#order-arrow{
+  height: 80%;
+  margin: 10%;
+}
 div.papers-list{
   position: relative;
   margin: 20px auto auto 0px;
   width: 700px;
   min-height: 300px;
 }
+div.paper-card-holder{
+  width: 700px;
+}
+
 div.project-description{
-  margin-top: 20px;
   width: 300px;
   position: absolute;
   right: 0px;
   text-align: justify;
-  font-size: 15px;
   font-weight: 300;
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
   color: #2f2f2f;
+  display: flex;
+  flex-flow: column;
 }
-div.papers-list svg#loading-icon{
-  width: 50px;
-  height: 50px;
+div.project-description p{
+  margin: 0px;
+}
+div.hidden-form-description form button{
+  opacity: 0.0;
+}
+div.hidden-form-description:hover form button{
+  opacity: 1.0;
+}
+div.project-description button.edit-button{
+  position: absolute;
+  right: 0px;
+  top: 15px;
+  width: 25px;
+  height: 25px;
+}
+div.project-description form.edit-project-description textarea{
+  height: 200px;
+  font-size: 15px;
+  font-family: inherit;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: solid 1px black;
+  color: black;
+  resize: none;
+  overflow-wrap: normal;
+  word-wrap: normal;
+}
+div.project-description h2{
+  margin-top: 15px;
 }
