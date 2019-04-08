@@ -272,18 +272,24 @@ code{
 }
 
 /*pagination*/
-div.pagination{
+ul.pagination{
+  font-weight: 300;
+  padding: 0px;
   clear: both;
-  font-size: 18px; 
-  margin: 20px auto; 
-  width: 50%;
+  font-size: 17px;
+  margin: 30px auto 20px auto;
   text-align: center;
+  list-style-type: none;
 }
-a.before, a.after{
-  width: 25%; 
+ul.pagination *{
   display: inline-block;
 }
-
+ul.pagination li{
+  margin: 10px;
+}
+ul.pagination span.current-page{
+  font-weight: 700;
+}
 /*notfound error*/
 div.not-found{
   animation: showup 0.3s linear ;

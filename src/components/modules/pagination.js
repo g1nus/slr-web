@@ -38,7 +38,7 @@ const Pagination = function({start, count, totalResults, path}) {
         //if it isn't the first page, print the prev-page link
         if (paged > 1) {
             prev = (
-                <li style={{display: "inline-block", margin: 10}}>
+                <li>
                     <Link className="prev-page"
                           to={path + "start=" + (((paged - 1) * count) > 0 ? ((paged - 2) * count) : 0) + "&count=" + count}>
                         {"<"}
@@ -49,7 +49,7 @@ const Pagination = function({start, count, totalResults, path}) {
         //if it isn't the last page, print the next-page link
         if (paged < totalPage) {
             next = (
-                <li style={{display: "inline-block", margin: 10}}>
+                <li>
                     <Link className="next-page" to={path + "start=" + (paged * count) + "&count=" + count}>
                         {">"}
                     </Link>
@@ -61,12 +61,12 @@ const Pagination = function({start, count, totalResults, path}) {
         if (paged > paginationLength + 2) {
             firstPage = (
                 <>
-                    <li style={{display: "inline-block", margin: 10}}>
+                    <li>
                         <Link className="first-page" to={path + "start=0&count=" + count}>
                             {"1"}
                         </Link>
                     </li>
-                    <li style={{display: "inline-block", margin: 10}}>
+                    <li>
                         <span>{separator}</span>
                     </li>
                 </>
@@ -77,10 +77,10 @@ const Pagination = function({start, count, totalResults, path}) {
         if (paged < totalPage - (paginationLength + 1)) {
             lastPage = (
                 <>
-                    <li style={{display: "inline-block", margin: 10}}>
+                    <li>
                         <span>{separator}</span>
                     </li>
-                    <li style={{display: "inline-block", margin: 10}}>
+                    <li>
                         <Link style={{display: "inline-block"}} className="last-page"
                               to={path + "start=" + ((totalPage - 1) * count) + "&count=" + count}>
                             {totalPage}
@@ -108,7 +108,7 @@ const Pagination = function({start, count, totalResults, path}) {
                 //if i is current page, print only text
                 else {
                     listPage.push((
-                            <span style={{color: "red"}}className="current-page">{paged}</span>
+                            <span className="current-page">{paged}</span>
                     ));
                 }
 
@@ -119,7 +119,7 @@ const Pagination = function({start, count, totalResults, path}) {
     }
 
     let output = (
-        <ul style={{listStyleType: "none" }}className="pagination">
+        <ul className="pagination">
             {prev}
             {firstPage}
             {listPage.map((element,index)=><li style={{display: "inline-block", margin: 10}} key={index}>{element}</li>)}
