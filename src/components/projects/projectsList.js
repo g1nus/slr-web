@@ -180,7 +180,7 @@ const PrintList = function ({projectsList, path}) {
                 <div key={element.id} className="light-modal project-card">
                     <SideOptions options={sideOptions} handler={handleDelete} target={element.id} cls="project-card-options"/>
                     <Link to={join(path, "/" + element.id)}>
-                        <h3>{element.id} {element.data.name}</h3>
+                        <h3>{element.data.name}</h3>
                         <p>{element.data.description}</p>
                     </Link>
                 </div>

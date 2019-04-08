@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, } from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 
 
@@ -35,9 +35,12 @@ const App = function(props) {
                             <SideMenu/>
                         </NavBar>
                         <Main>
-                            <Route exact path="/" render={() => <Home/> }/>
-                            <Route exact path="/projects" render={(props) => <ProjectsList {...props} />}/>
-                            <Route path="/projects/:id" render={(props) => <ProjectPage {...props} />}/>
+                            <Switch>
+                                <Route exact path="/" render={() => <Home/> }/>
+                                <Route exact path="/projects" render={(props) => <ProjectsList {...props} />}/>
+                                <Route path="/projects/:id" render={(props) => <ProjectPage {...props} />}/>
+                                <Route render={(props) => <div>404</div>}/>
+                            </Switch>
 
                         </Main>
 

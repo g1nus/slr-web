@@ -206,6 +206,8 @@ div.project-description form.edit-project-description textarea{
   border-bottom: solid 1px black;
   color: black;
   resize: none;
+  overflow-wrap: normal;
+  word-wrap: normal;
 }
 div.project-description h2{
   margin-top: 15px;
