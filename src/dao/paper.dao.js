@@ -1,25 +1,24 @@
-import {http} from './../utils/conn'
-import {config} from './../config/index'
+import http from 'src/utils/conn'
+import config from 'src/config/index'
 
 /**
- * dao to search papers
+ * dao to search local papers
  * @param queryData
  * @return {array[objects]}
  */
 async function search(queryData){
-    let url = config.home+config.search
-    try{
+    let url = config.home+config.search;
+
         const res = await http.get(url, queryData);
         return res;
-    }catch(e){
-        return ["not_found"];
-    }
+
 }
 
 
 
+
 const paperDao = {
-    "search" : search,
+    search,
     "abortRequest" : http.abortRequest
 }
 

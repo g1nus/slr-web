@@ -1,44 +1,51 @@
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, /*Link, Switch*/} from "react-router-dom";
-//import logo from './svg/logo.svg';
-import './App.css';
+import React from 'react';
+import {BrowserRouter as Router, Route, } from "react-router-dom";
 
-import LoadIcon from './components/loadicon';
-import NavBar from './components/navigation/navbar';
-import Main from './components/main';
-import ProjectsList from './components/projectslist';
-import ProjectPage from './components/projectpage';
 
-import {AccountProvider} from './providers/AccountProvider';
 
-class App extends Component {
-    state = {
-        menu_list: [
-            {id: 4, content: "my projects", link: "/projects"},
-            {id: 5, content: "option3", link: "/"},
-            {id: 6, content: "option4", link: "/projects/1"}],
-    };
+import Main from 'src/components/main';
+import Home from 'src/components/home';
 
-    render() {
+import NavBar from 'src/components/navigation/navBar';
+import SideMenu from 'src/components/navigation/sideMenu';
+
+import ProjectsList from 'src/components/projects/projectsList';
+import ProjectPage from 'src/components/projects/projectPage';
+
+
+import  {AppProvider} from 'src/components/providers/appProvider';
+
+
+/**
+ *this is the start point of application
+ */
+
+const App = function(props) {
+
+
         return (
-            <Router>
+            <Router basename={"slr-web/"}>
                 <div className="app">
 
-                    {/*mount component with context object*/}
-                    <AccountProvider>
+                    {/*mount a root context object*/}
+                    <AppProvider>
 
-                        {/*inputs of AccountProvider*/}
-                        <NavBar menu_elements={this.state.menu_list}></NavBar>
-                        {/*router by url*/}
-                        <Route exact path="/" render={() => <Main main_element={<LoadIcon/>}></Main>}/>
-                        <Route exact path="/projects" render={(props) => <Main main_element={<ProjectsList {...props} />}></Main>}/>
-                        <Route path="/projects/:id" render={(props) => <Main main_element={<ProjectPage {...props} />}></Main>}/>
+                        <NavBar>
+                            {/*component menu*/}
+                            <SideMenu/>
+                        </NavBar>
+                        <Main>
+                            <Route exact path="/" render={() => <Home/> }/>
+                            <Route exact path="/projects" render={(props) => <ProjectsList {...props} />}/>
+                            <Route path="/projects/:id" render={(props) => <ProjectPage {...props} />}/>
 
-                    </AccountProvider>
+                        </Main>
+
+                    </AppProvider>
                 </div>
             </Router>
         );
-    }
+
 }
 
 export default App;

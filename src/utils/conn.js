@@ -1,7 +1,11 @@
-/*this is the file to communicate with backend*/
+/*this is the file to communicate with backend by fetch request*/
 
 //signal to abort the request
 var abortController;
+//int to know abort error type
+var abortRequestType;
+//10seconds for timeout
+var timeOutTime = 10 * 1000;
 
 //object to export
 const http = {
@@ -15,10 +19,20 @@ const http = {
 
 
 /**
- * abort all request in progeress
+ * abort all request in progeress by user
  */
 function abortRequest() {
     abortController.abort();
+    abortRequestType = 1;
+}
+
+/**
+ * abort all request if timeout
+ */
+function timeOut() {
+
+    abortController.abort();
+    abortRequestType = 2;
 }
 
 /**
@@ -31,8 +45,11 @@ async function request(url, options = {}) {
     try {
 
         //create a new abortController for this request
-        abortController =  new AbortController();
+        abortController = new AbortController();
         let signal = abortController.signal;
+        //initialize as 0 for every request
+        abortRequestType = 0;
+
         let requestOptions = Object.assign(
             {
                 //enable the  sending of cookie
@@ -43,19 +60,39 @@ async function request(url, options = {}) {
             options
         );
 
+        //set timeout clock
+        let timer = setTimeout(() => timeOut(), timeOutTime);
 
         let response = await fetch(url, requestOptions);
-        //response error check
-        checkResponseStatus(response);
+
+        //clear timeoyt clock
+        clearTimeout(timer);
+
+
         //parse response data
-        response = await parseResponseData(response);
-        //console.log(response);
+        let data = await parseResponseData(response);
+        //response error check
+        checkResponseStatus(response,data);
+        return  data;
 
-        return response;
+    }
+    catch (error) {
 
-    } catch (error) {
-        throw error;
-        return null;
+        //if abort error is caused by timeout
+        if (abortRequestType === 2) {
+            //create a custom error for timeout
+            let timeOutError = new Error("Error: Time out to get response from backend");
+            timeOutError.name = "timeout";
+            return  timeOutError;
+        }
+        //if is a abort error  caused by user
+        else if (abortRequestType === 1) {
+            return null;
+        }
+
+        return error;
+
+
     }
 }
 
@@ -87,7 +124,7 @@ async function deletes(url) {
         "method": 'DELETE'
     };
 
-    await request(url, options);
+    return await request(url, options);
 }
 
 /**
@@ -111,8 +148,6 @@ async function post(url, bodyData = "") {
 
     return await request(url, options);
 }
-
-
 
 
 /**
@@ -140,12 +175,17 @@ async function put(url, bodyData = "") {
 /**
  *  * check resposonse status
  * @param response to check
+ * @param data data received
  * @throws {Error} if  status code < 200 or status code >= 300
  */
-function checkResponseStatus(response) {
+function checkResponseStatus(response, data) {
+
     if (response.status < 200 || response.status >= 300) {
         const error = new Error(response.statusText);
         error.data = response;
+        if(data.payload){
+            error.payload = data.payload;
+        }
         throw error;
     }
 
@@ -153,13 +193,13 @@ function checkResponseStatus(response) {
 
 /**
  * parse the response of  http request
- * @param response
+ * @param response response object
  * @return {object} data parsed
  */
 async function parseResponseData(response) {
     //get response data type
     const contentType = response.headers.get('Content-Type');
-    let data;
+    let data = null;
     //parse the data by its type
     if (contentType != null) {
         if (contentType.indexOf('text') > -1) {
@@ -174,11 +214,12 @@ async function parseResponseData(response) {
         if (contentType.indexOf('json') > -1) {
             data = await response.json();
         }
-    } else {
+    }
+    else if (response != null) {
         data = await response.text();
     }
     return data;
 }
 
 
-export {http};
+export default http;

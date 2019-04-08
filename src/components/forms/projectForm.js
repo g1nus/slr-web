@@ -1,6 +1,9 @@
-import React, {useEffect, useRef} from "react";
-import {projectsDao} from './../../dao/projects.dao'
+import React, {useEffect, useState, useContext} from "react";
+import {projectsDao} from 'src/dao/projects.dao'
 
+import CloseButton from 'src/components/svg/closeButton';
+
+import { AppContext } from 'src/components/providers/appProvider'
 
 /**
  * this is the form for create or edit the project
@@ -9,10 +12,12 @@ import {projectsDao} from './../../dao/projects.dao'
  */
 function ProjectForm(props) {
 
-    //field of project name
-    const projectName = useRef(null);
-    //field of project description
-    const projectDescription = useRef(null);
+    //fields values
+    const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
+
+    //get data from global context
+    const appConsumer = useContext(AppContext);
 
     /**
      * action to create a new project
@@ -21,23 +26,34 @@ function ProjectForm(props) {
         //disable default action
         e.preventDefault();
         //prepare the data object to post
-        let bodyData = {name: projectName.current.value, description: projectDescription.current.value};
+        let bodyData = {name: name, description:description};
         //call dao
         let res = await projectsDao.postProject(bodyData);
 
-        alert("inserted correctly");
+        //error checking
+        if(res.message){
+            //pass error object to global context
+            appConsumer.setError(res);
+        }
+        props.history.push("/projects/" + res.id);
     }
 
     /**
-     * action to update a old project
+     * action to update a old project(not used yet)
      */
     async function updateProject(e) {
         //disable default action
         e.preventDefault();
         //prepare the data object to post
-        let bodyData = {name: projectName.current.value, description: projectDescription.current.value};
+        let bodyData = {name: name, description: description};
         //call dao  with project_id and data object
-        await projectsDao.putProject(props.project.id, bodyData);
+        let res = await projectsDao.putProject(props.project.id, bodyData);
+
+        //error checking
+        if(res.message){
+            //pass error object to global context
+            appConsumer.setError(res);
+        }
 
         alert("updated correctly");
     }
@@ -61,16 +77,22 @@ function ProjectForm(props) {
         <form className="modal add-project" style={{visibility: (!props.visibility) ? 'hidden' : '' }}>
             <button type="button" className="close-btn" onClick={(e) => {
                 props.setVisibility(!props.visibility);
-            }}>X</button>
-            <label>name</label>
+            }}><CloseButton/></button>
             <br/>
-            <input ref={projectName} type="text" defaultValue={projectInputData.name}/>
+            <input 
+                defaultValue={name}
+                onChange={e => setName(e.target.value)}
+                type="text" 
+                placeholder="project name"/>
             <br/>
-            <label>description</label>
             <br/>
-            <input ref={projectDescription} type="text" defaultValue={projectInputData.description}/>
+            <textarea 
+                defaultValue={description}
+                onChange={e => setDescription(e.target.value)}
+                type="text" 
+                placeholder="project description"/>
             <br/>
-            <button type="submit" onClick={submitAction} value="submit">submit</button>
+            <button type="submit" onClick={submitAction} value="submit">Add project</button>
         </form>
         </>
     );

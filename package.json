@@ -5,6 +5,8 @@
   "homepage": "https://trentocrowdai.github.io/slr-web",
   "dependencies": {
     "gh-pages": "^2.0.1",
+    "lodash": "^4.17.11",
+    "query-string": "^6.4.2",
     "react": "^16.8.4",
     "react-clamp-lines": "^2.2.0",
     "react-dom": "^16.8.4",
@@ -15,7 +17,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "set PORT=3006 && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
